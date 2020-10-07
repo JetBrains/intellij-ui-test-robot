@@ -1,3 +1,5 @@
+![official JetBrains project](https://jb.gg/badges/official.svg)
+
 ## Quick Start
 First we need to launch the IDE. Because the `runIdeForUiTests` task is blocking, we can run it as an asynchronous process:
 

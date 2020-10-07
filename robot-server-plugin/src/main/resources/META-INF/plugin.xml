@@ -1,0 +1,17 @@
+<idea-plugin>
+    <id>com.jetbrains.test.robot-server-plugin</id>
+    <name>Robot server</name>
+    <vendor email="eugene.nizienko@jetbrains.com" url="jetbrains.com">JetBrains</vendor>
+
+    <description><![CDATA[
+    end2end ui tests support for IntelliJ Idea
+    ]]></description>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationInitializedListener implementation="com.intellij.remoterobot.RobotServerStarter"/>
+    </extensions>
+
+    <idea-version since-build="183.2153.8"/>
+
+    <depends>com.intellij.modules.platform</depends>
+</idea-plugin>

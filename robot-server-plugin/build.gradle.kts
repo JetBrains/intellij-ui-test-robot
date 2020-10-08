@@ -39,6 +39,14 @@ dependencies {
     implementation("org.mozilla:rhino:1.7.12")
 }
 
+// Create sources Jar from main kotlin sources
+val sourcesJar by tasks.creating(Jar::class) {
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
+    description = "Assembles sources JAR"
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
 configure<IntelliJPluginExtension> {
     setPlugins("org.jetbrains.kotlin:1.4.10-release-IJ2020.2-1")
     updateSinceUntilBuild = false
@@ -87,4 +95,27 @@ bintray {
         }
     }
     setPublications("publishToBintray")
+}
+
+publishing {
+    publications {
+        register("publishToJBMaven", MavenPublication::class) {
+            from(components["java"])
+            groupId = project.group as String
+            artifactId = project.name
+            version = rootProject.ext["rr_version"] as String
+
+            val sourcesJar by tasks.getting(Jar::class)
+            artifact(sourcesJar)
+        }
+    }
+}
+
+
+artifactory {
+    publish(delegateClosureOf<org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig> {
+        defaults(delegateClosureOf<groovy.lang.GroovyObject> {
+            invokeMethod("publications", "publishToJBMaven")
+        })
+    })
 }

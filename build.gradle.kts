@@ -33,7 +33,7 @@ subprojects {
     }
 }
 
-configure(listOf(project(":remote-robot"))) {
+configure(listOf(project(":remote-robot"), project(":robot-server-plugin"))) {
     apply {
         plugin("com.jfrog.artifactory")
         plugin("maven-publish")

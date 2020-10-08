@@ -3,7 +3,7 @@ import org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig
 
 plugins {
     `maven-publish`
-//    id("org.jetbrains.intellij")
+    id("org.jetbrains.intellij")
     id("com.jfrog.bintray") version "1.8.4"
 }
 

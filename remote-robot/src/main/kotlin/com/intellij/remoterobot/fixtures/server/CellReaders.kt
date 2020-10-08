@@ -1,5 +1,5 @@
 
-package com.intellij.remoterobot.fixtures
+package com.intellij.remoterobot.fixtures.server
 
 import com.intellij.ide.util.treeView.NodeRenderer
 import com.intellij.ui.MultilineTreeCellRenderer

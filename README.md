@@ -14,7 +14,7 @@ The easiest way to start the test system is to execute the `runIdeForUiTests` ta
 The `remote-robot` library communicates with the `robot-server` plugin via HTTP protocol. This connection means you can launch IDEA on remote machines or in docker containers to check your plugin within different test environments.
 
 ### Setup
-Last version of the Remote-Robot is `0.9.35`
+Last version of the Remote-Robot is `0.10.0`
 
 In the test project:
 ```groovy
@@ -30,7 +30,7 @@ In the plugin project:
 downloadRobotServerPlugin.version = REMOTER-ROBOT_VERSION
 
 runIdeForUiTests {
-    systemProperty "robot-server.port", "8082" // default port 8080
+    systemProperty "robot-server.port", "8082" // default port 8580
 }
 ```
 Of course, you can write UI tests in the plugin project. 
@@ -165,7 +165,7 @@ List<String> renderedText = welcomeFrame.findAllText()
 Instead of looking for text inside the component structure we just render it on a fake `Graphics` to collect text data and its points.
 
 ### Kotlin
-If you already familiar with Kotlin, please take a look at the [kotlin example](https://github.com/JetBrains/gradle-intellij-plugin/blob//examples/ui-test-example/src/test/kotlin/org/intellij/examples/simple/plugin/CreateCommandLineKotlinTest.kt). You may find it easier to read and use.
+If you already familiar with Kotlin, please take a look at the [kotlin example](/examples/ui-test-example/src/test/kotlin/org/intellij/examples/simple/plugin/CreateCommandLineKotlinTest.kt). You may find it easier to read and use.
 
 ### Steps Logging
 We use the `step` wrapper method to make test logs easy to read. The example simple `StepLogger` shows how useful it can be. 

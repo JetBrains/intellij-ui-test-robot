@@ -10,9 +10,7 @@ import com.intellij.remoterobot.services.xpath.XpathDataModelCreator
 import com.intellij.remoterobot.services.xpath.convertToHtml
 import com.intellij.remoterobot.utils.ComponentLookupExceptionSerializer
 import com.intellij.remoterobot.utils.serializeToBytes
-import io.ktor.application.ApplicationCall
-import io.ktor.application.call
-import io.ktor.application.install
+import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
@@ -45,6 +43,7 @@ class RobotServerImpl {
                     registerTypeAdapter(ComponentLookupException::class.java, ComponentLookupExceptionSerializer())
                 }
             }
+
             routing {
                 get("/hello") {
                     call.respond("Hello from idea")

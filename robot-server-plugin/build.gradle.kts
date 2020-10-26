@@ -30,6 +30,7 @@ dependencies {
     implementation("io.ktor:ktor-gson:$ktor_version") {
         exclude("org.slf4j", "slf4j-api")
     }
+    implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.assertj:assertj-swing-junit:3.9.2")
 
     testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
@@ -48,7 +49,7 @@ val sourcesJar by tasks.creating(Jar::class) {
 }
 
 configure<IntelliJPluginExtension> {
-    setPlugins("org.jetbrains.kotlin:1.4.10-release-IJ2020.2-1")
+//    setPlugins("org.jetbrains.kotlin:1.4.10-release-IJ2020.2-1")
     updateSinceUntilBuild = false
 }
 

@@ -1,5 +1,21 @@
 ![official JetBrains project](https://jb.gg/badges/official.svg)
 
+This library allows you to write and execute UI tests among IntelliJ Idea. You can test your Plugin.
+
+## Quick Start
+First we need to launch the IDE. Because the `runIdeForUiTests` task is blocking, we can run it as an asynchronous process:
+
+`./gradlew ui-test-example:clean ui-test-example:runIdeForUiTests &`
+ 
+Next, we can start the tests. Because they run locally, you must be sure the Welcome Frame is visible on the screen: 
+
+`./gradlew ui-test-example:test`
+
+Or, just run all tasks together with one command:
+
+`./gradlew ui-test-example:clean ui-test-example:runIdeForUiTests & ./gradlew ui-test-example:test`
+
+
 ## Remote-Robot
 The Remote-Robot library is inspired by Selenium WebDriver. It supports IntelliJ IDEA since version `2018.3`.
 

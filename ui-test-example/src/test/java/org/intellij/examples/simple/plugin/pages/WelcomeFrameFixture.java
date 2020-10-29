@@ -21,7 +21,7 @@ public class WelcomeFrameFixture extends ContainerFixture {
     }
 
     public ActionLinkFixture createNewProjectLink() {
-        return find(ActionLinkFixture.class, byXpath("//div[@accessiblename='New Project' and @class='JButton']"));
+        return find(ActionLinkFixture.class, byXpath("//div[@accessiblename='New Project' and @class='MainButton']"));
     }
 
     public ComponentFixture importProjectLink() {

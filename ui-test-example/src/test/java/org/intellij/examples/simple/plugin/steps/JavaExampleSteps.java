@@ -28,7 +28,7 @@ public class JavaExampleSteps {
 
     public void createNewCommandLineProject() {
         step("Create New Command Line Project", () -> {
-            final WelcomeFrameFixture welcomeFrame = remoteRobot.find(WelcomeFrameFixture.class);
+            final WelcomeFrameFixture welcomeFrame = remoteRobot.find(WelcomeFrameFixture.class, Duration.ofSeconds(10));
             welcomeFrame.createNewProjectLink().click();
 
             final DialogFixture newProjectDialog = welcomeFrame.find(DialogFixture.class, DialogFixture.byTitle("New Project"), Duration.ofSeconds(20));

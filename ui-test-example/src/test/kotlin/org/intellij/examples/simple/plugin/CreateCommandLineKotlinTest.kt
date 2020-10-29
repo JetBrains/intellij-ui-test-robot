@@ -10,6 +10,7 @@ import com.intellij.remoterobot.utils.autocomplete
 import com.intellij.remoterobot.utils.keyboard
 import com.intellij.remoterobot.utils.waitFor
 import org.assertj.swing.core.MouseButton
+import org.assertj.swing.timing.Pause.pause
 import org.intellij.examples.simple.plugin.pages.*
 import org.intellij.examples.simple.plugin.steps.JavaExampleSteps
 import org.intellij.examples.simple.plugin.utils.StepsLogger
@@ -63,6 +64,7 @@ class CreateCommandLineKotlinTest {
             editor("App.kt") {
                 step("Write a code") {
                     autocomplete("main")
+                    pause(1000)
                     autocomplete("sout")
                     keyboard { enterText("\""); enterText("Hello from UI test") }
                 }

@@ -181,7 +181,7 @@ List<String> renderedText = welcomeFrame.findAllText()
 Instead of looking for text inside the component structure we just render it on a fake `Graphics` to collect text data and its points.
 
 ### Kotlin
-If you already familiar with Kotlin, please take a look at the [kotlin example](/examples/ui-test-example/src/test/kotlin/org/intellij/examples/simple/plugin/CreateCommandLineKotlinTest.kt). You may find it easier to read and use.
+If you already familiar with Kotlin, please take a look at the [kotlin example](/ui-test-example/src/test/kotlin/org/intellij/examples/simple/plugin/CreateCommandLineKotlinTest.kt). You may find it easier to read and use.
 
 ### Steps Logging
 We use the `step` wrapper method to make test logs easy to read. The example simple `StepLogger` shows how useful it can be. 

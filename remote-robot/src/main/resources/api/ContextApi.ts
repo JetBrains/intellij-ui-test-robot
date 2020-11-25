@@ -807,6 +807,8 @@ export interface Component {
 
     isInstanceOf(arg0: any, arg1: string): boolean
 
+    getVisibleRect(): Rectangle
+
     initIDs()
 
     foreground: Color;

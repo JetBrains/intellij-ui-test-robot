@@ -129,7 +129,7 @@ abstract class Fixture(
 
     val hasFocus: Boolean
         get() {
-            return callJs("component.hasFocus();")
+            return callJs("component.hasFocus();", true)
         }
 
     val isShowing: Boolean
@@ -137,16 +137,16 @@ abstract class Fixture(
             return callJs("""
                 const rect = component.getVisibleRect();
                 component.isShowing() && rect.getWidth() !== 0 && rect.getHeight() !== 0;
-                """)
+                """, true)
         }
     val isFocusOwner: Boolean
         get() {
-            return callJs("component.isFocusOwner();")
+            return callJs("component.isFocusOwner();", true)
         }
 
     val locationOnScreen: Point
         get() {
-            return callJs("component.getLocationOnScreen();")
+            return callJs("component.getLocationOnScreen();", true)
         }
 }
 

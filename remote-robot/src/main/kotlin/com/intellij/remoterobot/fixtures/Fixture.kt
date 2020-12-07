@@ -134,10 +134,7 @@ abstract class Fixture(
 
     val isShowing: Boolean
         get() {
-            return callJs("""
-                const rect = component.getVisibleRect();
-                component.isShowing() && rect.getWidth() !== 0 && rect.getHeight() !== 0;
-                """, true)
+            return callJs("component.isShowing();", true)
         }
     val isFocusOwner: Boolean
         get() {

@@ -20,6 +20,7 @@ import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.stepsProcessing.StepWorkerKt.step;
 import static com.intellij.remoterobot.utils.KeyboardUtilsKt.autocomplete;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
+import static java.awt.event.KeyEvent.*;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenu;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenuItem;
 import static org.intellij.examples.simple.plugin.pages.EditorKt.editor;
@@ -38,8 +39,14 @@ public class CreateCommandLineJavaTest {
     @AfterEach
     public void closeProject() {
         step("Close the project", () -> {
-            actionMenu(remoteRobot, "File").click();
-            actionMenuItem(remoteRobot, "Close Project").click();
+            if (remoteRobot.isMac()) {
+                keyboard.hotKey(VK_SHIFT, VK_META, VK_A);
+                keyboard.enterText("Close Project");
+                keyboard.enter();
+            } else {
+                actionMenu(remoteRobot, "File").click();
+                actionMenuItem(remoteRobot, "Close Project").click();
+            }
         });
     }
 
@@ -67,8 +74,7 @@ public class CreateCommandLineJavaTest {
 
         step("Write a code", () -> {
             autocomplete(remoteRobot, "main");
-            autocomplete(remoteRobot, "sout");
-            keyboard.enterText("\"");
+            keyboard.enterText("println(\"");
             keyboard.enterText("Hello from UI test");
         });
 

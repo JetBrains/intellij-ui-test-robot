@@ -43,6 +43,7 @@ intellij {
 
 runIdeForUiTests {
     systemProperty "robot-server.port", "8082"
+    systemProperty "ide.mac.message.dialogs.as.sheets", "false"
 }
 
 test {

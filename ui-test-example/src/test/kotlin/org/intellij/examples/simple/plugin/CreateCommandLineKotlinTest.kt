@@ -10,14 +10,13 @@ import com.intellij.remoterobot.utils.autocomplete
 import com.intellij.remoterobot.utils.keyboard
 import com.intellij.remoterobot.utils.waitFor
 import org.assertj.swing.core.MouseButton
-import org.assertj.swing.timing.Pause.pause
 import org.intellij.examples.simple.plugin.pages.*
 import org.intellij.examples.simple.plugin.steps.JavaExampleSteps
 import org.intellij.examples.simple.plugin.utils.StepsLogger
 import org.intellij.examples.simple.plugin.utils.uiTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import java.awt.event.KeyEvent
+import java.awt.event.KeyEvent.*
 import java.time.Duration
 
 class CreateCommandLineKotlinTest {
@@ -28,8 +27,17 @@ class CreateCommandLineKotlinTest {
     @AfterEach
     fun closeProject() = uiTest {
         idea {
-            actionMenu("File").click()
-            actionMenuItem("Close Project").click()
+            when {
+                isMac() -> keyboard {
+                    hotKey(VK_SHIFT, VK_META, VK_A)
+                    enterText("Close Project")
+                    enter()
+                }
+                else -> {
+                    actionMenu("File").click()
+                    actionMenuItem("Close Project").click()
+                }
+            }
         }
     }
 
@@ -41,10 +49,11 @@ class CreateCommandLineKotlinTest {
             createNewProjectLink.click()
             dialog("New Project") {
                 findText("Java").click()
-                find(ComponentFixture::class.java,
-                        byXpath("//div[@class='FrameworksTree']")
+                find(
+                    ComponentFixture::class.java,
+                    byXpath("//div[@class='FrameworksTree']")
                 ).findText("Kotlin/JVM").click()
-                runJs("robot.pressAndReleaseKey(${KeyEvent.VK_SPACE})")
+                runJs("robot.pressAndReleaseKey($VK_SPACE)")
                 button("Next").click()
                 button("Finish").click()
             }
@@ -64,13 +73,11 @@ class CreateCommandLineKotlinTest {
             editor("App.kt") {
                 step("Write a code") {
                     autocomplete("main")
-                    pause(1000)
-                    autocomplete("sout")
-                    keyboard { enterText("\""); enterText("Hello from UI test") }
+                    keyboard { enterText("println(\""); enterText("Hello from UI test") }
                 }
                 step("Launch application") {
                     findText("main").click()
-                    keyboard { hotKey(KeyEvent.VK_ALT, KeyEvent.VK_ENTER); enter() }
+                    keyboard { hotKey(VK_ALT, VK_ENTER); enter() }
                 }
             }
 

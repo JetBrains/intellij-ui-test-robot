@@ -3,7 +3,6 @@
 package org.intellij.examples.simple.plugin;
 
 import com.intellij.remoterobot.RemoteRobot;
-import com.intellij.remoterobot.fixtures.ComponentFixture;
 import org.intellij.examples.simple.plugin.pages.WelcomeFrame;
 import org.intellij.examples.simple.plugin.utils.StepsLogger;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 
 import static com.intellij.remoterobot.fixtures.dataExtractor.TextDataPredicatesKt.startsWith;
-import static com.intellij.remoterobot.search.locators.Locators.byXpath;
-import static org.assertj.swing.timing.Pause.pause;
+
 
 public class SayHelloJavaTest {
     @BeforeAll

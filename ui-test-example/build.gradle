@@ -45,9 +45,6 @@ runIdeForUiTests {
     systemProperty "robot-server.port", "8082"
     systemProperty "ide.mac.message.dialogs.as.sheets", "false"
 
-    // enable here and in test block - to log the retrofit HTTP calls
-    // systemProperty "debug-retrofit", "enable"
-
 }
 
 test {

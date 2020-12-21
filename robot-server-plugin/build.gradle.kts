@@ -33,9 +33,9 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.assertj:assertj-swing-junit:3.9.2")
 
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
-    testRuntime("org.junit.platform:junit-platform-launcher:1.2.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.2.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.2.0")
 
     implementation("org.mozilla:rhino:1.7.12")
 }

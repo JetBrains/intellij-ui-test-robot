@@ -44,6 +44,10 @@ intellij {
 runIdeForUiTests {
     systemProperty "robot-server.port", "8082"
     systemProperty "ide.mac.message.dialogs.as.sheets", "false"
+
+    // enable to log the retrofit call
+    // systemProperty "debug-retrofit", "enable"
+
 }
 
 test {

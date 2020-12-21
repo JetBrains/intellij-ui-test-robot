@@ -13,6 +13,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.bouncycastle:bcprov-jdk15on:1.66")
 
+    //Logging Network Calls
+    implementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
+
     api("org.assertj:assertj-swing-junit:3.9.2")
     api("org.apache.logging.log4j:log4j-api:2.11.1")
     api("org.apache.logging.log4j:log4j-core:2.11.1")

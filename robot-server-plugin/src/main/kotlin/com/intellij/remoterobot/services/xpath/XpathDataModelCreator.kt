@@ -37,11 +37,12 @@ class XpathDataModelCreator : ComponentToDocument {
             val exceptionChildren = if (System.getProperty("os.name").startsWith("mac", true)) {
                 allChildren.filter {
                     it.javaClass.name.contains("DialogWrapperPeerImpl")
+                            && filteredChildren.contains(it).not()
                 }.flatMap { hierarchy.childrenOf(it) }.filter(componentFilter)
             } else {
                 emptyList()
             }
-            mutableListOf<Component>().apply {
+            mutableSetOf<Component>().apply {
                 addAll(filteredChildren)
                 addAll(exceptionChildren)
             }.sortedWith(ComponentOrderComparator).forEach {

@@ -1,4 +1,4 @@
-rootProject.name = "inellij-ui-test-robot"
+rootProject.name = "intellij-ui-test-robot"
 
 include("remote-robot")
 include("robot-server-plugin")

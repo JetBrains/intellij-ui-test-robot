@@ -6,69 +6,45 @@ import com.intellij.remoterobot.data.TextData
 import com.intellij.remoterobot.fixtures.Fixture
 
 class ExtractedData(private val fixture: Fixture) {
-    private var _data: List<TextData>? = null
-
     operator fun get(text: String): RemoteText {
-        if (_data == null) {
-            reloadData()
-        }
+        val data = reloadData()
         try {
-            return RemoteText(fixture, _data!!.first { it.text == text })
+            return RemoteText(fixture, data.first { it.text == text })
         } catch (e: NoSuchElementException) {
-            throw IllegalStateException("Can't find text '$text' in the '$fixture'\n${availableTexts()}")
+            throw IllegalStateException("Can't find text '$text' in the '$fixture'\n${availableTexts(data)}")
         }
     }
 
     fun hasText(txt: String): Boolean {
-        if (_data == null) {
-            reloadData()
-        }
-        if (_data!!.any { it.text == txt }) {
-            return true
-        }
-        reloadData()
-        return _data!!.any { it.text == txt }
+        return reloadData().any { it.text == txt }
     }
 
     fun getOne(filter: (TextData) -> Boolean): RemoteText {
-        if (_data == null) {
-            reloadData()
-        }
+        val data = reloadData()
         try {
-            return RemoteText(fixture, _data!!.first(filter))
+            return RemoteText(fixture, data.first(filter))
         } catch (e: NoSuchElementException) {
-            throw IllegalStateException("Can't find text in the '$fixture'\n${availableTexts()}")
+            throw IllegalStateException("Can't find text in the '$fixture'\n${availableTexts(data)}")
         }
     }
 
     fun getAll(): List<RemoteText> {
-        if (_data == null) {
-            reloadData()
-        }
-        return _data!!.map { RemoteText(fixture, it) }
+        return reloadData().map { RemoteText(fixture, it) }
     }
 
     fun getMany(filter: (TextData) -> Boolean): List<RemoteText> {
-        reloadData()
-        try {
-            return _data!!.filter(filter).map { RemoteText(fixture, it) }
-        } catch (e: NoSuchElementException) {
-            throw IllegalStateException("Can't find text in the '$fixture'\n${availableTexts()}")
-        }
+        return reloadData().filter(filter).map { RemoteText(fixture, it) }
     }
 
-    fun reloadData() {
-        _data = fixture.extractData()
-    }
+    fun reloadData() = fixture.extractData()
 
-
-    private fun availableTexts(): String = StringBuilder().apply {
-        if (_data == null || _data.isNullOrEmpty()) {
-            append("no texts\n")
-            return@apply
+    private fun availableTexts(data: List<TextData>): String = buildString {
+        if (data.isNullOrEmpty()) {
+            appendLine("no texts")
+            return@buildString
         }
-        append("available:\n")
-        _data!!.forEach { append("${it.text}(${it.point.x},${it.point.y})\n") }
-    }.toString()
+        appendLine("available:")
+        data.forEach { appendLine("${it.text}(${it.point.x},${it.point.y})") }
+    }
 
 }

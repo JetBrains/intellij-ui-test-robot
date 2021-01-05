@@ -31,7 +31,7 @@ dependencies {
         exclude("org.slf4j", "slf4j-api")
     }
     implementation("ch.qos.logback:logback-classic:1.2.3")
-    implementation("org.assertj:assertj-swing-junit:3.9.2")
+    implementation("org.assertj:assertj-swing-junit:3.17.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.2.0")

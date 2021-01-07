@@ -3,6 +3,7 @@
 package com.intellij.remoterobot.services.dataExtractor
 
 import com.intellij.remoterobot.data.TextData
+import com.intellij.ui.components.JBViewport
 import org.assertj.swing.edt.GuiActionRunner
 import org.assertj.swing.edt.GuiTask
 import java.awt.Component
@@ -51,15 +52,9 @@ object TextParser {
     }
 
     private fun findContainerComponent(component: Component): Component? {
-        var c = component
-        while (c.parent != null
-            && c.javaClass.simpleName.contains("dialog", true).not()
-            && (c.bounds.width > c.parent.bounds.width
-                    || c.bounds.height > c.parent.bounds.height
-                    || c.isShowing.not())
-        ) {
-            c = c.parent
+        if (component.parent is JBViewport) {
+            return component.parent
         }
-        return c
+        return component
     }
 }

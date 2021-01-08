@@ -4,12 +4,18 @@ package com.intellij.remoterobot.client
 
 import com.intellij.remoterobot.data.ObjectContainer
 import com.intellij.remoterobot.data.js.ExecuteScriptRequest
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface IdeRobotApi {
+    @GET("/")
+    fun getHierarchy(): Call<ResponseBody>
+
     @POST("/component")
     fun findByLambda(@Body lambda: ObjectContainer): Call<FindComponentsResponse>
 

@@ -11,6 +11,12 @@ import org.intellij.lang.annotations.Language
 import retrofit2.Response
 
 class IdeRobotClient(private val ideRobotApi: IdeRobotApi) {
+    fun getHierarchy(): String {
+        val response = ideRobotApi.getHierarchy().execute()
+        check(response.isSuccessful) { "request failed" }
+        return response.body()!!.string()
+    }
+
     fun findByLambda(lambda: ObjectContainer): RemoteComponent {
         return processFindResponse(ideRobotApi.findByLambda(lambda).execute()).single()
     }

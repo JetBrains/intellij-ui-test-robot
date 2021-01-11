@@ -9,6 +9,7 @@ import org.assertj.swing.edt.GuiTask
 import java.awt.Component
 import java.awt.Point
 import java.awt.image.BufferedImage
+import javax.swing.JViewport
 
 object TextParser {
     private val graphics = BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics()
@@ -52,7 +53,7 @@ object TextParser {
     }
 
     private fun findContainerComponent(component: Component): Component? {
-        if (component.parent is JBViewport) {
+        if (component.parent is JViewport) {
             return component.parent
         }
         return component

@@ -186,3 +186,6 @@ If you already familiar with Kotlin, please take a look at the [kotlin example](
 ### Steps Logging
 We use the `step` wrapper method to make test logs easy to read. The example simple `StepLogger` shows how useful it can be. 
 For instance, by implementing your own `StepProcessor`, you can extend the steps workflow and connect to the [allure report](https://docs.qameta.io/allure/) framework.
+
+### FAQ
+[FAQ](/ui-test-example/FAQ.md)

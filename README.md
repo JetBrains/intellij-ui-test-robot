@@ -30,7 +30,7 @@ The easiest way to start the test system is to execute the `runIdeForUiTests` ta
 The `remote-robot` library communicates with the `robot-server` plugin via HTTP protocol. This connection means you can launch IDEA on remote machines or in docker containers to check your plugin within different test environments.
 
 ### Setup
-Last version of the Remote-Robot is `0.10.2`
+Last version of the Remote-Robot is `0.10.3`
 
 In the test project:
 ```groovy

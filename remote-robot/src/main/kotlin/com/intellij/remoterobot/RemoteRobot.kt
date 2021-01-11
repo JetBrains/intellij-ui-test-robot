@@ -29,21 +29,8 @@ annotation class RemoteCommand
 
 class RemoteRobot @JvmOverloads constructor(
     robotServerUrl: String,
+    okHttpClient: OkHttpClient = DefaultHttpClient.client
 ) : SearchContext, JavaScriptApi, LambdaApi {
-
-    // See retrofit rest calls in the logs for debug
-    // https://stackoverflow.com/questions/45646188/how-can-i-debug-my-retrofit-api-call
-    val okHttpClient: OkHttpClient = if (System.getProperty("debug-retrofit")?.equals("enable") ?: false) {
-        val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-            this.level = HttpLoggingInterceptor.Level.BODY
-        }
-        OkHttpClient.Builder().apply {
-            this.addInterceptor(interceptor)
-        }.build()
-    } else {
-        DefaultHttpClient.client
-    }
-
     override val ideRobotClient = IdeRobotClient(
         Retrofit.Builder().baseUrl(robotServerUrl)
             .addConverterFactory(GsonConverterFactory.create())

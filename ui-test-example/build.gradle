@@ -25,7 +25,7 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-def remoteRobotVersion = "0.10.2"
+def remoteRobotVersion = "0.10.3"
 def fixturesVersion = "1.1.18"
 
 dependencies {
@@ -33,6 +33,9 @@ dependencies {
     testImplementation("com.intellij.remoterobot:remote-fixtures:$fixturesVersion")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+
+    // Logging Network Calls
+    testImplementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
 }
 
 

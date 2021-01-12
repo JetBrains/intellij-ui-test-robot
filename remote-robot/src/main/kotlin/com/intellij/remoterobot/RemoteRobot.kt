@@ -16,7 +16,6 @@ import com.intellij.remoterobot.search.locators.Locator
 import com.intellij.remoterobot.utils.DefaultHttpClient
 import com.intellij.remoterobot.utils.waitFor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.intellij.lang.annotations.Language
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -2,7 +2,7 @@
 
 package com.intellij.remoterobot.services.xpath
 
-import com.intellij.remoterobot.services.dataExtractor.TextParser
+import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.util.ReflectionUtil
 import org.assertj.swing.edt.GuiActionRunner
 import org.assertj.swing.edt.GuiTask

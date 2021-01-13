@@ -4,7 +4,7 @@ package com.intellij.remoterobot.services
 
 import com.intellij.remoterobot.data.*
 import com.intellij.remoterobot.robot.SmoothRobot
-import com.intellij.remoterobot.services.dataExtractor.TextParser
+import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.remoterobot.services.js.RhinoJavaScriptExecutor
 import com.intellij.remoterobot.services.xpath.XpathSearcher
 import com.intellij.remoterobot.utils.LruCache

@@ -1,9 +1,8 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 
-package com.intellij.remoterobot.services.dataExtractor
+package com.intellij.remoterobot.fixtures.dataExtractor.server
 
 import com.intellij.remoterobot.data.TextData
-import com.intellij.ui.components.JBViewport
 import org.assertj.swing.edt.GuiActionRunner
 import org.assertj.swing.edt.GuiTask
 import java.awt.Component

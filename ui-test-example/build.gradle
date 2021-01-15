@@ -45,6 +45,11 @@ intellij {
 
 
 runIdeForUiTests {
+//    In case your Idea is launched on remote machine you can enable public port and enable encryption of JS calls
+//    systemProperty "robot-server.host.public", "true"
+//    systemProperty "robot.encryption.enabled", "true"
+//    systemProperty "robot.encryption.password", "my super secret"
+
     systemProperty "robot-server.port", "8082"
     systemProperty "ide.mac.message.dialogs.as.sheets", "false"
 
@@ -53,5 +58,8 @@ runIdeForUiTests {
 test {
     // enable here nad in runIdeForUiTests block - to log the retrofit HTTP calls
     // systemProperty "debug-retrofit", "enable"
+
+    // enable encryption on test side when use remote machine
+    // systemProperty "robot.encryption.password", "my super secret"
     useJUnitPlatform()
 }

@@ -28,11 +28,18 @@ import java.text.DateFormat
 
 class RobotServerImpl {
     private val ideRobot: IdeRobot by lazy { IdeRobot() }
+    private val serverHost by lazy {
+        if (System.getProperty("robot-server.host.public")?.equals("true") == true) {
+            "0.0.0.0"
+        } else {
+            "127.0.0.1"
+        }
+    }
     private val serverPort by lazy { System.getProperty("robot-server.port")?.toIntOrNull() ?: 8580 }
     private val encryptor: Encryptor by lazy { EncryptorFactory().getInstance() }
 
     fun startServer() {
-        embeddedServer(Netty, port = serverPort, configure = {
+        embeddedServer(Netty, host = serverHost, port = serverPort, configure = {
             connectionGroupSize = 1
             workerGroupSize = 1
             callGroupSize = 1

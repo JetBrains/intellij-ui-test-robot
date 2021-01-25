@@ -15,7 +15,6 @@ class DataExtractorGraphics2d(
 ) : ExtractorGraphics2d(g) {
     private fun addTextData(text: String, x: Int, y: Int) {
         if (rotation != null) {
-            // todo: this does not work
             val a = rotation!!.theta
             val rx = x * cos(a) - y * sin(a)
             val ry = -x * sin(a) + y * cos(a)
@@ -100,5 +99,4 @@ class DataExtractorGraphics2d(
         g.rotate(theta, x, y)
         rotation = Rotation(theta, x, y)
     }
-
 }

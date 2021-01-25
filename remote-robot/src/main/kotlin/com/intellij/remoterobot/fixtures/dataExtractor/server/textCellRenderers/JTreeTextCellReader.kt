@@ -1,7 +1,6 @@
 package com.intellij.remoterobot.fixtures.dataExtractor.server.textCellRenderers
 
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
-import com.intellij.remoterobot.fixtures.dataExtractor.server.computeOnEdt
 import org.assertj.swing.cell.JTreeCellReader
 import java.awt.Dimension
 import javax.swing.JTree
@@ -14,10 +13,7 @@ class JTreeTextCellReader : JTreeCellReader {
         return computeOnEdt {
             val cellRendererComponent =
                 tree.cellRenderer.getTreeCellRendererComponent(tree, modelValue, false, false, isLeaf, 0, false)
-
-            // fake size to make it paintable
             cellRendererComponent.size = Dimension(tree.width, 100)
-
             TextParser.parseCellRenderer(cellRendererComponent, true).joinToString(" ") { it.trim() }
         }
     }

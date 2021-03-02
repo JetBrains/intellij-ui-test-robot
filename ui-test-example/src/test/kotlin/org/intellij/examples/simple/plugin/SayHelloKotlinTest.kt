@@ -9,18 +9,20 @@ import com.intellij.remoterobot.fixtures.ContainerFixture
 import com.intellij.remoterobot.fixtures.DefaultXpath
 import com.intellij.remoterobot.search.locators.byXpath
 import org.intellij.examples.simple.plugin.pages.WelcomeFrame
+import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension
 import org.intellij.examples.simple.plugin.utils.StepsLogger
-import org.intellij.examples.simple.plugin.utils.uiTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import java.time.Duration
 
+@ExtendWith(RemoteRobotExtension::class)
 class SayHelloKotlinTest {
     init {
         StepsLogger.init()
     }
 
     @Test
-    fun checkHelloMessage() = uiTest {
+    fun checkHelloMessage(remoteRobot: RemoteRobot) = with(remoteRobot) {
         find(WelcomeFrame::class.java, timeout = Duration.ofSeconds(10)).apply {
             if (hasText("Say Hello")) {
                 findText("Say Hello").click()

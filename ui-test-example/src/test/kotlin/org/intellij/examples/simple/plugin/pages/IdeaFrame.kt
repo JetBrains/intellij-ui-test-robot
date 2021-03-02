@@ -42,7 +42,7 @@ class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : Co
         }
     }
 
-    private fun isDumbMode(): Boolean {
+    fun isDumbMode(): Boolean {
         return callJs("com.intellij.openapi. project.DumbService.isDumb(component.project);", true)
     }
 }

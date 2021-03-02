@@ -15,6 +15,7 @@ import java.time.Duration;
 
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.stepsProcessing.StepWorkerKt.step;
+import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
 import static org.intellij.examples.simple.plugin.pages.DialogFixture.byTitle;
 
 public class JavaExampleSteps {
@@ -45,6 +46,7 @@ public class JavaExampleSteps {
 
     public void closeTipOfTheDay() {
         step("Close Tip of the Day if it appears", () -> {
+            waitFor(Duration.ofSeconds(20), ()-> remoteRobot.findAll(DialogFixture.class, byXpath("//div[@class='MyDialog'][.//div[@text='Running startup activities...']]")).size() == 0);
             final IdeaFrame idea = remoteRobot.find(IdeaFrame.class);
             idea.dumbAware(() -> {
                 try {

@@ -2,6 +2,7 @@
 
 package org.intellij.examples.simple.plugin
 
+import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.fixtures.ComponentFixture
 import com.intellij.remoterobot.fixtures.ContainerFixture
 import com.intellij.remoterobot.search.locators.byXpath
@@ -12,20 +13,22 @@ import com.intellij.remoterobot.utils.waitFor
 import org.assertj.swing.core.MouseButton
 import org.intellij.examples.simple.plugin.pages.*
 import org.intellij.examples.simple.plugin.steps.JavaExampleSteps
+import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension
 import org.intellij.examples.simple.plugin.utils.StepsLogger
-import org.intellij.examples.simple.plugin.utils.uiTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import java.awt.event.KeyEvent.*
-import java.time.Duration
+import java.time.Duration.ofMinutes
 
+@ExtendWith(RemoteRobotExtension::class)
 class CreateCommandLineKotlinTest {
     init {
         StepsLogger.init()
     }
 
     @AfterEach
-    fun closeProject() = uiTest {
+    fun closeProject(remoteRobot: RemoteRobot) = with(remoteRobot) {
         idea {
             when {
                 isMac() -> keyboard {
@@ -42,7 +45,7 @@ class CreateCommandLineKotlinTest {
     }
 
     @Test
-    fun createCommandLineApp() = uiTest {
+    fun createCommandLineApp(remoteRobot: RemoteRobot) = with(remoteRobot) {
         val sharedSteps = JavaExampleSteps(this)
 
         welcomeFrame {
@@ -60,6 +63,7 @@ class CreateCommandLineKotlinTest {
         }
         sharedSteps.closeTipOfTheDay()
         idea {
+            waitFor(ofMinutes(5)) { isDumbMode().not() }
             step("Create App file") {
                 with(projectViewTree) {
                     findText(projectName).doubleClick()
@@ -76,17 +80,19 @@ class CreateCommandLineKotlinTest {
                     keyboard { enterText("println(\""); enterText("Hello from UI test") }
                 }
                 step("Launch application") {
-                    findText("main").click()
-                    keyboard { hotKey(VK_ALT, VK_ENTER); enter() }
+                    findText("main").click(MouseButton.RIGHT_BUTTON)
+                    this@idea.find<ComponentFixture>(
+                        byXpath("//div[@class='ActionMenuItem' and contains(@text, 'Run')]")
+                    ).click()
                 }
             }
 
             val consoleLocator = byXpath("ConsoleViewImpl", "//div[@class='ConsoleViewImpl']")
             step("Wait for Console appears") {
-                waitFor(Duration.ofMinutes(1)) { findAll<ContainerFixture>(consoleLocator).isNotEmpty() }
+                waitFor(ofMinutes(1)) { findAll<ContainerFixture>(consoleLocator).isNotEmpty() }
             }
             step("Check the message") {
-                assert(find<ContainerFixture>(consoleLocator).hasText("Hello from UI test"))
+                waitFor(ofMinutes(1)) { find<ContainerFixture>(consoleLocator).hasText("Hello from UI test") }
             }
         }
     }

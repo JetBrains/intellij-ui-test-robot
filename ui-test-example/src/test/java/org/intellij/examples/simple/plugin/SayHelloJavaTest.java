@@ -4,15 +4,17 @@ package org.intellij.examples.simple.plugin;
 
 import com.intellij.remoterobot.RemoteRobot;
 import org.intellij.examples.simple.plugin.pages.WelcomeFrame;
+import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension;
 import org.intellij.examples.simple.plugin.utils.StepsLogger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.Duration;
 
 import static com.intellij.remoterobot.fixtures.dataExtractor.TextDataPredicatesKt.startsWith;
 
-
+@ExtendWith(RemoteRobotExtension.class)
 public class SayHelloJavaTest {
     @BeforeAll
     public static void initLogging() {
@@ -20,8 +22,7 @@ public class SayHelloJavaTest {
     }
 
     @Test
-    void checkSayHello() {
-        final RemoteRobot remoteRobot = new RemoteRobot("http://127.0.0.1:8082");
+    void checkSayHello(final RemoteRobot remoteRobot) {
         final WelcomeFrame welcomeFrame = remoteRobot.find(WelcomeFrame.class, Duration.ofSeconds(10));
         assert (welcomeFrame.hasText(startsWith("IntelliJ IDEA")));
         if (!welcomeFrame.hasText("Say Hello")) {

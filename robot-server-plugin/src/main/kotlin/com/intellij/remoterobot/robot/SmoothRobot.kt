@@ -15,7 +15,9 @@ import org.assertj.swing.keystroke.KeyStrokeMap
 import org.assertj.swing.timing.Pause.pause
 import org.assertj.swing.util.Modifiers
 import java.awt.*
+import java.io.ByteArrayOutputStream
 import java.time.Duration
+import javax.imageio.ImageIO
 import javax.swing.JComponent
 import javax.swing.JPopupMenu
 import javax.swing.KeyStroke
@@ -333,6 +335,15 @@ class SmoothRobot : Robot {
         keyCodeArray.forEach { fastPressAndReleaseKeyWithoutModifiers(keyCode = it); pause(50) }
     }
 
+    fun makeScreenshot(): ByteArray = makeScreenshot(Rectangle(Toolkit.getDefaultToolkit().screenSize))
+
+    fun makeScreenshot(screenshotArea: Rectangle): ByteArray {
+        return ByteArrayOutputStream().use { b ->
+            ImageIO.write(fastRobot.createScreenCapture(screenshotArea), "png", b)
+            b.toByteArray()
+        }
+    }
+
     private fun isEdt() = SwingUtilities.isEventDispatchThread()
 
     private fun moveMouseAndClick(c: Component? = null, where: Point, button: MouseButton, times: Int) {
@@ -414,5 +425,4 @@ class SmoothRobot : Robot {
         }
         return unified
     }
-
 }

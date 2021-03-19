@@ -244,6 +244,31 @@ class RobotServerImpl {
                         ComponentDataResponse(componentData = result.data!!, log = result.logs, time = result.time)
                     }
                 }
+                get("/screenshot") {
+                    call.dataResultRequest({
+                        ideRobot.makeScreenshot()
+                    }) { result ->
+                        ByteResponse(
+                            className = "",
+                            bytes = result.data ?: ByteArray(0),
+                            log = result.logs,
+                            time = result.time
+                        )
+                    }
+                }
+                get("/{componentId}/screenshot") {
+                    call.dataResultRequest({
+                        val componentId = call.parameters["componentId"] ?: throw IllegalArgumentException("empty componentId")
+                        ideRobot.makeScreenshot(componentId)
+                    }) { result ->
+                        ByteResponse(
+                            className = "",
+                            bytes = result.data ?: ByteArray(0),
+                            log = result.logs,
+                            time = result.time
+                        )
+                    }
+                }
 
                 // ----------------------------------------------------------------
                 // JavaScript

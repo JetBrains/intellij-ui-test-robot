@@ -44,5 +44,4 @@ data class ComponentDataResponse(
     override val log: String = ""
 ) : Response
 
-
 enum class ResponseStatus { SUCCESS, ERROR }

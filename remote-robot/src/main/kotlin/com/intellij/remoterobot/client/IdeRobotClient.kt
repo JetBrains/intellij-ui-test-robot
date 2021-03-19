@@ -83,6 +83,14 @@ class IdeRobotClient(private val ideRobotApi: IdeRobotApi) {
         return processRetrieveComponentDataResponse(ideRobotApi.retrieveComponentData(componentId).execute())
     }
 
+    fun makeScreenshot(): ByteArray? {
+        return processRetrieveResponse(ideRobotApi.retrieve().execute())
+    }
+
+    fun makeScreenshot(componentId: String): ByteArray? {
+        return processRetrieveResponse(ideRobotApi.retrieve(componentId).execute())
+    }
+
     private fun processFindResponse(response: Response<FindComponentsResponse>): List<RemoteComponent> {
         check(response.isSuccessful) { "request failed" }
         val findResponse = response.body()!!

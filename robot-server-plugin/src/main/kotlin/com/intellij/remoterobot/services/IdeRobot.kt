@@ -3,8 +3,8 @@
 package com.intellij.remoterobot.services
 
 import com.intellij.remoterobot.data.*
-import com.intellij.remoterobot.robot.SmoothRobot
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
+import com.intellij.remoterobot.robot.SmoothRobot
 import com.intellij.remoterobot.services.js.RhinoJavaScriptExecutor
 import com.intellij.remoterobot.services.xpath.XpathSearcher
 import com.intellij.remoterobot.utils.LruCache
@@ -14,6 +14,7 @@ import org.assertj.swing.edt.GuiTask
 import org.assertj.swing.exception.ComponentLookupException
 import java.awt.Component
 import java.awt.Container
+import java.awt.Rectangle
 import java.io.Serializable
 import java.util.*
 
@@ -233,6 +234,27 @@ class IdeRobot {
                 val action = LambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Serializable
                 return@getResult ctx.action()
             }
+        }
+    }
+
+    fun makeScreenshot(): Result<ByteArray> {
+        return getResult(RobotContext(robot)) { ctx ->
+            robot.makeScreenshot()
+        }
+    }
+
+    fun makeScreenshot(componentId: String): Result<ByteArray> {
+        val componentContext =
+            componentContextCache[componentId] ?: throw IllegalStateException("Unknown component id $componentId")
+        return getResult(RobotContext(robot)) { ctx ->
+            val componentLocation = componentContext.component.locationOnScreen
+            robot.makeScreenshot(
+                Rectangle(
+                    componentLocation.x,
+                    componentLocation.y,
+                    componentContext.component.width,
+                    componentContext.component.height
+                ))
         }
     }
 

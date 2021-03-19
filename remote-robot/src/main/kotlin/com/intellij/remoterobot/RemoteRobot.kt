@@ -20,7 +20,10 @@ import org.intellij.lang.annotations.Language
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.awt.Component
+import java.awt.image.BufferedImage
+import java.io.ByteArrayInputStream
 import java.time.Duration
+import javax.imageio.ImageIO
 
 @DslMarker
 annotation class RemoteCommand
@@ -63,6 +66,15 @@ class RemoteRobot @JvmOverloads constructor(
     val os: String
         get() = callJs("com.intellij.openapi.util.SystemInfo.OS_NAME")
 
+    fun getScreenshot(): BufferedImage {
+        val bytes = ideRobotClient.makeScreenshot()
+        return ImageIO.read(ByteArrayInputStream(bytes))
+    }
+
+    fun getScreenshot(componentId: String): BufferedImage {
+        val bytes = ideRobotClient.makeScreenshot(componentId)
+        return ImageIO.read(ByteArrayInputStream(bytes))
+    }
 
     // only for internal test project
     // ================================================================================

@@ -6,6 +6,7 @@ import com.intellij.remoterobot.data.ObjectContainer
 import com.intellij.remoterobot.data.js.ExecuteScriptRequest
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -63,4 +64,10 @@ interface IdeRobotApi {
 
     @POST("/{componentId}/data")
     fun retrieveComponentData(@Path("componentId") componentId: String): Call<ComponentDataResponse>
+
+    @GET("/screenshot")
+    fun retrieve(): Call<RetrieveResponse>
+
+    @GET("/{componentId}/screenshot")
+    fun retrieve(@Path("componentId") componentId: String): Call<RetrieveResponse>
 }

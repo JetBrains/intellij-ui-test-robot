@@ -246,7 +246,7 @@ class IdeRobot {
     fun makeScreenshot(componentId: String): Result<ByteArray> {
         val componentContext =
             componentContextCache[componentId] ?: throw IllegalStateException("Unknown component id $componentId")
-        return getResult(RobotContext(robot)) { ctx ->
+        return getResult(componentContext) {
             val componentLocation = componentContext.component.locationOnScreen
             robot.makeScreenshot(
                 Rectangle(
@@ -254,7 +254,8 @@ class IdeRobot {
                     componentLocation.y,
                     componentContext.component.width,
                     componentContext.component.height
-                ))
+                )
+            )
         }
     }
 

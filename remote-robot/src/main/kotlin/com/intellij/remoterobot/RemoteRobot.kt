@@ -75,15 +75,6 @@ class RemoteRobot @JvmOverloads constructor(
         return ImageIO.read(ByteArrayInputStream(bytes))
     }
 
-    /**
-     * Get shot of component in '.png' format.
-     * Use ImageIO.write method with "png" formatName
-     */
-    fun getScreenshot(componentId: String): BufferedImage {
-        val bytes = ideRobotClient.makeScreenshot(componentId)
-        return ImageIO.read(ByteArrayInputStream(bytes))
-    }
-
     // only for internal test project
     // ================================================================================
 

@@ -12,8 +12,11 @@ import com.intellij.remoterobot.fixtures.dataExtractor.ExtractedData
 import com.intellij.remoterobot.fixtures.dataExtractor.RemoteText
 import org.intellij.lang.annotations.Language
 import java.awt.Point
+import java.awt.image.BufferedImage
+import java.io.ByteArrayInputStream
 import java.io.Serializable
 import java.util.function.Predicate
+import javax.imageio.ImageIO
 
 abstract class Fixture(
     val remoteRobot: RemoteRobot,
@@ -36,6 +39,7 @@ abstract class Fixture(
     fun hasText(txt: String): Boolean = data.hasText(txt)
 
     fun hasText(filter: (TextData) -> Boolean): Boolean = data.getMany(filter).isNotEmpty()
+
     fun hasText(textPredicate: Predicate<TextData>): Boolean = data.getMany { textPredicate.test(it) }.isNotEmpty()
 
     fun findText(text: String): RemoteText {
@@ -47,6 +51,7 @@ abstract class Fixture(
     }
 
     fun findAllText() = findAllText(Predicate { true })
+
     fun findAllText(text: String) = findAllText(Predicate { it.text == text })
 
     fun findAllText(filter: (TextData) -> Boolean): List<RemoteText> {
@@ -57,6 +62,14 @@ abstract class Fixture(
         return data.getMany { textPredicate.test(it) }
     }
 
+    /**
+     * Get shot of component in '.png' format.
+     * Use ImageIO.write method with "png" formatName
+     */
+    fun getScreenshot(): BufferedImage {
+        val bytes = remoteRobot.ideRobotClient.makeScreenshot(remoteComponent.id)
+        return ImageIO.read(ByteArrayInputStream(bytes))
+    }
 
     @Deprecated("Doesn't work from Java, consider to use `callJs`")
     @RemoteCommand
@@ -99,7 +112,6 @@ abstract class Fixture(
         remoteRobot.runJs(this, script, runInEdt)
     }
 
-
     @Deprecated("Use callJs", ReplaceWith("callJs(script, runInEdt)"))
     @JvmOverloads
     @RemoteCommand
@@ -136,6 +148,7 @@ abstract class Fixture(
         get() {
             return callJs("component.isShowing();", true)
         }
+
     val isFocusOwner: Boolean
         get() {
             return callJs("component.isFocusOwner();", true)

@@ -32,6 +32,9 @@ val sourcesJar by tasks.creating(Jar::class) {
     from(sourceSets.main.get().allSource)
 }
 
+intellij {
+    version ="2020.3.2"
+}
 
 publishing {
     publications {

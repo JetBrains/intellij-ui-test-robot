@@ -5,7 +5,7 @@ import org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig
 plugins {
     id("com.jfrog.artifactory") version "4.9.9"
     id("org.jetbrains.kotlin.jvm") version "1.4.10"
-    id("org.jetbrains.intellij") version "0.5.0"
+    id("org.jetbrains.intellij") version "0.7.2"
 }
 
 repositories {

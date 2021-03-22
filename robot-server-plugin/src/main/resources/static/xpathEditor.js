@@ -11,10 +11,22 @@ class XpathEditor {
         this.xpathTextField = this.editor.getElementsByTagName("input")[0]
         this.xpathLabel = this.editor.getElementsByTagName("label")[0]
         this.editor.setAttribute("class", this.editor.getAttribute("class").replace("hidden", ""))
+        this.generator = new SmartXpathLocatorsGenerator()
     }
 
     generatePath() {
-        this.xpathTextField.value = `//${this.element.tagName.toLowerCase()}${this._formatAttributes()}`;
+        const xpath = this.generator.generate(this.element).sort(
+            function (a, b) {
+                if (a.priority === b.priority) {
+                    return a.xpath.length - b.xpath.length
+                }
+                return a.priority - b.priority
+            })[0]
+        if (xpath) {
+            this.xpathTextField.value = xpath.xpath
+        } else {
+            this.xpathTextField.value = `//${this.element.tagName.toLowerCase()}${this.generator._formatAttributes(this.element)}`;
+        }
         this.checkXpath()
     }
 
@@ -45,9 +57,189 @@ class XpathEditor {
     _countElementByXpath(xpath) {
         return document.evaluate(`count(${xpath})`, document, null, XPathResult.ANY_TYPE, null).numberValue;
     }
+}
 
-    _formatAttributes() {
-        const attributes = this.element.attributes
+class PrioritizedXpath {
+    constructor(xpath, priority) {
+        this.xpath = xpath
+        this.priority = priority
+    }
+}
+
+
+class SmartXpathLocatorsGenerator {
+    constructor() {
+        this.generators = [
+            // tag
+            (element) => {
+                return [new PrioritizedXpath(`//${element.tagName.toLowerCase()}`, 2)]
+            },
+            // id
+            (element) => {
+                if (element.getAttribute("id")) {
+                    return [new PrioritizedXpath(`//*[@id='${element.getAttribute("id")}']`, 1)]
+                }
+            },
+            // visible text
+            (element) => {
+                if (element.getAttribute("visible_text")) {
+                    return element.getAttribute("visible_text").split("||")
+                        .map((it) => new PrioritizedXpath(`//div[contains(@visible_text, '${it.trim()}')]`, 3))
+                }
+            },
+            //all attributes
+            (element) => {
+                return Array.prototype.slice.call(element.attributes)
+                    .filter((a) => a.nodeValue.length > 0)
+                    .map((a) => {
+                        let priority = 3
+                        if (a.nodeValue.length > 30) priority = 4
+                        return new PrioritizedXpath(`//${element.tagName.toLowerCase()}[@${a.nodeName}='${a.nodeValue}']`, priority)
+                    })
+            },
+            // combination of good attributes
+            (element) => {
+                return [new PrioritizedXpath(`//${element.tagName.toLowerCase()}${this._formatAttributes(element)}`, 3)]
+            },
+            // // all attributes contains words
+            // (element) => {
+            //     const result = []
+            //     Array.prototype.slice.call(element.attributes).forEach((a) => {
+            //         const attrName = a.nodeName
+            //         a.nodeValue.split(new RegExp('[ -_/0-9]'))
+            //             .filter((v) => v.length > 0)
+            //             .forEach((v) => {
+            //                 result.push(new PrioritizedXpath(`//${element.tagName.toLowerCase()}[contains(@${attrName}, '${v}')]`, 4))
+            //             })
+            //     })
+            //     return result
+            // },
+            // all attributes contains words separated by space only
+            (element) => {
+                const result = []
+                Array.prototype.slice.call(element.attributes).forEach((a) => {
+                    const attrName = a.nodeName
+                    a.nodeValue.split(" ")
+                        .filter((v) => v.length > 0)
+                        .forEach((v) => {
+                            result.push(new PrioritizedXpath(`//${element.tagName.toLowerCase()}[contains(@${attrName}, '${v}')]`, 4))
+                        })
+                })
+                return result
+            }
+        ]
+    }
+
+    _collect(element) {
+        return this.generators
+            .flatMap((generator) => generator(element))
+            .filter((x) => x)
+    }
+
+    generate(element) {
+        const allXpaths = this._collect(element)
+        let xpaths = allXpaths.filter((xpath) => this._isGoodAndUnique(xpath, element))
+        if (xpaths.length === 0) {
+            const uniqueChildrenXpath = this._findUniqueChildren(element)
+            if (uniqueChildrenXpath) {
+                xpaths = allXpaths
+                    .map((x) => new PrioritizedXpath(x.xpath + `[.${uniqueChildrenXpath.xpath}]`, x.priority))
+                    .filter((xpath) => this._isGoodAndUnique(xpath, element))
+            }
+        }
+        if (xpaths.length === 0) {
+            const uniqueParentXpath = this._findUniqueParent(element)
+            if (uniqueParentXpath) {
+                xpaths = allXpaths
+                    .map((x) => new PrioritizedXpath(uniqueParentXpath.xpath + x.xpath, x.priority))
+                    .filter((xpath) => this._isGoodAndUnique(xpath, element))
+                xpaths = xpaths.flatMap((x) => this._generateMiddleSkippedPaths(x))
+                    .filter((xpath) => this._isGoodAndUnique(xpath, element))
+            }
+        }
+        return xpaths
+    }
+
+    _findUniqueParent(element) {
+        let parent = element.parentNode
+        while (parent) {
+            const uniqueParent = this.generate(parent)
+            if (uniqueParent.length > 0) {
+                return uniqueParent.sort(
+                    function (a, b) {
+                        if (a.priority === b.priority) {
+                            return a.xpath.length - b.xpath.length
+                        }
+                        return a.priority - b.priority
+                    }
+                )[0]
+            }
+            parent = parent.parentNode
+        }
+    }
+
+    _findUniqueChildren(element) {
+        return Array.from(element.getElementsByTagName('div'))
+            .flatMap((el) => this._collect(el).filter((x) => this._isGoodAndUnique(x, el)))
+            .sort(
+                function (a, b) {
+                    if (a.priority === b.priority) {
+                        return a.xpath.length - b.xpath.length
+                    }
+                    return a.priority - b.priority
+                })[0]
+    }
+
+    _generateMiddleSkippedPaths(x) {
+        const parts = x.xpath.split("//").filter((it) => it.length > 0)
+        console.log(parts)
+
+        const result = []
+        for (let n = 0; n < Math.pow(2, parts.length - 2); n++) {
+            let middle = []
+            for (let p = 0; p < parts.length - 2; p++) {
+                if ((n >> p) % 2 === 1) {
+                    middle.push(parts[p + 1])
+                }
+            }
+            let collectedXpath = "//" + parts[0]
+            if (middle.length > 0) {
+                collectedXpath = collectedXpath + "//"
+            }
+            collectedXpath = collectedXpath + middle.join("//")
+            collectedXpath = collectedXpath + "//" + parts[parts.length - 1]
+            result.push(new PrioritizedXpath(collectedXpath, x.priority))
+        }
+        return result
+    }
+
+    _isGoodAndUnique(x, element) {
+        if (/\r|\n/.exec(x.xpath)) {
+            return false
+        }
+        if (/[a-zA-Z;$0-9]{2,30}@[a-z0-9A-Z]{3,20}/.exec(x.xpath)) {
+            return false
+        }
+        if (/@onclick/.exec(x.xpath)) {
+            return false
+        }
+        if (/[=,][ ]?'[a-zA-Z$.]{0,200}[0-9]{1,5}'/.exec(x.xpath)) {
+            return false
+        }
+        if (/[=,][ ]?'[^a-z^A-Z]{1,20}'/.exec(x.xpath)) {
+            return false
+        }
+        try {
+            return document.evaluate("count(" + x.xpath + ")", document, null, XPathResult.ANY_TYPE, null).numberValue === 1
+                && document.evaluate(x.xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue === element
+        } catch (e) {
+            console.log(e)
+            return false
+        }
+    }
+
+    _formatAttributes(element) {
+        const attributes = element.attributes
 
         if (attributes.length === 0) {
             return ""
@@ -57,7 +249,7 @@ class XpathEditor {
         }
         let result = ""
         for (let i = 0; i < attributes.length; i++) {
-            if (XpathEditor._goodAttributes.includes(attributes[i].name) && attributes[i].value.length > 1) {
+            if (XpathEditor._goodAttributes.includes(attributes[i].name) && attributes[i].value.length > 1 && !/[']/.exec(attributes[i].value)) {
                 if (result.length === 0) {
                     result = `[@${attributes[i].name}='${attributes[i].value}'`
                 } else {

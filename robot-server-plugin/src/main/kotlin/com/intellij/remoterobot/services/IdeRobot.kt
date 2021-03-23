@@ -15,8 +15,11 @@ import org.assertj.swing.exception.ComponentLookupException
 import java.awt.Component
 import java.awt.Container
 import java.awt.Rectangle
+import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
 import java.io.Serializable
 import java.util.*
+import javax.imageio.ImageIO
 
 @Suppress("UNCHECKED_CAST")
 class IdeRobot {
@@ -256,6 +259,24 @@ class IdeRobot {
                     componentContext.component.height
                 )
             )
+        }
+    }
+
+    fun makeScreenshotWithPainting(componentId: String): Result<ByteArray> {
+        val componentContext =
+            componentContextCache[componentId] ?: throw IllegalStateException("Unknown component id $componentId")
+        return getResult(componentContext) {
+            val component = componentContext.component
+            val capturedImage = BufferedImage(
+                component.bounds.width,
+                component.bounds.height,
+                BufferedImage.TYPE_INT_ARGB
+            )
+            component.paint(capturedImage.graphics)
+            return@getResult ByteArrayOutputStream().use { b ->
+                ImageIO.write(capturedImage, "png", b)
+                b.toByteArray()
+            }
         }
     }
 

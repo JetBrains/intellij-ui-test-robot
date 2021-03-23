@@ -67,8 +67,10 @@ class RemoteRobot @JvmOverloads constructor(
         get() = callJs("com.intellij.openapi.util.SystemInfo.OS_NAME")
 
     /**
-     * Get shot of whole screen in '.png' format.
-     * Use ImageIO.write method with "png" formatName
+     * Get whole display screenshot.
+     * Use ImageIO.write() method with "png" formatName
+     *
+     * @return BufferedImage specified as .png
      */
     fun getScreenshot(): BufferedImage {
         val bytes = ideRobotClient.makeScreenshot()

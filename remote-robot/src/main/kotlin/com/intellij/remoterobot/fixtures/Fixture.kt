@@ -63,11 +63,14 @@ abstract class Fixture(
     }
 
     /**
-     * Get shot of component in '.png' format.
-     * Use ImageIO.write method with "png" formatName
+     * Get component screenshot.
+     * Use ImageIO.write() method with "png" formatName
+     *
+     * @param withPainting false by default. Set true for rendering the component before capturing screenshot
+     * @return BufferedImage specified as .png
      */
-    fun getScreenshot(): BufferedImage {
-        val bytes = remoteRobot.ideRobotClient.makeScreenshot(remoteComponent.id)
+    fun getScreenshot(withPainting: Boolean = false): BufferedImage {
+        val bytes = remoteRobot.ideRobotClient.makeScreenshot(remoteComponent.id, withPainting)
         return ImageIO.read(ByteArrayInputStream(bytes))
     }
 

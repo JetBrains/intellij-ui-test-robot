@@ -259,7 +259,11 @@ class RobotServerImpl {
                 get("/{componentId}/screenshot") {
                     call.dataResultRequest({
                         val componentId = call.parameters["componentId"] ?: throw IllegalArgumentException("empty componentId")
-                        ideRobot.makeScreenshot(componentId)
+                        val paintingMode = call.parameters["withPainting"].toBoolean()
+                        if (paintingMode)
+                            ideRobot.makeScreenshotWithPainting(componentId)
+                        else
+                            ideRobot.makeScreenshot(componentId)
                     }) { result ->
                         ByteResponse(
                             className = "",

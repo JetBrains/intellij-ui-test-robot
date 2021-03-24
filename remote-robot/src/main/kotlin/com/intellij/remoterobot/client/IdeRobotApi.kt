@@ -68,6 +68,6 @@ interface IdeRobotApi {
     @GET("/{componentId}/screenshot")
     fun retrieve(
         @Path("componentId") componentId: String,
-        @Query("withPainting") painting: Boolean = false
+        @Query("isPaintingMode") isPaintingMode: Boolean = false
     ): Call<RetrieveResponse>
 }

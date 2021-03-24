@@ -87,8 +87,8 @@ class IdeRobotClient(private val ideRobotApi: IdeRobotApi) {
         return processRetrieveResponse(ideRobotApi.retrieve().execute())
     }
 
-    fun makeScreenshot(componentId: String, withPainting: Boolean): ByteArray? {
-        return processRetrieveResponse(ideRobotApi.retrieve(componentId, withPainting).execute())
+    fun makeScreenshot(componentId: String, isPaintingMode: Boolean): ByteArray? {
+        return processRetrieveResponse(ideRobotApi.retrieve(componentId, isPaintingMode).execute())
     }
 
     private fun processFindResponse(response: Response<FindComponentsResponse>): List<RemoteComponent> {

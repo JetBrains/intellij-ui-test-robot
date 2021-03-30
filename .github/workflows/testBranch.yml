@@ -1,0 +1,16 @@
+name: Test Branch
+on:
+  push:
+    branches:
+      - '!master'
+jobs:
+  build:
+    name: Build lib and plugin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@master
+      - name: Build the lib
+        run: gradle :remote-robot:build
+      - name: Build the plugin
+        run: gradle :robot-server-plugin:buildPlugin

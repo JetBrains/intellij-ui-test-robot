@@ -59,9 +59,7 @@ publishing {
             from(components["java"])
             groupId = project.group as String
             artifactId = project.name
-            version = rootProject.ext["rr_main_version"] as String + "." + (System.getenv("RUN_NUMBER")
-                ?: rootProject.ext["rr_build"])
-
+            version = rootProject.ext["publish_version"] as String
             val sourcesJar by tasks.getting(Jar::class)
             artifact(sourcesJar)
         }

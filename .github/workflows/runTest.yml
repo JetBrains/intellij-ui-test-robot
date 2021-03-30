@@ -1,5 +1,6 @@
-name: RunTests
-on: [ push, pull_request ]
+name: Run example UI Tests
+on:
+  workflow_dispatch
 jobs:
   build-for-ui-test-linux:
     runs-on: ubuntu-latest

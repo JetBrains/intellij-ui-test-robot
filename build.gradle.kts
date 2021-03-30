@@ -59,3 +59,12 @@ configure(listOf(project(":remote-robot"), project(":robot-server-plugin"))) {
 ext {
     set("rr_version", "${get("rr_main_version")}.${get("rr_build")}")
 }
+ext {
+    val publishVersion: String =
+        get("rr_main_version") as String + "." + get("rr_build") + if (System.getenv("RUN_NUMBER") != null) {
+            "." + System.getenv("RUN_NUMBER")
+        } else {
+            ""
+        }
+    set("publish_version", publishVersion)
+}

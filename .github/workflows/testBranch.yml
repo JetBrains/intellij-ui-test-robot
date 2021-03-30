@@ -1,8 +1,8 @@
 name: Test Branch
 on:
   push:
-    branches:
-      - '!master'
+    branches-ignore:
+      - master
 jobs:
   build:
     name: Build lib and plugin

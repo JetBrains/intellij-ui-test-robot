@@ -39,7 +39,7 @@ publishing {
     repositories {
         maven {
             name = "SpaceInternal"
-            url = uri("https://packages.jetbrains.team/maven/p/iuia/maven")
+            url = uri("https://packages.jetbrains.team/maven/p/iuia/qa-automation-maven")
             credentials {
                 username = System.getenv("SPACE_INTERNAL_ACTOR")
                 password = System.getenv("SPACE_INTERNAL_TOKEN")

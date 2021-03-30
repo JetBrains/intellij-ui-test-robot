@@ -4,7 +4,6 @@ import org.jetbrains.intellij.tasks.RunIdeTask
 
 plugins {
     id("org.jetbrains.intellij")
-    id("com.jfrog.bintray") version "1.8.4"
     `maven-publish`
 }
 val robotServerVersion = rootProject.ext["rr_main_version"] as String + "." + rootProject.ext["rr_build"] as String
@@ -69,54 +68,39 @@ tasks.getByName<PatchPluginXmlTask>("patchPluginXml") {
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "SpaceInternal"
+            url = uri("https://packages.jetbrains.team/maven/p/iuia/maven")
+            credentials {
+                username = System.getenv("SPACE_INTERNAL_ACTOR")
+                password = System.getenv("SPACE_INTERNAL_TOKEN")
+            }
+        }
+        maven {
+            name = "SpacePublic"
+            url = uri("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
+            credentials {
+                username = System.getenv("SPACE_INTERNAL_ACTOR")
+                password = System.getenv("SPACE_INTERNAL_TOKEN")
+            }
+        }
+    }
     publications {
-        register("publishToBintray", MavenPublication::class) {
+        register("robotServerPluginRelease", MavenPublication::class) {
             artifact("build/distributions/robot-server-plugin-$robotServerVersion.zip")
-            // fix artifact id after gradle-plugin changes
-            groupId = "org.jetbrains.test"
+            groupId = project.group as String
             artifactId = "robot-server-plugin"
             version = robotServerVersion
         }
-    }
-}
-
-bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_KEY")
-
-    publish = true
-
-    pkg.apply {
-        repo = "intellij-third-party-dependencies"
-        name = "robot-server-plugin"
-        userOrg = "jetbrains"
-
-        version.apply {
-            name = rootProject.ext["rr_main_version"] as String
-        }
-    }
-    setPublications("publishToBintray")
-}
-
-publishing {
-    publications {
-        register("publishToJBMaven", MavenPublication::class) {
+        register("robotServerPluginSnapshot", MavenPublication::class) {
             from(components["java"])
             groupId = project.group as String
             artifactId = project.name
-            version = rootProject.ext["rr_version"] as String
+            version = rootProject.ext["rr_version"] as String + "." + (System.getenv("RUN_NUMBER") ?: "SNAPSHOT")
 
             val sourcesJar by tasks.getting(Jar::class)
             artifact(sourcesJar)
         }
     }
-}
-
-
-artifactory {
-    publish(delegateClosureOf<org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig> {
-        defaults(delegateClosureOf<groovy.lang.GroovyObject> {
-            invokeMethod("publications", "publishToJBMaven")
-        })
-    })
 }

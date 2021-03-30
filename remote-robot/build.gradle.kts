@@ -4,7 +4,6 @@ import org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig
 plugins {
     `maven-publish`
     id("org.jetbrains.intellij")
-    id("com.jfrog.bintray") version "1.8.4"
 }
 
 
@@ -46,18 +45,16 @@ publishing {
                 password = System.getenv("SPACE_INTERNAL_TOKEN")
             }
         }
+        maven {
+            name = "SpacePublic"
+            url = uri("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
+            credentials {
+                username = System.getenv("SPACE_INTERNAL_ACTOR")
+                password = System.getenv("SPACE_INTERNAL_TOKEN")
+            }
+        }
     }
     publications {
-        register("publishToJBMaven", MavenPublication::class) {
-            from(components["java"])
-            groupId = project.group as String
-            artifactId = project.name
-            version = rootProject.ext["rr_version"] as String
-
-            val sourcesJar by tasks.getting(Jar::class)
-            artifact(sourcesJar)
-        }
-        //
         register("remoteRobotSnapshot", MavenPublication::class) {
             from(components["java"])
             groupId = project.group as String
@@ -67,7 +64,7 @@ publishing {
             val sourcesJar by tasks.getting(Jar::class)
             artifact(sourcesJar)
         }
-        register("publishToBintray", MavenPublication::class) {
+        register("remoteRobotRelease", MavenPublication::class) {
             from(components["java"])
             groupId = project.group as String
             artifactId = "remote-robot"
@@ -77,31 +74,4 @@ publishing {
             pom
         }
     }
-}
-
-
-artifactory {
-    publish(delegateClosureOf<PublisherConfig> {
-        defaults(delegateClosureOf<GroovyObject> {
-            invokeMethod("publications", "publishToJBMaven")
-        })
-    })
-}
-
-bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_KEY")
-
-    publish = true
-
-    pkg.apply {
-        repo = "intellij-third-party-dependencies"
-        name = "remote-robot"
-        userOrg = "jetbrains"
-
-        version.apply {
-            name = rootProject.ext["rr_main_version"] as String
-        }
-    }
-    setPublications("publishToBintray")
 }

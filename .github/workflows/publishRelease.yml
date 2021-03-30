@@ -1,11 +1,10 @@
-name: Publish Master
+name: Publish Release
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [ created ]
 jobs:
   build-and-publish:
-    name: Build and Publish Master
+    name: Build and Publish Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -19,10 +18,16 @@ jobs:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
-        run: gradle :robot-server:publishRobotServerPluginSnapshotPublicationToSpaceInternalRepository
+        run: gradle :robot-server:publishRobotServerPluginReleasePublicationToSpacePublicRepository
       - name: Publish the lib
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
-        run: gradle :remote-robot:publishRemoteRobotSnapshotPublicationToSpaceInternalRepository
+        run: gradle :remote-robot:publishRemoteRobotReleasePublicationToSpacePublicRepository
+      - name: Upload the plugin to the relase page
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: 'robot-server-plugin/build/distributions/robot-server-plugin*.zip'

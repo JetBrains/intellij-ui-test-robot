@@ -18,7 +18,7 @@ jobs:
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
-          RUN_NUMBER: ${{ github.run_number }}
+          SNAPSHOT: "true"
         run: gradle :robot-server:publishRobotServerPluginPublicationToSpaceInternalRepository
       - name: Publish the lib
         env:

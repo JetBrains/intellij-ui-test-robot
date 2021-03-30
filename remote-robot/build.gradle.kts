@@ -49,8 +49,8 @@ publishing {
             name = "SpacePublic"
             url = uri("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
             credentials {
-                username = System.getenv("SPACE_INTERNAL_ACTOR")
-                password = System.getenv("SPACE_INTERNAL_TOKEN")
+                username = System.getenv("SPACE_ACTOR")
+                password = System.getenv("SPACE_TOKEN")
             }
         }
     }

@@ -6,8 +6,11 @@ plugins {
     id("org.jetbrains.intellij")
     `maven-publish`
 }
-val robotServerVersion = rootProject.ext["rr_main_version"] as String + "." + rootProject.ext["rr_build"] as String
-
+val robotServerVersion = if (System.getenv("SNAPSHOT") == null) {
+    rootProject.ext["publish_version"] as String
+} else {
+    "0.0.1-SNAPSHOT"
+}
 version = robotServerVersion
 
 repositories {
@@ -70,7 +73,7 @@ publishing {
     repositories {
         maven {
             name = "SpaceInternal"
-            url = uri("https://packages.jetbrains.team/maven/p/iuia/maven")
+            url = uri("https://packages.jetbrains.team/maven/p/iuia/qa-automation-maven")
             credentials {
                 username = System.getenv("SPACE_INTERNAL_ACTOR")
                 password = System.getenv("SPACE_INTERNAL_TOKEN")
@@ -80,24 +83,18 @@ publishing {
             name = "SpacePublic"
             url = uri("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
             credentials {
-                username = System.getenv("SPACE_INTERNAL_ACTOR")
-                password = System.getenv("SPACE_INTERNAL_TOKEN")
+                username = System.getenv("SPACE_ACTOR")
+                password = System.getenv("SPACE_TOKEN")
             }
         }
     }
 
     publications {
-        val publishVersion: String =  if (System.getenv("RELEASE") != null) {
-            robotServerVersion
-        } else {
-            "SNAPSHOT"
-        }
-
         register("robotServerPlugin", MavenPublication::class) {
             artifact("build/distributions/robot-server-plugin-$robotServerVersion.zip")
             groupId = project.group as String
             artifactId = project.name
-            version = publishVersion
+            version = robotServerVersion
         }
     }
 }

@@ -87,10 +87,10 @@ publishing {
     }
 
     publications {
-        val publishVersion: String =  if (System.getenv("RUN_NUMBER") != null) {
-            "SNAPSHOT"
-        } else {
+        val publishVersion: String =  if (System.getenv("RELEASE") != null) {
             robotServerVersion
+        } else {
+            "SNAPSHOT"
         }
 
         register("robotServerPlugin", MavenPublication::class) {
@@ -98,8 +98,6 @@ publishing {
             groupId = project.group as String
             artifactId = project.name
             version = publishVersion
-            val sourcesJar by tasks.getting(Jar::class)
-            artifact(sourcesJar)
         }
     }
 }

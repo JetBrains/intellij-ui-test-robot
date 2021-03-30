@@ -32,7 +32,7 @@ val sourcesJar by tasks.creating(Jar::class) {
 }
 
 intellij {
-    version ="2020.3.2"
+    version = "2020.3.2"
 }
 
 publishing {
@@ -55,23 +55,15 @@ publishing {
         }
     }
     publications {
-        register("remoteRobotSnapshot", MavenPublication::class) {
+        register("remoteRobot", MavenPublication::class) {
             from(components["java"])
             groupId = project.group as String
             artifactId = project.name
-            version = rootProject.ext["rr_main_version"] as String + "." + (System.getenv("RUN_NUMBER")?:"SNAPSHOT")
+            version = rootProject.ext["rr_main_version"] as String + "." + (System.getenv("RUN_NUMBER")
+                ?: rootProject.ext["rr_build"])
 
             val sourcesJar by tasks.getting(Jar::class)
             artifact(sourcesJar)
-        }
-        register("remoteRobotRelease", MavenPublication::class) {
-            from(components["java"])
-            groupId = project.group as String
-            artifactId = "remote-robot"
-            version =
-                rootProject.ext["rr_main_version"] as String + "." + rootProject.ext["rr_build"] as String
-            artifact(sourcesJar)
-            pom
         }
     }
 }

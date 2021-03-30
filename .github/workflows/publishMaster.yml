@@ -19,10 +19,10 @@ jobs:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
-        run: gradle :robot-server:publishRobotServerPluginSnapshotPublicationToSpaceInternalRepository
+        run: gradle :robot-server:publishRobotServerPluginPublicationToSpaceInternalRepository
       - name: Publish the lib
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
-        run: gradle :remote-robot:publishRemoteRobotSnapshotPublicationToSpaceInternalRepository
+        run: gradle :remote-robot:publishRemoteRobotPublicationToSpaceInternalRepository

@@ -87,17 +87,12 @@ publishing {
         }
     }
     publications {
-        register("robotServerPluginRelease", MavenPublication::class) {
-            artifact("build/distributions/robot-server-plugin-$robotServerVersion.zip")
-            groupId = project.group as String
-            artifactId = "robot-server-plugin"
-            version = robotServerVersion
-        }
-        register("robotServerPluginSnapshot", MavenPublication::class) {
+        register("robotServerPlugin", MavenPublication::class) {
             from(components["java"])
             groupId = project.group as String
             artifactId = project.name
-            version = rootProject.ext["rr_version"] as String + "." + (System.getenv("RUN_NUMBER") ?: "SNAPSHOT")
+            version = rootProject.ext["rr_version"] as String + "." + (System.getenv("RUN_NUMBER")
+                ?: rootProject.ext["rr_build"])
 
             val sourcesJar by tasks.getting(Jar::class)
             artifact(sourcesJar)

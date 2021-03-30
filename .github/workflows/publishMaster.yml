@@ -13,6 +13,8 @@ jobs:
       - name: Build the lib
         run: gradle :remote-robot:build
       - name: Build the plugin
+        env:
+          SNAPSHOT: "true"
         run: gradle :robot-server-plugin:buildPlugin
       - name: Publish the plugin
         env:

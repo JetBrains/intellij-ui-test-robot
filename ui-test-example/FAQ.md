@@ -5,11 +5,7 @@ On mac computers, you will need to allow the IDE to control their computer:
 IDE you are working with
 
 ### Can I run the tests on github actions
-The problem is that when you try tasks like `runIde` or `runIdeForUiTests` in an environment without a graphical user interface, they don't start with the error no graphical user interface.
-
-This problem can be solved by using (under Linux) a program like `xvfb`, which simulates a display. If you now start tasks like `runIde` or `runIdeForUiTests` with `xvfb`, they execute but the ide does not start.
-Because when the Ide is starting for the first time, the terms and conditions must be accepted and the sharing of data must be allowed or prohibited. Only then does the Ide start normally.
-
+Yes, please check our [workflow](https://github.com/JetBrains/intellij-ui-test-robot/blob/master/.github/workflows/runTest.yml) for the UI tests example project 
 #### Accept End User Agreement/privacy policy and disable consents
 ```
 runIdeForUiTests {

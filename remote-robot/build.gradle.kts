@@ -37,12 +37,32 @@ intellij {
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "SpaceInternal"
+            url = uri("https://packages.jetbrains.team/maven/p/iuia/maven")
+            credentials {
+                username = System.getenv("SPACE_INTERNAL_ACTOR")
+                password = System.getenv("SPACE_INTERNAL_TOKEN")
+            }
+        }
+    }
     publications {
         register("publishToJBMaven", MavenPublication::class) {
             from(components["java"])
             groupId = project.group as String
             artifactId = project.name
             version = rootProject.ext["rr_version"] as String
+
+            val sourcesJar by tasks.getting(Jar::class)
+            artifact(sourcesJar)
+        }
+        //
+        register("remoteRobotSnapshot", MavenPublication::class) {
+            from(components["java"])
+            groupId = project.group as String
+            artifactId = project.name
+            version = rootProject.ext["rr_main_version"] as String + "." + (System.getenv("RUN_NUMBER")?:"SNAPSHOT")
 
             val sourcesJar by tasks.getting(Jar::class)
             artifact(sourcesJar)

@@ -1,0 +1,20 @@
+name: Publish remote-robot master
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-publish-remote-robot-and:
+    name: Build and Publish remote-robot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@master
+      - name: Build the lib
+        run: gradle :remote-robot:build
+      - name: Publish the lib
+        env:
+          SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
+          SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: gradle :remote-robot:publishRemoteRobotSnapshotPublicationToSpaceInternalRepository

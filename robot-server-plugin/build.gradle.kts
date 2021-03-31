@@ -96,5 +96,13 @@ publishing {
             artifactId = project.name
             version = robotServerVersion
         }
+        register("robotServerJar", MavenPublication::class) {
+            from(components["java"])
+            groupId = project.group as String
+            artifactId = "robot-server"
+            version = rootProject.ext["publish_version"] as String
+            val sourcesJar by tasks.getting(Jar::class)
+            artifact(sourcesJar)
+        }
     }
 }

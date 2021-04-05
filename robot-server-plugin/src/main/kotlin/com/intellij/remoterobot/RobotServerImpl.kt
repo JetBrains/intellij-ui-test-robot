@@ -29,7 +29,7 @@ import java.text.DateFormat
 class RobotServerImpl {
     private val ideRobot: IdeRobot by lazy { IdeRobot() }
     private val serverHost by lazy {
-        if (System.getProperty("robot-server.host.public")?.equals("true") == true) {
+        if (System.getProperty("robot-server.host.public")?.toBoolean() == true) {
             "0.0.0.0"
         } else {
             "127.0.0.1"

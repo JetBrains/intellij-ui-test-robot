@@ -4,6 +4,7 @@ package com.intellij.remoterobot.services
 
 import com.intellij.remoterobot.data.*
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
+import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
 import com.intellij.remoterobot.robot.SmoothRobot
 import com.intellij.remoterobot.services.js.RhinoJavaScriptExecutor
 import com.intellij.remoterobot.services.xpath.XpathSearcher
@@ -22,10 +23,10 @@ import java.util.*
 import javax.imageio.ImageIO
 
 @Suppress("UNCHECKED_CAST")
-class IdeRobot {
+class IdeRobot(private val textToKeyCache: TextToKeyCache) {
     private val componentContextCache = Collections.synchronizedMap(LruCache<String, ComponentContext>())
     private val robot = SmoothRobot()
-    private val xpathSearcher = XpathSearcher()
+    private val xpathSearcher = XpathSearcher(textToKeyCache)
 
     fun find(lambdaContainer: ObjectContainer): Result<RemoteComponent> {
         val lambda = LambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
@@ -192,7 +193,7 @@ class IdeRobot {
         val componentContext = componentContextCache[componentId]
             ?: throw IllegalStateException("Unknown component id $componentId")
         return getResult(componentContext) {
-            val data = TextParser.parseComponent(it.component, false)
+            val data = TextParser.parseComponent(it.component, false, textToKeyCache)
             return@getResult ComponentData(data.toList())
         }
     }

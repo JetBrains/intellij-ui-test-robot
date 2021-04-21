@@ -2,7 +2,7 @@
 
 class XpathEditor {
     static get _goodAttributes() {
-        return ['class', 'text', 'name', 'myaction', 'accessiblename']
+        return ['class', 'text', 'name', 'myaction', 'accessiblename', 'text.key', 'accessiblename.key']
     }
 
     constructor(element) {
@@ -15,13 +15,18 @@ class XpathEditor {
     }
 
     generatePath() {
-        const xpath = this.generator.generate(this.element).sort(
+        const xpaths = this.generator.generate(this.element).sort(
             function (a, b) {
                 if (a.priority === b.priority) {
                     return a.xpath.length - b.xpath.length
                 }
                 return a.priority - b.priority
-            })[0]
+            })
+        console.log("..............")
+        console.log("Unique Locators for " + this.element.getAttribute("class"))
+        xpaths.map(locator => console.log(locator.xpath))
+        console.log("..............")
+        const xpath = xpaths[0]
         if (xpath) {
             this.xpathTextField.value = xpath.xpath
         } else {
@@ -70,51 +75,57 @@ class PrioritizedXpath {
 class SmartXpathLocatorsGenerator {
     constructor() {
         this.generators = [
-            // tag
+            // class
             (element) => {
-                return [new PrioritizedXpath(`//${element.tagName.toLowerCase()}`, 2)]
+                if (element.getAttribute("class")) {
+                    return [new PrioritizedXpath(`//div[@class='${element.getAttribute("class")}']`, 2)]
+                }
             },
-            // id
+            // title.key
             (element) => {
-                if (element.getAttribute("id")) {
-                    return [new PrioritizedXpath(`//*[@id='${element.getAttribute("id")}']`, 1)]
+                if (element.getAttribute("title.key")) {
+                    const keys = element.getAttribute("title.key")
+                    if (keys.includes(" ")) {
+                        return keys.split(" ").map((key => new PrioritizedXpath(`//*[contains(@title.key, '${key}')]`, 1)))
+                    }
+                    return [new PrioritizedXpath(`//*[@title.key='${element.getAttribute("title.key")}']`, 1)]
                 }
             },
             // visible text
             (element) => {
                 if (element.getAttribute("visible_text")) {
                     return element.getAttribute("visible_text").split("||")
-                        .map((it) => new PrioritizedXpath(`//div[contains(@visible_text, '${it.trim()}')]`, 3))
+                        .map((it) => new PrioritizedXpath(`//div[contains(@visible_text, '${it.trim()}')]`, 4))
+                }
+            },
+            // visible text key
+            (element) => {
+                if (element.getAttribute("visible_text_keys")) {
+                    return element.getAttribute("visible_text_keys").split("||")
+                        .flatMap(keys => keys.split(" "))
+                        .map((it) => new PrioritizedXpath(`//div[contains(@visible_text_keys, '${it.trim()}')]`, 3))
                 }
             },
             //all attributes
             (element) => {
                 return Array.prototype.slice.call(element.attributes)
                     .filter((a) => a.nodeValue.length > 0)
-                    .map((a) => {
+                    .flatMap((a) => {
                         let priority = 3
                         if (a.nodeValue.length > 30) priority = 4
-                        return new PrioritizedXpath(`//${element.tagName.toLowerCase()}[@${a.nodeName}='${a.nodeValue}']`, priority)
+                        if (a.nodeName.endsWith(".key")) {
+                            priority = 2
+                            if (a.nodeValue.includes(" ")) {
+                                return a.nodeValue.split(" ").map(key => new PrioritizedXpath(`//${element.tagName.toLowerCase()}[contains(@${a.nodeName}, '${key}')]`, priority))
+                            }
+                        }
+                        return [new PrioritizedXpath(`//${element.tagName.toLowerCase()}[@${a.nodeName}='${a.nodeValue}']`, priority)]
                     })
             },
             // combination of good attributes
             (element) => {
                 return [new PrioritizedXpath(`//${element.tagName.toLowerCase()}${this._formatAttributes(element)}`, 3)]
             },
-            // // all attributes contains words
-            // (element) => {
-            //     const result = []
-            //     Array.prototype.slice.call(element.attributes).forEach((a) => {
-            //         const attrName = a.nodeName
-            //         a.nodeValue.split(new RegExp('[ -_/0-9]'))
-            //             .filter((v) => v.length > 0)
-            //             .forEach((v) => {
-            //                 result.push(new PrioritizedXpath(`//${element.tagName.toLowerCase()}[contains(@${attrName}, '${v}')]`, 4))
-            //             })
-            //     })
-            //     return result
-            // },
-            // all attributes contains words separated by space only
             (element) => {
                 const result = []
                 Array.prototype.slice.call(element.attributes).forEach((a) => {
@@ -192,7 +203,6 @@ class SmartXpathLocatorsGenerator {
 
     _generateMiddleSkippedPaths(x) {
         const parts = x.xpath.split("//").filter((it) => it.length > 0)
-        console.log(parts)
 
         const result = []
         for (let n = 0; n < Math.pow(2, parts.length - 2); n++) {
@@ -233,7 +243,6 @@ class SmartXpathLocatorsGenerator {
             return document.evaluate("count(" + x.xpath + ")", document, null, XPathResult.ANY_TYPE, null).numberValue === 1
                 && document.evaluate(x.xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue === element
         } catch (e) {
-            console.log(e)
             return false
         }
     }

@@ -14,7 +14,6 @@ val robotServerVersion = if (System.getenv("SNAPSHOT") == null) {
 version = robotServerVersion
 
 repositories {
-    maven("https://dl.bintray.com/kotlin/ktor")
     maven("https://repo.labs.intellij.net/intellij")
 }
 

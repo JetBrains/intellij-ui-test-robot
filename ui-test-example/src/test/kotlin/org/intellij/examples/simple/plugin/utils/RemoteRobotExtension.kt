@@ -83,7 +83,6 @@ class RemoteRobotExtension : AfterTestExecutionCallback, ParameterResolver {
 
     private fun saveIdeaFrames(testName: String) {
         remoteRobot.findAll<ContainerFixture>(byXpath("//div[@class='IdeFrameImpl']")).forEachIndexed { n, frame ->
-            println("$n !!!!!!")
             val pic = try {
                 frame.callJs<ByteArray>(
                     """

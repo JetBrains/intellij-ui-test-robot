@@ -1,6 +1,3 @@
-import groovy.lang.GroovyObject
-import org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig
-
 plugins {
     `maven-publish`
     id("org.jetbrains.intellij")
@@ -32,7 +29,7 @@ val sourcesJar by tasks.creating(Jar::class) {
 }
 
 intellij {
-    version = "2020.3.2"
+    version = "LATEST-EAP-SNAPSHOT"
 }
 
 publishing {

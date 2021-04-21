@@ -22,3 +22,7 @@ fun endsWith(endsWith: String) = Predicate<TextData> {
 fun matches(regex: String) = Predicate<TextData> {
     Pattern.compile(regex).matcher(it.text).matches()
 }
+
+fun byKey(key: String) = Predicate<TextData> { textData ->
+    textData.bundleKey?.split(" ")?.any { it == key } ?: false
+}

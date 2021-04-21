@@ -9,4 +9,4 @@ data class ComponentData(
     val textDataList: List<TextData>
 )
 
-data class TextData(val text: String, val point: Point) : Serializable
+data class TextData(val text: String, val point: Point, val bundleKey: String?) : Serializable

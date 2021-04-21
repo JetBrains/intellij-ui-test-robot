@@ -11,7 +11,10 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class DataExtractorGraphics2d(
-    private val g: Graphics2D, private val extractionData: MutableList<TextData>, private val location: Point
+    private val g: Graphics2D,
+    private val extractionData: MutableList<TextData>,
+    private val location: Point,
+    private val textToKey: TextToKeyCache
 ) : ExtractorGraphics2d(g) {
     private fun addTextData(text: String, x: Int, y: Int) {
         if (rotation != null) {
@@ -21,7 +24,8 @@ class DataExtractorGraphics2d(
             extractionData.add(
                 TextData(
                     text,
-                    Point(location.x + rx.toInt(), location.y + ry.toInt())
+                    Point(location.x + rx.toInt(), location.y + ry.toInt()),
+                    textToKey.findKey(text)
                 )
             )
         } else {
@@ -29,7 +33,8 @@ class DataExtractorGraphics2d(
             extractionData.add(
                 TextData(
                     text,
-                    Point(location.x + x + 3, location.y + y - 3)
+                    Point(location.x + x + 3, location.y + y - 3),
+                    textToKey.findKey(text)
                 )
             )
         }
@@ -39,7 +44,8 @@ class DataExtractorGraphics2d(
         return DataExtractorGraphics2d(
             g.create() as Graphics2D,
             extractionData,
-            location.clone() as Point
+            location.clone() as Point,
+            textToKey
         )
     }
 

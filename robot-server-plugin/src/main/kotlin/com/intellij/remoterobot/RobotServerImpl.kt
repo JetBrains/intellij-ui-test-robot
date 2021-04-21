@@ -8,6 +8,7 @@ import com.intellij.remoterobot.data.js.ExecuteScriptRequest
 import com.intellij.remoterobot.encryption.Encryptor
 import com.intellij.remoterobot.encryption.EncryptorFactory
 import com.intellij.remoterobot.services.IdeRobot
+import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
 import com.intellij.remoterobot.services.xpath.XpathDataModelCreator
 import com.intellij.remoterobot.services.xpath.convertToHtml
 import com.intellij.remoterobot.utils.ComponentLookupExceptionSerializer
@@ -27,7 +28,8 @@ import org.assertj.swing.exception.ComponentLookupException
 import java.text.DateFormat
 
 class RobotServerImpl {
-    private val ideRobot: IdeRobot by lazy { IdeRobot() }
+    private val textToKeyCache: TextToKeyCache = TextToKeyCache()
+    private val ideRobot: IdeRobot = IdeRobot(textToKeyCache)
     private val serverHost by lazy {
         if (System.getProperty("robot-server.host.public")?.toBoolean() == true) {
             "0.0.0.0"
@@ -327,7 +329,7 @@ class RobotServerImpl {
     }
 
     private suspend fun PipelineContext<*, ApplicationCall>.hierarchy() {
-        val doc = XpathDataModelCreator().create(null)
+        val doc = XpathDataModelCreator(textToKeyCache).create(null)
         call.respondText(doc.convertToHtml(), ContentType.Text.Html)
     }
 

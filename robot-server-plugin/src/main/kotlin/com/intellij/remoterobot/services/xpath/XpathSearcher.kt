@@ -2,13 +2,14 @@
 
 package com.intellij.remoterobot.services.xpath
 
+import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
 import org.w3c.dom.NodeList
 import java.awt.Component
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
-class XpathSearcher {
-    private val modelCreator = XpathDataModelCreator()
+class XpathSearcher(private val textToKeyCache: TextToKeyCache) {
+    private val modelCreator = XpathDataModelCreator(textToKeyCache)
     private val xPath =  XPathFactory.newInstance().newXPath()
 
     fun findComponent(xpathExpression: String, component: Component?): Component {

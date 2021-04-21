@@ -13,13 +13,13 @@ import javax.swing.JViewport
 object TextParser {
     private val graphics = BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics()
 
-    fun parseComponent(component: Component, isEdt: Boolean): List<TextData> {
+    fun parseComponent(component: Component, isEdt: Boolean, textToKey: TextToKeyCache): List<TextData> {
         val containerComponent = findContainerComponent(component) ?: return emptyList()
         val x = containerComponent.locationOnScreen.x - component.locationOnScreen.x
         val y = containerComponent.locationOnScreen.y - component.locationOnScreen.y
         val data = mutableListOf<TextData>()
 
-        val g = DataExtractorGraphics2d(graphics, data, Point(x, y))
+        val g = DataExtractorGraphics2d(graphics, data, Point(x, y), textToKey)
         parseData(g, containerComponent, isEdt)
         return data.distinct()
     }

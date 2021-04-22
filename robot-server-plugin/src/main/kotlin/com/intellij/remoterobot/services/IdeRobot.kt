@@ -264,21 +264,25 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache) {
     }
 
     fun makeScreenshotWithPainting(componentId: String): Result<ByteArray> {
-        val componentContext =
-            componentContextCache[componentId] ?: throw IllegalStateException("Unknown component id $componentId")
-        return getResult(componentContext) {
-            val component = componentContext.component
-            val capturedImage = BufferedImage(
-                component.bounds.width,
-                component.bounds.height,
-                BufferedImage.TYPE_INT_ARGB
-            )
-            component.paint(capturedImage.graphics)
-            return@getResult ByteArrayOutputStream().use { b ->
-                ImageIO.write(capturedImage, "png", b)
-                b.toByteArray()
+        return execute(object : GuiQuery<Result<ByteArray>>() {
+            override fun executeInEDT(): Result<ByteArray> {
+                val componentContext =
+                    componentContextCache[componentId] ?: throw IllegalStateException("Unknown component id $componentId")
+                return getResult(componentContext) {
+                    val component = componentContext.component
+                    val capturedImage = BufferedImage(
+                        component.bounds.width,
+                        component.bounds.height,
+                        BufferedImage.TYPE_INT_ARGB
+                    )
+                    component.paint(capturedImage.graphics)
+                    return@getResult ByteArrayOutputStream().use { b ->
+                        ImageIO.write(capturedImage, "png", b)
+                        b.toByteArray()
+                    }
+                }
             }
-        }
+        })
     }
 
     //----------------------------------

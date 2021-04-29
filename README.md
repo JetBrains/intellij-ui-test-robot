@@ -30,12 +30,12 @@ The easiest way to start the test system is to execute the `runIdeForUiTests` ta
 The `remote-robot` library communicates with the `robot-server` plugin via HTTP protocol. This connection means you can launch IDEA on remote machines or in docker containers to check your plugin within different test environments.
 
 ### Setup
-Last version of the Remote-Robot is `0.10.3`
+Last version of the Remote-Robot is `0.11.1`
 
 In the test project:
 ```groovy
 repositories {
-    maven { url = "https://jetbrains.bintray.com/intellij-third-party-dependencies" }
+    maven { url = "https://packages.jetbrains.team/maven/p/ij/intellij-dependencies" }
 }
 dependencies {
     testImplementation("com.intellij.remoterobot:remote-robot:REMOTER-ROBOT_VERSION")
@@ -49,6 +49,15 @@ runIdeForUiTests {
     systemProperty "robot-server.port", "8082" // default port 8580
 }
 ```
+By default, the port is local, so it could not be reached from another host. 
+In case you need make it public you can add system property in the `runIdeForUiTests` task:
+```groovy
+runIdeForUiTests {
+    // ......
+    systemProperty "robot-server.host.public", "true" // port is public
+}
+```
+
 Of course, you can write UI tests in the plugin project. 
 
 ### Create RemoteRobot
@@ -163,7 +172,17 @@ Or just use the full path:
         "com.intellij.openapi.project.DumbService.isDumb(component.project);"
     );
 ```
+In case you made robot-server-plugin port public, you may want to enable encryption for JavaScript code:
+```groovy
+runIdeForUiTests {
+    systemProperty "robot.encryption.enabled", "true"
+    systemProperty "robot.encryption.password", "secret"
+}
 
+test {
+    systemProperty "robot.encryption.password", "secret"
+}
+```
 ### Text
 Sometimes you may not want to dig through the whole component to find out which field contains the text you need to reach. 
 If you need to check whether some text is present on the component, or you need to click at the text, 

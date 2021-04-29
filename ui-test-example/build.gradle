@@ -1,21 +1,17 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            url 'https://dl.bintray.com/jetbrains/intellij-plugin-service'
-        }
-
     }
 }
 plugins {
+    id 'org.jetbrains.intellij'
     id 'org.jetbrains.kotlin.jvm'
     id 'java'
-    id 'org.jetbrains.intellij'
 }
 
 repositories {
     mavenCentral()
-    maven { url = "https://jetbrains.bintray.com/intellij-third-party-dependencies" }
+    maven { url = "https://packages.jetbrains.team/maven/p/ij/intellij-dependencies" }
 }
 
 compileKotlin {
@@ -25,7 +21,7 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-def remoteRobotVersion = "0.10.3"
+def remoteRobotVersion = "0.11.1"
 def fixturesVersion = "1.1.18"
 
 dependencies {
@@ -40,7 +36,7 @@ dependencies {
 
 
 intellij {
-    version '2020.3.2'
+    version '2021.1'
     downloadRobotServerPlugin.version = remoteRobotVersion
 }
 

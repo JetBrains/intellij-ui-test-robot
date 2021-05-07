@@ -4,7 +4,6 @@ import org.jetbrains.intellij.tasks.RunIdeTask
 
 plugins {
     id("org.jetbrains.intellij")
-    `maven-publish`
 }
 val robotServerVersion = if (System.getenv("SNAPSHOT") == null) {
     rootProject.ext["publish_version"] as String
@@ -69,25 +68,6 @@ tasks.getByName<PatchPluginXmlTask>("patchPluginXml") {
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "SpaceInternal"
-            url = uri("https://packages.jetbrains.team/maven/p/iuia/qa-automation-maven")
-            credentials {
-                username = System.getenv("SPACE_INTERNAL_ACTOR")
-                password = System.getenv("SPACE_INTERNAL_TOKEN")
-            }
-        }
-        maven {
-            name = "SpacePublic"
-            url = uri("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
-            credentials {
-                username = System.getenv("SPACE_ACTOR")
-                password = System.getenv("SPACE_TOKEN")
-            }
-        }
-    }
-
     publications {
         register("robotServerPlugin", MavenPublication::class) {
             artifact("build/distributions/robot-server-plugin-$robotServerVersion.zip")

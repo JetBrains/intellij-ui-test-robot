@@ -32,17 +32,35 @@ subprojects {
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     }
-}
 
-configure(listOf(project(":remote-robot"), project(":robot-server-plugin"))) {
-    apply {
-        plugin("maven-publish")
+    if (name in listOf("remote-robot", "remote-fixtures", "robot-server-plugin")) {
+        apply {
+            plugin("maven-publish")
+        }
+
+        configure<PublishingExtension> {
+            repositories {
+                maven {
+                    name = "SpaceInternal"
+                    url = uri("https://packages.jetbrains.team/maven/p/iuia/qa-automation-maven")
+                    credentials {
+                        username = System.getenv("SPACE_INTERNAL_ACTOR")
+                        password = System.getenv("SPACE_INTERNAL_TOKEN")
+                    }
+                }
+                maven {
+                    name = "SpacePublic"
+                    url = uri("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
+                    credentials {
+                        username = System.getenv("SPACE_ACTOR")
+                        password = System.getenv("SPACE_TOKEN")
+                    }
+                }
+            }
+        }
     }
 }
 
-ext {
-    set("rr_version", "${get("rr_main_version")}.${get("rr_build")}")
-}
 ext {
     val publishVersion: String =
         get("rr_main_version") as String + "." + get("rr_build") + if (System.getenv("RUN_NUMBER") != null) {
@@ -52,3 +70,4 @@ ext {
         }
     set("publish_version", publishVersion)
 }
+

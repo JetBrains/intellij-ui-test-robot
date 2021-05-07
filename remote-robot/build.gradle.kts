@@ -1,5 +1,4 @@
 plugins {
-    `maven-publish`
     id("org.jetbrains.intellij")
 }
 
@@ -33,24 +32,6 @@ intellij {
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "SpaceInternal"
-            url = uri("https://packages.jetbrains.team/maven/p/iuia/qa-automation-maven")
-            credentials {
-                username = System.getenv("SPACE_INTERNAL_ACTOR")
-                password = System.getenv("SPACE_INTERNAL_TOKEN")
-            }
-        }
-        maven {
-            name = "SpacePublic"
-            url = uri("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
-            credentials {
-                username = System.getenv("SPACE_ACTOR")
-                password = System.getenv("SPACE_TOKEN")
-            }
-        }
-    }
     publications {
         register("remoteRobot", MavenPublication::class) {
             from(components["java"])

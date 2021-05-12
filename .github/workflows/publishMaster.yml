@@ -29,9 +29,15 @@ jobs:
           RUN_NUMBER: ${{ github.run_number }}
           SNAPSHOT: "true"
         run: gradle :robot-server:publishRobotServerJarPublicationToSpaceInternalRepository
-      - name: Publish the lib
+      - name: Publish the remote-robot lib
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
         run: gradle :remote-robot:publishRemoteRobotPublicationToSpaceInternalRepository
+      - name: Publish the remote-fixtures lib
+        env:
+          SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
+          SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: gradle :remote-fixtures:publishRemoteFixturesPublicationToSpaceInternalRepository

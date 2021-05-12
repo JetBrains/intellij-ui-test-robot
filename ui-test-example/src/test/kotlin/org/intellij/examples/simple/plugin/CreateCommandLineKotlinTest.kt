@@ -7,7 +7,6 @@ import com.intellij.remoterobot.fixtures.ComponentFixture
 import com.intellij.remoterobot.fixtures.ContainerFixture
 import com.intellij.remoterobot.search.locators.byXpath
 import com.intellij.remoterobot.stepsProcessing.step
-import com.intellij.remoterobot.utils.autocomplete
 import com.intellij.remoterobot.utils.keyboard
 import com.intellij.remoterobot.utils.waitFor
 import org.assertj.swing.core.MouseButton
@@ -66,8 +65,10 @@ class CreateCommandLineKotlinTest {
             waitFor(ofMinutes(5)) { isDumbMode().not() }
             step("Create App file") {
                 with(projectViewTree) {
-                    findText(projectName).doubleClick()
-                    waitFor { hasText("src") }
+                    if (hasText("src").not()) {
+                        findText(projectName).doubleClick()
+                        waitFor { hasText("src") }
+                    }
                     findText("src").click(MouseButton.RIGHT_BUTTON)
                 }
                 actionMenu("New").click()
@@ -76,13 +77,13 @@ class CreateCommandLineKotlinTest {
             }
             editor("App.kt") {
                 step("Write a code") {
-                    autocomplete("main")
-                    keyboard { enterText("println(\""); enterText("Hello from UI test") }
+                    sharedSteps.autocomplete("main")
+                    keyboard { enterText("println(\\\""); enterText("Hello from UI test") }
                 }
                 step("Launch application") {
                     findText("main").click(MouseButton.RIGHT_BUTTON)
                     this@idea.find<ComponentFixture>(
-                        byXpath("//div[@class='ActionMenuItem' and contains(@text, 'Run')]")
+                        byXpath("//div[@class='ActionMenuItem' and @disabledicon='execute.svg']")
                     ).click()
                 }
             }

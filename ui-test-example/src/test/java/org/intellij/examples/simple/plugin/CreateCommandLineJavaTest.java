@@ -17,12 +17,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-
-import java.time.Duration;
-
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.stepsProcessing.StepWorkerKt.step;
-import static com.intellij.remoterobot.utils.KeyboardUtilsKt.autocomplete;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
 import static java.awt.event.KeyEvent.*;
 import static java.time.Duration.ofMinutes;
@@ -66,9 +62,10 @@ public class CreateCommandLineJavaTest {
 
         step("Create New Kotlin file", () -> {
             final ContainerFixture projectView = idea.getProjectViewTree();
-
-            projectView.findText(idea.getProjectName()).doubleClick();
-            waitFor(() -> projectView.hasText("src"));
+            if (!projectView.hasText("src")) {
+                projectView.findText(idea.getProjectName()).doubleClick();
+                waitFor(() -> projectView.hasText("src"));
+            }
             projectView.findText("src").click(MouseButton.RIGHT_BUTTON);
             actionMenu(remoteRobot, "New").click();
             actionMenuItem(remoteRobot, "Kotlin Class/File").click();
@@ -80,15 +77,15 @@ public class CreateCommandLineJavaTest {
         final ContainerFixture editor = editor(idea, "App.kt");
 
         step("Write a code", () -> {
-            autocomplete(remoteRobot, "main");
-            keyboard.enterText("println(\"");
+            sharedSteps.autocomplete("main");
+            keyboard.enterText("println(\\\"");
             keyboard.enterText("Hello from UI test");
         });
 
         step("Launch the application", () -> {
             editor.findText("main").click(MouseButton.RIGHT_BUTTON);
             idea.find(ComponentFixture.class,
-                    byXpath("//div[@class='ActionMenuItem' and contains(@text, 'Run')]")
+                    byXpath("//div[@class='ActionMenuItem' and @disabledicon='execute.svg']")
             ).click();
         });
         step("Check console output", () -> {

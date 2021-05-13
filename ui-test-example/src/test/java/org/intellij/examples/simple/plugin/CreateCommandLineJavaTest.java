@@ -78,7 +78,7 @@ public class CreateCommandLineJavaTest {
 
         step("Write a code", () -> {
             sharedSteps.autocomplete("main");
-            keyboard.enterText("println(\\\"");
+            keyboard.enterText("println(\"");
             keyboard.enterText("Hello from UI test");
         });
 

@@ -49,7 +49,7 @@ open class Keyboard(private val remoteRobot: RemoteRobot) {
         remoteRobot.runJs(
             """
             let delay = $delayBetweenCharsInMs
-            for (let c of "$text") {
+            for (let c of "${text.replace("\"", "\\\"")}") {
                 robot.type(c)
                 if (delay > 0) {
                     Thread.sleep(delay)

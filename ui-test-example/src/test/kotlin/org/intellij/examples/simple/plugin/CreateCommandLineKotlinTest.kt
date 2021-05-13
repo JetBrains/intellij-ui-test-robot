@@ -78,7 +78,7 @@ class CreateCommandLineKotlinTest {
             editor("App.kt") {
                 step("Write a code") {
                     sharedSteps.autocomplete("main")
-                    keyboard { enterText("println(\\\""); enterText("Hello from UI test") }
+                    keyboard { enterText("println(\""); enterText("Hello from UI test") }
                 }
                 step("Launch application") {
                     findText("main").click(MouseButton.RIGHT_BUTTON)

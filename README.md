@@ -38,7 +38,7 @@ repositories {
     maven { url = "https://packages.jetbrains.team/maven/p/ij/intellij-dependencies" }
 }
 dependencies {
-    testImplementation("com.intellij.remoterobot:remote-robot:REMOTER-ROBOT_VERSION")
+    testImplementation("com.intellij.remoterobot:remote-robot:REMOTE-ROBOT_VERSION")
 }
 ```
 In the plugin project:
@@ -121,7 +121,15 @@ public class WelcomeFrameFixture extends ContainerFixture {
 WelcomeFrameFixture welcomeFrame = remoteRobot.find(WelcomeFrameFixture.class);
 welcomeFrame.createNewProjectLink().click();
 ```
-
+### Remote-Fixtures
+We have prepared some basic fixtures:
+```groovy
+dependencies {
+    testImplementation("com.intellij.remoterobot:remote-fixtures:REMOTE-ROBOT_VERSION")
+}
+```
+The library contains Fixtures for most basic UI components. Please check [this package](https://github.com/JetBrains/intellij-ui-test-robot/tree/master/remote-fixtures/src/main/kotlin/com/intellij/remoterobot/fixtures) to learn more.
+In case you want to add missing basic Fixtures you are welcome to PR or create an [issue](https://github.com/JetBrains/intellij-ui-test-robot/issues)
 ### Getting Data From a Real Component
 We use the JavaScript [`rhino`](https://github.com/mozilla/rhino) engine to work with components on the IDEA side.
 

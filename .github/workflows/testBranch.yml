@@ -10,7 +10,9 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@master
-      - name: Build the lib
+      - name: Build the remote-robot lib
         run: gradle :remote-robot:build
+      - name: Build the remote-fixtures lib
+        run: gradle :remote-fixtures:build
       - name: Build the plugin
         run: gradle :robot-server-plugin:buildPlugin

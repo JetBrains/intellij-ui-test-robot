@@ -29,7 +29,7 @@ import java.text.DateFormat
 
 class RobotServerImpl {
     private val textToKeyCache: TextToKeyCache = TextToKeyCache()
-    private val ideRobot: IdeRobot = IdeRobot(textToKeyCache)
+    private val ideRobot: IdeRobot by lazy { IdeRobot(textToKeyCache) }
     private val serverHost by lazy {
         if (System.getProperty("robot-server.host.public")?.toBoolean() == true) {
             "0.0.0.0"

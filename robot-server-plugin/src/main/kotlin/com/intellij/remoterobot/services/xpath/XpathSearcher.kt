@@ -8,7 +8,7 @@ import java.awt.Component
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
-class XpathSearcher(private val textToKeyCache: TextToKeyCache) {
+class XpathSearcher(textToKeyCache: TextToKeyCache) {
     private val modelCreator = XpathDataModelCreator(textToKeyCache)
     private val xPath =  XPathFactory.newInstance().newXPath()
 

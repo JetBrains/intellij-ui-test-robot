@@ -17,9 +17,13 @@ object Locators {
     }
 
     fun <T: Component> byType(cls: Class<T>): Locator {
+        return byType(cls.name)
+    }
+
+    fun byType(clsName: String): Locator {
         return byXpath(
-            "by type ${cls.name}",
-            """//div[@javaclass="${cls.name}" or contains(@classhierarchy, "${cls.name} ") or contains(@classhierarchy, " ${cls.name} ")]"""
+            "by type $clsName",
+            """//div[@javaclass="$clsName" or contains(@classhierarchy, "$clsName ") or contains(@classhierarchy, " $clsName ")]"""
         )
     }
 
@@ -50,6 +54,14 @@ object Locators {
         property: Pair<XpathProperty, String>,
         vararg properties: Pair<XpathProperty, String>
     ): Locator {
+        return byTypeAndProperties(cls.name, property, *properties)
+    }
+
+    fun byTypeAndProperties(
+        clsName: String,
+        property: Pair<XpathProperty, String>,
+        vararg properties: Pair<XpathProperty, String>
+    ): Locator {
         val allProperties = listOf(property, *properties)
         val joinedProperties = allProperties.joinToString(" and ") { "${it.first.title}=\"${it.second}\"" }.let {
             if (allProperties.isNotEmpty()) {
@@ -59,13 +71,21 @@ object Locators {
             }
         }
         return byXpath(
-            "by type ${cls.name} properties ${allProperties.joinToString(",") { "(${it.first.title}, ${it.second})" }}",
-            """//div[(@javaclass="${cls.name}" or contains(@classhierarchy, "${cls.name} ") or contains(@classhierarchy, " ${cls.name} "))$joinedProperties]"""
+            "by type $clsName properties ${allProperties.joinToString(",") { "(${it.first.title}, ${it.second})" }}",
+            """//div[(@javaclass="$clsName" or contains(@classhierarchy, "$clsName ") or contains(@classhierarchy, " $clsName "))$joinedProperties]"""
         )
     }
 
     fun <T : Component> byTypeAndPropertiesContains(
         cls: Class<T>,
+        property: Pair<XpathProperty, String>,
+        vararg properties: Pair<XpathProperty, String>
+    ): Locator {
+        return byTypeAndPropertiesContains(cls.name, property, *properties)
+    }
+
+    fun byTypeAndPropertiesContains(
+        clsName: String,
         property: Pair<XpathProperty, String>,
         vararg properties: Pair<XpathProperty, String>
     ): Locator {
@@ -79,8 +99,8 @@ object Locators {
                 }
             }
         return byXpath(
-            "by type ${cls.name} properties ${allProperties.joinToString(",") { "(${it.first.title}, ${it.second})" }}",
-            """//div[(@javaclass="${cls.name}" or contains(@classhierarchy, "${cls.name} ") or contains(@classhierarchy, " ${cls.name} "))$joinedProperties]"""
+            "by type $clsName properties ${allProperties.joinToString(",") { "(${it.first.title}, ${it.second})" }}",
+            """//div[(@javaclass="$clsName" or contains(@classhierarchy, "$clsName ") or contains(@classhierarchy, " $clsName "))$joinedProperties]"""
         )
     }
 }

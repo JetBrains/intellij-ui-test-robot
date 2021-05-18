@@ -32,7 +32,9 @@ class TextToKeyCache {
     fun findKey(text: String): String? {
         var key: Set<String>? = textToKeyMap[text]
         if (key == null && text.endsWith("...")) {
-            key = textToKeyMap[textToKeyMap.keys.firstOrNull { it.startsWith(text.split("...")[0]) }]
+            synchronized(textToKeyMap) {
+                key = textToKeyMap[textToKeyMap.keys.firstOrNull { it.startsWith(text.split("...")[0]) }]
+            }
         }
         if (key == null && text.contains("(")) {
             key = textToKeyMap[text.split("(")[0].trim()]

@@ -43,7 +43,7 @@ dependencies {
 ```
 In the plugin project:
 ```groovy
-downloadRobotServerPlugin.version = REMOTER-ROBOT_VERSION
+downloadRobotServerPlugin.version = REMOTE-ROBOT_VERSION
 
 runIdeForUiTests {
     systemProperty "robot-server.port", "8082" // default port 8580

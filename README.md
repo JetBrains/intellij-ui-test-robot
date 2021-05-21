@@ -207,6 +207,20 @@ List<String> renderedText = welcomeFrame.findAllText()
 ```
 Instead of looking for text inside the component structure we just render it on a fake `Graphics` to collect text data and its points.
 
+### Screenshots
+There are two ways to get screenshot.
+1. Get shot of whole screen (method of ```RemoteRobot``` object)
+```java
+remoteRobot.getScreenshot()
+```
+2. Get component screenshot (Method of ```Fixture``` object). Parameter ```isPaintingMode``` responses for execution in EDT and allows getting current state of fixture (by default it's ```false```)
+```java
+someFixture.getScreenshot()
+someFixture.getScreenshot(true)
+```
+
+In both cases you will get ```BufferedImage``` object specified as ```.png```
+
 ### Kotlin
 If you already familiar with Kotlin, please take a look at the [kotlin example](/ui-test-example/src/test/kotlin/org/intellij/examples/simple/plugin/CreateCommandLineKotlinTest.kt). You may find it easier to read and use.
 

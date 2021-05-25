@@ -63,10 +63,10 @@ interface IdeRobotApi {
     fun retrieveComponentData(@Path("componentId") componentId: String): Call<ComponentDataResponse>
 
     @GET("/screenshot")
-    fun retrieve(): Call<RetrieveResponse>
+    fun screenshot(): Call<RetrieveResponse>
 
     @GET("/{componentId}/screenshot")
-    fun retrieve(
+    fun componentScreenshot(
         @Path("componentId") componentId: String,
         @Query("isPaintingMode") isPaintingMode: Boolean = false
     ): Call<RetrieveResponse>

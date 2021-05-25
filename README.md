@@ -213,7 +213,10 @@ There are two ways to get screenshot.
 ```java
 remoteRobot.getScreenshot()
 ```
-2. Get component screenshot (Method of ```Fixture``` object). Parameter ```isPaintingMode``` responses for execution in EDT and allows getting current state of fixture (by default it's ```false```)
+2. Get component screenshot (Method of ```Fixture``` object).<br>
+   ```isPaintingMode``` parameter allows to return a new render of the component (by default it ```false```).<br>
+   It might be useful when you don't have a full set of desktop environment or when any other component covers the component of your interest.
+
 ```java
 someFixture.getScreenshot()
 someFixture.getScreenshot(true)

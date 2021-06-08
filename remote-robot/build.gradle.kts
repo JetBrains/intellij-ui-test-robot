@@ -28,7 +28,7 @@ val sourcesJar by tasks.creating(Jar::class) {
 }
 
 intellij {
-    version = "LATEST-EAP-SNAPSHOT"
+    version.set("LATEST-EAP-SNAPSHOT")
 }
 
 publishing {

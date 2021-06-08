@@ -18,7 +18,7 @@ jobs:
           Xvfb -ac :99 -screen 0 1920x1080x16 &
           gradle :ui-test-example:runIdeForUiTests &
       - name: Wait for Idea started
-        uses: jtalk/url-health-check-action@v1.4
+        uses: jtalk/url-health-check-action@1.5
         with:
           url: http://127.0.0.1:8082
           max-attempts: 15
@@ -45,7 +45,7 @@ jobs:
       - name: Run Idea
         run: gradle :ui-test-example:runIdeForUiTests &
       - name: Wait for Idea started
-        uses: jtalk/url-health-check-action@v1.4
+        uses: jtalk/url-health-check-action@1.5
         with:
           url: http://127.0.0.1:8082
           max-attempts: 15
@@ -72,7 +72,7 @@ jobs:
       - name: Run Idea
         run: start gradlew.bat :ui-test-example:runIdeForUiTests
       - name: Wait for Idea started
-        uses: jtalk/url-health-check-action@v1.4
+        uses: jtalk/url-health-check-action@1.5
         with:
           url: http://localhost:8082
           max-attempts: 15

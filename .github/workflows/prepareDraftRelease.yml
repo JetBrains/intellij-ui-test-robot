@@ -1,0 +1,46 @@
+name: Prepare Draft Release
+on:
+  push:
+    branches: ['0.*']
+jobs:
+  prepare-draft-release:
+    name: Prepare Draft Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@master
+
+      # Set environment variables
+      - name: Export Properties
+        id: properties
+        shell: bash
+        run: |
+          PROPERTIES="$(./gradlew properties --console=plain -q)"
+          MAIN_VERSION="$(echo "$PROPERTIES" | grep "^rr_main_version:" | cut -f2- -d ' ')"
+          BUILD="$(echo "$PROPERTIES" | grep "^rr_build:" | cut -f2- -d ' ')"
+          VERSION="${MAIN_VERSION}.${BUILD}"
+
+          echo "::set-output name=version::$VERSION"
+
+      # Remove old release drafts by using the curl request for the available releases with draft flag
+      - name: Remove Old Release Drafts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/releases \
+            | tr '\r\n' ' ' \
+            | jq '.[] | select(.draft == true) | .id' \
+            | xargs -I '{}' \
+          curl -X DELETE -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/releases/{}
+
+      # Create new release draft - which is not publicly visible and requires manual acceptance
+      - name: Create Release Draft
+        id: createDraft
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.properties.outputs.version }}
+          release_name: v${{ steps.properties.outputs.version }}
+          body: ${{ needs.build.outputs.changelog }}
+          draft: true

@@ -4,7 +4,7 @@ plugins {
 }
 
 intellij {
-    version = "LATEST-EAP-SNAPSHOT"
+    version.set("LATEST-EAP-SNAPSHOT")
 }
 
 repositories {

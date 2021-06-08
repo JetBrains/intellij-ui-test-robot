@@ -48,23 +48,24 @@ val sourcesJar by tasks.creating(Jar::class) {
     from(sourceSets.main.get().allSource)
 }
 
-configure<IntelliJPluginExtension> {
-    updateSinceUntilBuild = false
+intellij {
+    updateSinceUntilBuild.set(false)
 }
 
-tasks.getByName<RunIdeTask>("runIde") {
-    setJbrVersion("11_0_2b159")
-    systemProperty("robot-server.port", 8080)
-    systemProperty("robot.encryption.enabled", "true")
-    systemProperty("robot.encryption.password", "my super secret")
-}
+tasks {
+    runIde {
+        jbrVersion.set("11_0_2b159")
+        systemProperty("robot-server.port", 8080)
+        systemProperty("robot.encryption.enabled", "true")
+        systemProperty("robot.encryption.password", "my super secret")
+    }
 
-tasks.getByName<PatchPluginXmlTask>("patchPluginXml") {
-    setChangeNotes(
-        """
-      api for robot inside Idea<br>
-      <em>idea testing</em>"""
-    )
+    patchPluginXml {
+        changeNotes.set("""
+            api for robot inside Idea<br>
+            <em>idea testing</em>
+        """.trimIndent())
+    }
 }
 
 publishing {

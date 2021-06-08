@@ -1,0 +1,30 @@
+# Dependabot configuration:
+# https://docs.github.com/en/free-pro-team@latest/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/remote-fixtures/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/remote-robot/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/robot-server-plugin/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/ui-test-example/"
+    schedule:
+      interval: "daily"

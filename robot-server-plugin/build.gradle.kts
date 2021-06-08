@@ -34,7 +34,7 @@ dependencies {
     implementation("org.assertj:assertj-swing-junit:3.17.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.2.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.2.0")
 
     implementation("org.mozilla:rhino:1.7.12")

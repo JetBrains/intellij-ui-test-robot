@@ -16,7 +16,7 @@ dependencies {
         isForce = true
     }
     api("com.squareup.retrofit2:retrofit:2.7.1")
-    api("com.squareup.retrofit2:converter-gson:2.7.1")
+    api("com.squareup.retrofit2:converter-gson:2.9.0")
 }
 
 // Create sources Jar from main kotlin sources

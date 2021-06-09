@@ -8,7 +8,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.bouncycastle:bcprov-jdk15on:1.69")
 
-    api("org.assertj:assertj-swing-junit:3.9.2")
+    api("org.assertj:assertj-swing-junit:3.17.1")
     api("org.apache.logging.log4j:log4j-api:2.14.1")
     api("org.apache.logging.log4j:log4j-core:2.14.1")
 

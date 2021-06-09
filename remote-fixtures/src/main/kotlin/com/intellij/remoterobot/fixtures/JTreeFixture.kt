@@ -73,6 +73,10 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
                 for (let node of p.getPath()) {
                     nodes.add(node.toString())
                 }
+                
+                // If the root node is not visible, remove it
+                if (component.isRootVisible() === false)
+                    nodes.remove(0)
                 return nodes
             }, (p) => paths.add(p))
             paths
@@ -90,6 +94,10 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
                 for (let node of treePaths[i].getPath()) {
                     nodes.add(node.toString())
                 }
+                
+                // If the root node is not visible, remove it
+                if (component.isRootVisible() === false)
+                    nodes.remove(0)
                 paths.add(nodes)
             }
         }
@@ -108,32 +116,13 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
 
     fun expand(vararg path: String): JTreeFixture {
         runJs("""
-            var expandingPathNodes = [${path.joinToString(",") { "\"${it}\"" }}]
-            function visit(treePath) {
-                var pathNodes = treePath.getPath().map(function (node) {
-                    if (node === null) return ""
-                    return node.toString()
-                }).filter(function (node) {
-                    return node !== ""
-                })
-
-                if (pathNodes.length === 0) 
-                    return com.intellij.ui.tree.TreeVisitor.Action.CONTINUE
-
-                if (pathNodes.length - 1 > expandingPathNodes.length)
-                    return com.intellij.ui.tree.TreeVisitor.Action.SKIP_CHILDREN
-
-                var isPathMatches = [pathNodes, pathNodes.slice(1)].some(function (nodes) {
-                    for (var i = 0; i < Math.min(expandingPathNodes.length, nodes.length); ++i)
-                        if (nodes[i].indexOf(expandingPathNodes[i]) === -1) return false
-                    return true
-                })
-                if (!isPathMatches) return com.intellij.ui.tree.TreeVisitor.Action.SKIP_CHILDREN
-                else return com.intellij.ui.tree.TreeVisitor.Action.CONTINUE
-            }
-            const visitor = { visit: visit }
+            const expandingPathNodes = [${path.joinToString(",") { "\"${it}\"" }}]
+            const ignoreRoot = component.isRootVisible() === false
+            const treePath = com.intellij.ui.tree.TreePathUtil.convertArrayToTreePath(expandingPathNodes)
+            const toStringConverter = function(obj) {return java.util.Objects.toString(obj)}
+            const visitor = new com.intellij.ui.tree.TreeVisitor.ByTreePath(ignoreRoot, treePath, toStringConverter);
             
-            com.intellij.util.ui.tree.TreeUtil.promiseExpand(component, new com.intellij.ui.tree.TreeVisitor(visitor)).blockingGet(5000)
+            com.intellij.util.ui.tree.TreeUtil.promiseExpand(component, visitor).blockingGet(5000)
         """)
         return this
     }

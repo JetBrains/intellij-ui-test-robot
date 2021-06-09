@@ -1,6 +1,6 @@
 ![official JetBrains project](https://jb.gg/badges/official.svg)
 
-This library allows you to write and execute UI tests among IntelliJ Idea. You can test your Plugin.
+This library allows you to write and execute UI tests among IntelliJ Idea. You can test your plugin.
 
 ## Quick Start
 First we need to launch the IDE. Because the `runIdeForUiTests` task is blocking, we can run it as an asynchronous process:
@@ -25,12 +25,12 @@ It consists of a `remote-robot` client and a `robot-server` plugin:
 * `remote-robot` - is a client (test) side library used to send commands to the `robot-server` plugin. 
 * `robot-server` - is an IDEA plugin that should run with the plugin you are developing. 
 
-The easiest way to start the test system is to execute the `runIdeForUiTests` task. (See Quick Start section, above.) When IDEA is initialized, the `robot-server` plugin starts listening for commands from the UI test client.
+The easiest way to start the test system is to execute the `runIdeForUiTests` task. (See Quick Start section above.) When IDEA is initialized, the `robot-server` plugin starts listening for commands from the UI test client.
 
 The `remote-robot` library communicates with the `robot-server` plugin via HTTP protocol. This connection means you can launch IDEA on remote machines or in docker containers to check your plugin within different test environments.
 
 ### Setup
-Last version of the Remote-Robot is `0.11.4`
+The last version of the Remote-Robot is `0.11.4`.
 
 In the test project:
 ```groovy
@@ -50,7 +50,7 @@ runIdeForUiTests {
 }
 ```
 By default, the port is local, so it could not be reached from another host. 
-In case you need make it public you can add system property in the `runIdeForUiTests` task:
+In case you need to make it public, you can add system property in the `runIdeForUiTests` task:
 ```groovy
 runIdeForUiTests {
     // ......
@@ -117,7 +117,7 @@ public class WelcomeFrameFixture extends ContainerFixture {
 }
 ```
 ```java
-// find the custom fixture by its default xpath
+// find the custom fixture by its default XPath
 WelcomeFrameFixture welcomeFrame = remoteRobot.find(WelcomeFrameFixture.class);
 welcomeFrame.createNewProjectLink().click();
 ```
@@ -145,10 +145,10 @@ public class ActionLinkFixture extends ComponentFixture {
     }
 }
 ```
-We can retrieve data using `RemoteRobot` with the `callJs` method. In this case there is a `robot` var in the context of JavaScript execution. 
+We can retrieve data using `RemoteRobot` with the `callJs` method. In this case, there is a `robot` var in the context of JavaScript execution. 
 The `robot` is an instance of extending the [`org.assertj.swing.core.Robot`](https://joel-costigliola.github.io/assertj/swing/api/org/assertj/swing/core/Robot.html) class.
 
-When you use the `callJs()` method of a `fixture` object, the `component` argument represents the actual UI component that was found (see Searching Components) and used to initialize the `ComponentFixture`.
+When you use the `callJs()` method of a `fixture` object, the `component` argument represents the actual UI component found (see Searching Components) and used to initialize the `ComponentFixture`.
 
 The `runJs` method works the same way without any return value:
 ```java
@@ -192,8 +192,8 @@ test {
 }
 ```
 ### Text
-Sometimes you may not want to dig through the whole component to find out which field contains the text you need to reach. 
-If you need to check whether some text is present on the component, or you need to click at the text, 
+Sometimes you may not want to dig through the whole component to determine which field contains the text you need to reach. 
+If you need to check whether some text is present on the component, or you need to click on the text, 
 you can use `fixture` methods:
 ```java
 welcomeFrame.findText("Create New Project").click();
@@ -205,30 +205,30 @@ List<String> renderedText = welcomeFrame.findAllText()
     .map(RemoteText::getText)
     .collect(Collectors.toList());
 ```
-Instead of looking for text inside the component structure we just render it on a fake `Graphics` to collect text data and its points.
+Instead of looking for text inside the component structure, we render it on a fake `Graphics` to collect text data and its points.
 
 ### Screenshots
-There are two ways to get screenshot.
-1. Get shot of whole screen (method of ```RemoteRobot``` object)
+There are two ways to get the screenshot.
+1. Get shot of whole screen (method of `RemoteRobot` object)
 ```java
 remoteRobot.getScreenshot()
 ```
-2. Get component screenshot (Method of ```Fixture``` object).<br>
-   ```isPaintingMode``` parameter allows to return a new render of the component (by default it ```false```).<br>
-   It might be useful when you don't have a full set of desktop environment or when any other component covers the component of your interest.
+2. Get component screenshot (Method of `Fixture` object).<br>
+   `isPaintingMode` parameter allows returning a new render of the component `false` by default).<br>
+   It might be helpful when you don't have a complete set of desktop environments or when any other component covers the component of your interest.
 
 ```java
 someFixture.getScreenshot()
 someFixture.getScreenshot(true)
 ```
 
-In both cases you will get ```BufferedImage``` object specified as ```.png```
+In both cases, you will get `BufferedImage` object specified as `.png`
 
 ### Kotlin
 If you already familiar with Kotlin, please take a look at the [kotlin example](/ui-test-example/src/test/kotlin/org/intellij/examples/simple/plugin/CreateCommandLineKotlinTest.kt). You may find it easier to read and use.
 
 ### Steps Logging
-We use the `step` wrapper method to make test logs easy to read. The example simple `StepLogger` shows how useful it can be. 
+We use the `step` wrapper method to make test logs easy to read. The `StepLogger` example shows how useful it can be. 
 For instance, by implementing your own `StepProcessor`, you can extend the steps workflow and connect to the [allure report](https://docs.qameta.io/allure/) framework.
 
 ### FAQ

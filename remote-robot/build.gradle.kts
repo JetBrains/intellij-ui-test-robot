@@ -15,7 +15,7 @@ dependencies {
     implementation("commons-io:commons-io:2.6") {
         isForce = true
     }
-    api("com.squareup.retrofit2:retrofit:2.7.1")
+    api("com.squareup.retrofit2:retrofit:2.9.0")
     api("com.squareup.retrofit2:converter-gson:2.9.0")
 }
 

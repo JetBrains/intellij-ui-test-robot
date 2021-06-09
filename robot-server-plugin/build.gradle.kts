@@ -35,7 +35,7 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.2.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.2")
 
     implementation("org.mozilla:rhino:1.7.12")
 }

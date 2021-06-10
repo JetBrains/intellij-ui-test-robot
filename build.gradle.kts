@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.32"
+    id("org.jetbrains.kotlin.jvm") version "1.5.10"
     id("org.jetbrains.intellij") version "1.0"
 }
 

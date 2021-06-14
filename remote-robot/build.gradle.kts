@@ -12,7 +12,7 @@ dependencies {
     api("org.apache.logging.log4j:log4j-api:2.14.1")
     api("org.apache.logging.log4j:log4j-core:2.14.1")
 
-    implementation("commons-io:commons-io:2.9.0") {
+    implementation("commons-io:commons-io:2.10.0") {
         isForce = true
     }
     api("com.squareup.retrofit2:retrofit:2.9.0")

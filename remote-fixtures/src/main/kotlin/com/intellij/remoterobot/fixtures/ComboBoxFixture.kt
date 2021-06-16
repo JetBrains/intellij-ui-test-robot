@@ -20,8 +20,19 @@ open class ComboBoxFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
         }
     }
 
+    init {
+        runJs(
+            """
+            const fixture = new JComboBoxFixture(robot, component);
+            const cellReader = new com.intellij.remoterobot.fixtures.dataExtractor.server.textCellRenderers.JComboBoxTextCellReader();
+            fixture.replaceCellReader(cellReader);
+            ctx.put("fixture", fixture) 
+        """
+        )
+    }
+
     fun selectItem(text: String) = step("Select '$text'") {
-        runJs("""JComboBoxFixture(robot, component).selectItem("$text")""")
+        runJs("""ctx.get('fixture').selectItem("$text")""")
     }
 
     open fun selectItemContains(text: String) = step("Select '$text'") {
@@ -33,7 +44,7 @@ open class ComboBoxFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
      */
     fun selectedText(): String = step("Get Selected text") {
         return@step callJs("""
-            const text = JComboBoxFixture(robot, component).selectedItem();
+            const text = ctx.get('fixture').selectedItem();
             if (text) {
                 text;
             } else {
@@ -43,7 +54,7 @@ open class ComboBoxFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
     }
 
     fun listValues(): List<String> {
-        return callJs<Array<String>>("JComboBoxFixture(robot, component).contents()").toList()
+        return callJs<Array<String>>("ctx.get('fixture').contents()").toList()
     }
 }
 

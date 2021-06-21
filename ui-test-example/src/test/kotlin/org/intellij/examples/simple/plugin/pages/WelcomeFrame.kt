@@ -18,7 +18,7 @@ class WelcomeFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
     val createNewProjectLink
         get() = actionLink(byXpath("New Project","//div[(@class='MainButton' and @text='New Project') or (@accessiblename='New Project' and @class='JButton')]"))
     val moreActions
-        get() = button(byXpath("More Action", "//div[@accessiblename='More Actions' and @class='ActionButton']"))
+        get() = button(byXpath("More Action", "//div[@accessiblename='More Actions']"))
 
     val heavyWeightPopup
         get() = remoteRobot.find(ComponentFixture::class.java, byXpath("//div[@class='HeavyWeightWindow']"))

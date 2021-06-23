@@ -3,7 +3,8 @@
 export declare let robot: Robot
 export declare let component: Component
 export declare let log: Log
-export declare let ctx: Map
+export declare let local: Map
+export declare let global: Map
 
 
 export interface Robot {

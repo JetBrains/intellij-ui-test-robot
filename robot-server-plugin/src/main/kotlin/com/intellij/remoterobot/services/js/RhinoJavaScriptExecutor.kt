@@ -7,12 +7,15 @@ import com.intellij.remoterobot.data.RobotContext
 import org.mozilla.javascript.*
 
 class RhinoJavaScriptExecutor : JavaScriptExecutor {
+    private val globalObjectMap by lazy { mutableMapOf<String, Any>() }
     override fun execute(script: String, componentContext: ComponentContext): Any? {
         return executeWithContext(script) {
             defineProperty("robot", componentContext.robot, 0)
             defineProperty("log", componentContext.log, 0)
             defineProperty("component", componentContext.component, 0)
             defineProperty("ctx", componentContext.objects, 0)
+            defineProperty("local", componentContext.objects, 0)
+            defineProperty("global", globalObjectMap, 0)
         }
     }
 
@@ -20,6 +23,7 @@ class RhinoJavaScriptExecutor : JavaScriptExecutor {
         return executeWithContext(script) {
             defineProperty("robot", robotContext.robot, 0)
             defineProperty("log", robotContext.log, 0)
+            defineProperty("global", globalObjectMap, 0)
         }
     }
 

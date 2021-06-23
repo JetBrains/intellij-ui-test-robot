@@ -15,6 +15,7 @@ interface RemoteLoggableContext {
     val robot: Robot
     val log: RemoteLogger
 }
+
 class RobotContext(override val robot: Robot): RemoteLoggableContext {
     override val log = RemoteLogger()
 }

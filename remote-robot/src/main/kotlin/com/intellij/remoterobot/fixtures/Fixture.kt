@@ -85,7 +85,8 @@ abstract class Fixture(
     fun runJs(
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst ctx = ctx;\n\n"
+            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst local = local;\n" +
+                    "const global = global;\n\n"
         ) script: String, runInEdt: Boolean = false
     ) {
         remoteRobot.runJs(this, script, runInEdt)
@@ -96,7 +97,7 @@ abstract class Fixture(
     fun <T : Serializable> callJs(
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst ctx = ctx;\n\n"
+            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst local = local;\nconst global = global;\n\n"
         ) script: String,
         runInEdt: Boolean = false
     ): T {
@@ -109,7 +110,8 @@ abstract class Fixture(
     fun execute(
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst ctx = ctx;\n\n"
+            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst local = local;\n" +
+                    "const global = global;\n\n"
         ) script: String, runInEdt: Boolean = false
     ) {
         remoteRobot.runJs(this, script, runInEdt)
@@ -121,7 +123,8 @@ abstract class Fixture(
     fun <T : Serializable> retrieve(
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst ctx = ctx;\n\n"
+            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst local = local;\n" +
+                    "const global = global;\n\n"
         ) script: String,
         runInEdt: Boolean = false
     ): T {

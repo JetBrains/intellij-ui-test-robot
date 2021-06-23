@@ -19,7 +19,7 @@ interface JavaScriptApi {
     fun runJs(
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst log = log;\n\n"
+            prefix = "const robot = robot;\nconst log = log;\nconst global = global;\n\n"
         ) script: String
     ) {
         runJs(script, false)
@@ -29,7 +29,7 @@ interface JavaScriptApi {
     fun runJs(
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst log = log;\n\n"
+            prefix = "const robot = robot;\nconst log = log;\nconst global = global;\n\n"
         ) script: String, runInEdt: Boolean
     ) {
         ideRobotClient.execute(ExecuteScriptRequest(script, runInEdt).encrypt(encryptor))
@@ -40,7 +40,7 @@ interface JavaScriptApi {
         fixture: Fixture,
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst ctx = ctx;\n\n"
+            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst local = local;\nconst global = global;\n\n"
         ) script: String
     ) {
         runJs(fixture, script, false)
@@ -51,7 +51,7 @@ interface JavaScriptApi {
         fixture: Fixture,
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst ctx = ctx;\n\n"
+            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst local = local;\nconst global = global;\n\n"
         ) script: String, runInEdt: Boolean
     ) {
         ideRobotClient.execute(fixture.remoteComponent.id, ExecuteScriptRequest(script, runInEdt).encrypt(encryptor))
@@ -61,7 +61,7 @@ interface JavaScriptApi {
     fun <T : Serializable> callJs(
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst log = log;\n\n"
+            prefix = "const robot = robot;\nconst log = log;\nconst global = global;\n\n"
         ) script: String
     ): T {
         return callJs(script, false)
@@ -71,7 +71,7 @@ interface JavaScriptApi {
     fun <T : Serializable> callJs(
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst log = log;\n\n"
+            prefix = "const robot = robot;\nconst log = log;\nconst global = global;\n\n"
         ) script: String,
         runInEdt: Boolean
     ): T {
@@ -83,7 +83,7 @@ interface JavaScriptApi {
         fixture: Fixture,
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst ctx = ctx;\n\n"
+            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst local = local;\nconst global = global;\n\n"
         ) script: String
     ): T {
         return callJs(fixture, script, false)
@@ -94,7 +94,7 @@ interface JavaScriptApi {
         fixture: Fixture,
         @Language(
             value = "JS",
-            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst ctx = ctx;\n\n"
+            prefix = "const robot = robot;\nconst component = component;\nconst log = log;\nconst local = local;\nconst global = global;\n\n"
         ) script: String,
         runInEdt: Boolean
     ): T {

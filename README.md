@@ -30,7 +30,7 @@ The easiest way to start the test system is to execute the `runIdeForUiTests` ta
 The `remote-robot` library communicates with the `robot-server` plugin via HTTP protocol. This connection means you can launch IDEA on remote machines or in docker containers to check your plugin within different test environments.
 
 ### Setup
-The last version of the Remote-Robot is `0.11.4`.
+The last version of the Remote-Robot is `0.11.5`.
 
 In the test project:
 ```groovy
@@ -43,10 +43,12 @@ dependencies {
 ```
 In the plugin project:
 ```groovy
-downloadRobotServerPlugin.version = REMOTE-ROBOT_VERSION
-
 runIdeForUiTests {
     systemProperty "robot-server.port", "8082" // default port 8580
+}
+
+downloadRobotServerPlugin {
+   version = REMOTE-ROBOT_VERSION
 }
 ```
 By default, the port is local, so it could not be reached from another host. 
@@ -180,6 +182,10 @@ Or just use the full path:
         "com.intellij.openapi.project.DumbService.isDumb(component.project);"
     );
 ```
+#### Store data between `runJs/callJs` requests
+There are `global` and `local` `Map<String, Object>` variables available in the js context. `global` is a single map for the whole Ide.
+`local` map is defined on a per-fixture basis. Please check [GlobalAndLocalMapExamples](/ui-test-example/src/test/kotlin/org/intellij/examples/simple/plugin/GlobalAndLocalMapExamplesTest.kt)
+
 In case you made robot-server-plugin port public, you may want to enable encryption for JavaScript code:
 ```groovy
 runIdeForUiTests {

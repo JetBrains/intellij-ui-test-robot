@@ -2,6 +2,8 @@
 
 This library allows you to write and execute UI tests among IntelliJ Idea. You can test your plugin.
 
+If you have any questions you are welcome to our [Slack Channel](https://jetbrains-platform.slack.com/archives/C026SVA9MMM)
+
 ## Quick Start
 First we need to launch the IDE. Because the `runIdeForUiTests` task is blocking, we can run it as an asynchronous process:
 

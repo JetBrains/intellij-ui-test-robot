@@ -5,6 +5,7 @@ package com.intellij.remoterobot.fixtures
 import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.data.RemoteComponent
 import com.intellij.remoterobot.stepsProcessing.step
+import java.awt.Color
 import java.awt.Point
 
 open class ComponentFixture(
@@ -31,5 +32,9 @@ open class ComponentFixture(
             robot.click(component, point);
         """
         )
+    }
+
+    open fun getColor(): Color {
+        return Color(this.callJs("component.background.getRGB()"))
     }
 }

@@ -170,4 +170,18 @@ open class CommonContainerFixture(
 
     fun jPopupMenu(locator: Locator, timeout: Duration = defaultFindTimeout, func: JPopupMenuFixture.() -> Unit = {}) =
         find<JPopupMenuFixture>(locator, timeout).apply(func)
+
+    //----------------------------------------
+
+    fun browser(timeout: Duration = defaultFindTimeout): JCefBrowserFixture {
+        val locator = if(remoteRobot.isMac()) {
+            JCefBrowserFixture.macLocator
+        } else {
+            JCefBrowserFixture.canvasLocator
+        }
+        return find(locator, timeout)
+    }
+
+    fun browser(locator: Locator, timeout: Duration = defaultFindTimeout): JCefBrowserFixture =
+        find(locator, timeout)
 }

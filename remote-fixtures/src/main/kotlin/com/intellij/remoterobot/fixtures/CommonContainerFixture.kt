@@ -184,4 +184,20 @@ open class CommonContainerFixture(
 
     fun browser(locator: Locator, timeout: Duration = defaultFindTimeout): JCefBrowserFixture =
         find(locator, timeout)
+
+    //----------------------------------------
+
+    fun textEditor(timeout: Duration = defaultFindTimeout): TextEditorFixture {
+        return textEditor(TextEditorFixture.locator, timeout)
+    }
+
+    fun textEditor(locator: Locator, timeout: Duration = defaultFindTimeout): TextEditorFixture =
+        find(locator, timeout)
+
+    fun textEditors(): List<TextEditorFixture> {
+        return textEditors(TextEditorFixture.locator)
+    }
+
+    fun textEditors(locator: Locator): List<TextEditorFixture> =
+        findAll(locator)
 }

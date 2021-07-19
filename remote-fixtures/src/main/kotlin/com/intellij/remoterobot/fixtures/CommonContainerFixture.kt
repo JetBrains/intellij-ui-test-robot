@@ -123,7 +123,12 @@ open class CommonContainerFixture(
     fun checkBoxes(locator: Locator): List<JCheckboxFixture> =
         findAll(locator)
 
-    fun checkBox(text: String) = checkBox(JCheckboxFixture.byText(text))
+    fun checkBox(text: String, contains: Boolean = false) = checkBox(
+        if (contains)
+            JCheckboxFixture.byTextContains(text)
+        else
+            JCheckboxFixture.byText(text)
+    )
 
     //----------------------------------------
 

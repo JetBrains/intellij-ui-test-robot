@@ -79,11 +79,13 @@ class GutterFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) 
                         }
                         let renderer = renderers.get(i)
                         let point = component.getCenterPoint(renderer)
-                        icon.description = new String(renderer.getIcon().toString())
-                        icon.point.x = point.x
-                        icon.point.y = point.y
-                        icon.lineNumber = parseInt(lineInfo.getKey() + 1)
-                        iconsArray.add(JSON.stringify(icon))
+                        if (point) {
+                            icon.description = new String(renderer.getIcon().toString())
+                            icon.point.x = point.x
+                            icon.point.y = point.y
+                            icon.lineNumber = parseInt(lineInfo.getKey() + 1)
+                            iconsArray.add(JSON.stringify(icon))
+                        }
                     }
                 }
             } finally {

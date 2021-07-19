@@ -148,7 +148,6 @@ class EditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) 
         runJs(
             """
                 const editor = local.get('editor')
-                local.put('scrollingInProgress', true)
                 editor.getScrollingModel().scrollTo(editor.offsetToLogicalPosition(${offset}), com.intellij.openapi.editor.ScrollType.CENTER)
             """, true
         )

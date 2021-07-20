@@ -3,6 +3,7 @@
 package org.intellij.examples.simple.plugin
 
 import com.intellij.remoterobot.RemoteRobot
+import com.intellij.remoterobot.fixtures.CommonContainerFixture
 import com.intellij.remoterobot.fixtures.ComponentFixture
 import com.intellij.remoterobot.fixtures.ContainerFixture
 import com.intellij.remoterobot.search.locators.byXpath
@@ -75,16 +76,18 @@ class CreateCommandLineKotlinTest {
                 actionMenuItem("Kotlin Class/File").click()
                 keyboard { enterText("App"); down(); enter() }
             }
-            editor("App.kt") {
+            with(textEditor()) {
                 step("Write a code") {
+                    click()
                     sharedSteps.autocomplete("main")
                     keyboard { enterText("println(\""); enterText("Hello from UI test") }
                 }
                 step("Launch application") {
-                    findText("main").click(MouseButton.RIGHT_BUTTON)
-                    this@idea.find<ComponentFixture>(
-                        byXpath("//div[@class='ActionMenuItem' and @disabledicon='execute.svg']")
-                    ).click()
+                    gutter.getIcons().first { it.description.contains("run.svg") }.click()
+                    this@idea.find<CommonContainerFixture>(
+                        byXpath("//div[@class='HeavyWeightWindow']")
+                    ).button(byXpath("//div[@disabledicon='execute.svg']"))
+                        .click()
                 }
             }
 

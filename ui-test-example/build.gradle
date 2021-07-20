@@ -21,7 +21,7 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-def remoteRobotVersion = "0.11.5"
+def remoteRobotVersion = "0.11.6"
 
 dependencies {
     testImplementation 'com.intellij.remoterobot:remote-robot:' + remoteRobotVersion
@@ -35,11 +35,11 @@ dependencies {
 
 
 intellij {
-    version = '2021.1'
+    version.set('2021.1')
 }
 
 downloadRobotServerPlugin {
-    version = remoteRobotVersion
+    version.set(remoteRobotVersion)
 }
 
 

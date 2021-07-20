@@ -3,8 +3,7 @@
 package org.intellij.examples.simple.plugin;
 
 import com.intellij.remoterobot.RemoteRobot;
-import com.intellij.remoterobot.fixtures.ComponentFixture;
-import com.intellij.remoterobot.fixtures.ContainerFixture;
+import com.intellij.remoterobot.fixtures.*;
 import com.intellij.remoterobot.search.locators.Locator;
 import com.intellij.remoterobot.utils.Keyboard;
 import org.assertj.swing.core.MouseButton;
@@ -16,6 +15,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import java.time.Duration;
 
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.stepsProcessing.StepWorkerKt.step;
@@ -24,7 +24,6 @@ import static java.awt.event.KeyEvent.*;
 import static java.time.Duration.ofMinutes;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenu;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenuItem;
-import static org.intellij.examples.simple.plugin.pages.EditorKt.editor;
 
 @ExtendWith(RemoteRobotExtension.class)
 public class CreateCommandLineJavaTest {
@@ -74,19 +73,27 @@ public class CreateCommandLineJavaTest {
             keyboard.enter();
         });
 
-        final ContainerFixture editor = editor(idea, "App.kt");
+        final TextEditorFixture editor = idea.textEditor(Duration.ofSeconds(2));
 
         step("Write a code", () -> {
+            editor.click();
             sharedSteps.autocomplete("main");
             keyboard.enterText("println(\"");
             keyboard.enterText("Hello from UI test");
         });
 
         step("Launch the application", () -> {
-            editor.findText("main").click(MouseButton.RIGHT_BUTTON);
-            idea.find(ComponentFixture.class,
-                    byXpath("//div[@class='ActionMenuItem' and @disabledicon='execute.svg']")
-            ).click();
+            final GutterIcon runIcon = editor.getGutter().getIcons()
+                    .stream()
+                    .filter((it) -> it.getDescription().contains("run.svg"))
+                    .findFirst()
+                    .orElseThrow(() -> {
+                        throw new IllegalStateException("No Run icon presents in the gutter");
+                    });
+            runIcon.click();
+            idea.find(CommonContainerFixture.class, byXpath("//div[@class='HeavyWeightWindow']"))
+                    .button(byXpath("//div[@disabledicon='execute.svg']"), Duration.ofSeconds(2))
+                    .click();
         });
         step("Check console output", () -> {
             final Locator locator = byXpath("//div[@class='ConsoleViewImpl']");

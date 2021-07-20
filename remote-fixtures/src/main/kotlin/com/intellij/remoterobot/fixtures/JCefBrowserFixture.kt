@@ -20,7 +20,7 @@ The fixture provides some requirements:
 - `ide.browser.jcef.jsQueryPoolSize=10000` - possible count of callback slots must be specified for running IDE
 in build.gradle:
 runIdeForUiTests {
-    systemProperty "ide.browser.jcef.jsQueryPoolSize", "10000"
+systemProperty "ide.browser.jcef.jsQueryPoolSize", "10000"
 }
 One fixture takes a one slot of the reserved callback slots. So if you create a lot of fixtures across the one browser
 the slots could be run out. It is preferable to create one fixture and then reuse it.
@@ -145,7 +145,8 @@ class JCefBrowserFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompon
                     element = findElements(xpath).firstOrNull()
                     element != null
                 }
-            } catch(e: Throwable) {  }
+            } catch (e: Throwable) {
+            }
             return@step element ?: throw IllegalStateException("No such element: $xpath")
         }
 
@@ -244,10 +245,13 @@ class JCefBrowserFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompon
 class DomElement(val container: JCefBrowserFixture, var elementData: JCefBrowserFixture.ElementData) {
     private val x
         get() = elementData.location.x.roundToInt()
+
     private val y
         get() = elementData.location.y.roundToInt()
+
     private val width
         get() = elementData.location.width.roundToInt()
+
     private val height
         get() = elementData.location.height.roundToInt()
 
@@ -265,16 +269,20 @@ class DomElement(val container: JCefBrowserFixture, var elementData: JCefBrowser
 
     fun clickAtCenter() = step("click at ${elementData.tag}") {
         scroll()
-        container.runJs("""
+        container.runJs(
+            """
            robot.click(component, new Point($centerX, $centerY)) 
-        """)
+        """
+        )
     }
 
     fun click() = step("click at ${elementData.tag}") {
         scroll()
-        container.runJs("""
+        container.runJs(
+            """
            robot.click(component, new Point(${x + height / 2}, $centerY)) 
-        """)
+        """
+        )
     }
 
     fun scroll() = step("scroll to ${elementData.tag}") {

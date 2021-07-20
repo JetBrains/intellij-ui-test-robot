@@ -1,7 +1,3 @@
-import org.jetbrains.intellij.IntelliJPluginExtension
-import org.jetbrains.intellij.tasks.PatchPluginXmlTask
-import org.jetbrains.intellij.tasks.RunIdeTask
-
 plugins {
     id("org.jetbrains.intellij")
 }

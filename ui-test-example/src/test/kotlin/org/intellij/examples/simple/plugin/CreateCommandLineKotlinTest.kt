@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.awt.event.KeyEvent.*
 import java.time.Duration.ofMinutes
+import java.time.Duration.ofSeconds
 
 @ExtendWith(RemoteRobotExtension::class)
 class CreateCommandLineKotlinTest {
@@ -83,6 +84,7 @@ class CreateCommandLineKotlinTest {
                     keyboard { enterText("println(\""); enterText("Hello from UI test") }
                 }
                 step("Launch application") {
+                    waitFor(ofSeconds(10)) { statusButton.hasText("Analyzing...").not() }
                     gutter.getIcons().first { it.description.contains("run.svg") }.click()
                     this@idea.find<CommonContainerFixture>(
                         byXpath("//div[@class='HeavyWeightWindow']")

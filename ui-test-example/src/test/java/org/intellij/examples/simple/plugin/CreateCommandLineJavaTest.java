@@ -83,6 +83,7 @@ public class CreateCommandLineJavaTest {
         });
 
         step("Launch the application", () -> {
+            waitFor(Duration.ofSeconds(10), ()-> !editor.getStatusButton().hasText("Analyzing..."));
             final GutterIcon runIcon = editor.getGutter().getIcons()
                     .stream()
                     .filter((it) -> it.getDescription().contains("run.svg"))

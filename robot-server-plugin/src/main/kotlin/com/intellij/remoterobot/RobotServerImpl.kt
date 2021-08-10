@@ -28,6 +28,10 @@ import org.assertj.swing.exception.ComponentLookupException
 import java.text.DateFormat
 
 class RobotServerImpl {
+    init {
+        TextToKeyCacheGlobal.cache
+    }
+
     private val ideRobot: IdeRobot by lazy { IdeRobot(TextToKeyCacheGlobal.cache) }
     private val serverHost by lazy {
         if (System.getProperty("robot-server.host.public")?.toBoolean() == true) {
@@ -259,7 +263,8 @@ class RobotServerImpl {
                 }
                 get("/{componentId}/screenshot") {
                     call.dataResultRequest({
-                        val componentId = call.parameters["componentId"] ?: throw IllegalArgumentException("empty componentId")
+                        val componentId =
+                            call.parameters["componentId"] ?: throw IllegalArgumentException("empty componentId")
                         if (call.parameters["isPaintingMode"].toBoolean())
                             ideRobot.makeScreenshotWithPainting(componentId)
                         else

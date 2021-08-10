@@ -7,7 +7,7 @@ import java.util.function.BiConsumer
 import java.util.function.Consumer
 
 object TextToKeyCacheGlobal {
-    val cache by lazy { TextToKeyCache() }
+    val cache = TextToKeyCache()
 }
 
 class TextToKeyCache {

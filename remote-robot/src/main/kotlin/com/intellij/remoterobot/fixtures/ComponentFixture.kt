@@ -34,7 +34,11 @@ open class ComponentFixture(
         )
     }
 
-    open fun getColor(): Color {
+    open fun getBackgroundColor(): Color {
         return Color(this.callJs("component.background.getRGB()"))
+    }
+
+    open fun getForegroundColor(): Color {
+        return Color(this.callJs("component.foreground.getRGB()"))
     }
 }

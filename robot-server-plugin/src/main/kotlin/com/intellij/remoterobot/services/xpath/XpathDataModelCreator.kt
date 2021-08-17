@@ -207,6 +207,8 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : Compon
     private val componentFilter: (Component) -> Boolean = {
         it.isVisible && it.isShowing
                 && it::class.java.simpleName != "Corner"
+                && it.bounds.width > 0
+                && it.bounds.height > 0
     }
 
     private fun getTooltipText(component: Component): String? = if (component is JComponent) {

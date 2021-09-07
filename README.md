@@ -240,4 +240,4 @@ We use the `step` wrapper method to make test logs easy to read. The `StepLogger
 For instance, by implementing your own `StepProcessor`, you can extend the steps workflow and connect to the [allure report](https://docs.qameta.io/allure/) framework.
 
 ### FAQ
-[FAQ](/ui-test-example/FAQ.md)
+[FAQ](/ui-test-example)

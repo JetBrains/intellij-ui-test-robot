@@ -14,3 +14,5 @@ fun ContainerFixture.hasAnyComponent(locator: Locator) = finder.findMany(locator
 
 fun RemoteRobot.getIdeBuildNumber() =
     callJs<String>("com.intellij.openapi.application.ApplicationInfo.getInstance().getBuildNumber()")
+
+fun RemoteRobot.getSystemProperty(propertyName: String): String = callJs("""System.getProperty("$propertyName") || "" """)

@@ -4,6 +4,7 @@ import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.data.RemoteComponent
 import com.intellij.remoterobot.stepsProcessing.step
 import com.intellij.remoterobot.utils.Locators
+import com.intellij.remoterobot.utils.getSystemProperty
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 
@@ -15,7 +16,7 @@ open class JMenuBarFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
     }
 
     open fun select(vararg items: String) {
-        if (remoteRobot.isMac()) {
+        if (remoteRobot.isMac() && remoteRobot.getSystemProperty("apple.laf.useScreenMenuBar").toBoolean()) {
             selectOnMac(*items)
         } else {
             openMenu(items[0]).select(*items.sliceArray(1..items.lastIndex))

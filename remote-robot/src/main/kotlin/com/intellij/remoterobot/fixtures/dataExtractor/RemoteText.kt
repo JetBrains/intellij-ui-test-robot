@@ -33,6 +33,10 @@ class RemoteText(private val fixture: Fixture, private val data: TextData) {
         click(button, 2)
     }
 
+    fun rightClick() {
+        click(MouseButton.RIGHT_BUTTON, 1)
+    }
+
     fun moveMouse() = step("move mouse to '$text'") {
         val _point = data.point
         fixture.execute { robot.moveMouse(component, _point) }

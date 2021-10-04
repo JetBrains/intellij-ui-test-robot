@@ -24,6 +24,7 @@ open class CommonContainerFixture(
     companion object {
         private val defaultFindTimeout = Duration.ofSeconds(5)
     }
+
     //----------------------------------------
 
     fun actionLink(locator: Locator, timeout: Duration = defaultFindTimeout): ActionLinkFixture =
@@ -36,7 +37,6 @@ open class CommonContainerFixture(
     fun actionLink(text: String) = actionLink(ActionLinkFixture.byText(text))
 
     //----------------------------------------
-
 
     fun button(text: String): JButtonFixture = button(JButtonFixture.byText(text))
 
@@ -58,7 +58,6 @@ open class CommonContainerFixture(
 
     fun jLabel(text: String) = jLabel(JLabelFixture.byText(text))
 
-
     //----------------------------------------
 
     fun textField(locator: Locator, timeout: Duration = defaultFindTimeout): JTextFieldFixture =
@@ -79,7 +78,6 @@ open class CommonContainerFixture(
 
     fun textArea(locator: Locator, timeout: Duration = defaultFindTimeout): JTextAreaFixture =
         find(locator, timeout)
-
 
     fun textAreas(locator: Locator): List<JTextAreaFixture> =
         findAll(locator)
@@ -132,7 +130,6 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
-
     fun radioButton(locator: Locator, timeout: Duration = defaultFindTimeout): JRadioButtonFixture =
         find(locator, timeout)
 
@@ -141,7 +138,6 @@ open class CommonContainerFixture(
 
     fun radioButton(text: String) = radioButton(JRadioButtonFixture.byText(text))
 
-
     //----------------------------------------
 
     fun jList(
@@ -149,7 +145,6 @@ open class CommonContainerFixture(
         func: JListFixture.() -> Unit = {}
     ): JListFixture =
         find<JListFixture>(locator, timeout).apply(func)
-
 
     fun jLists(locator: Locator): List<JListFixture> =
         findAll(locator)
@@ -179,7 +174,7 @@ open class CommonContainerFixture(
     //----------------------------------------
 
     fun browser(timeout: Duration = defaultFindTimeout): JCefBrowserFixture {
-        val locator = if(remoteRobot.isMac()) {
+        val locator = if (remoteRobot.isMac()) {
             JCefBrowserFixture.macLocator
         } else {
             JCefBrowserFixture.canvasLocator
@@ -204,5 +199,19 @@ open class CommonContainerFixture(
     }
 
     fun textEditors(locator: Locator): List<TextEditorFixture> =
+        findAll(locator)
+
+    //----------------------------------------
+
+    fun heavyWeightWindow(timeout: Duration = defaultFindTimeout): HeavyWeightWindowFixture =
+        heavyWeightWindow(HeavyWeightWindowFixture.byXpath)
+
+    fun heavyWeightWindow(locator: Locator, timeout: Duration = defaultFindTimeout): HeavyWeightWindowFixture =
+        find(locator, timeout)
+
+    fun heavyWeightWindows(): List<HeavyWeightWindowFixture> =
+        heavyWeightWindows(HeavyWeightWindowFixture.byXpath)
+
+    fun heavyWeightWindows(locator: Locator): List<HeavyWeightWindowFixture> =
         findAll(locator)
 }

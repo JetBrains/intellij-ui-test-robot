@@ -11,6 +11,10 @@ class HeavyWeightWindowFixture(
     remoteComponent: RemoteComponent
 ) : ContainerFixture(remoteRobot, remoteComponent) {
 
+    companion object{
+        val byXpath = byXpath("//div[@class='HeavyWeightWindow']")
+    }
+
     val itemsList
         get() = find<JListFixture>(byXpath("//div[@class='MyList']"))
 }

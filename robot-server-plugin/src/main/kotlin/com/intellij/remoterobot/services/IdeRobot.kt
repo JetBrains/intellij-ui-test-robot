@@ -6,7 +6,7 @@ import com.intellij.remoterobot.data.*
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
 import com.intellij.remoterobot.robot.SmoothRobot
-import com.intellij.remoterobot.services.js.RhinoJavaScriptExecutor
+import com.intellij.remoterobot.services.js.JavaScriptExecutor
 import com.intellij.remoterobot.services.xpath.XpathSearcher
 import com.intellij.remoterobot.utils.LruCache
 import org.assertj.swing.edt.GuiActionRunner.execute
@@ -23,7 +23,8 @@ import java.util.*
 import javax.imageio.ImageIO
 
 @Suppress("UNCHECKED_CAST")
-class IdeRobot(private val textToKeyCache: TextToKeyCache) {
+class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecutor: JavaScriptExecutor) {
+
     private val componentContextCache = Collections.synchronizedMap(LruCache<String, ComponentContext>())
     private val robot = SmoothRobot()
     private val xpathSearcher = XpathSearcher(textToKeyCache)
@@ -287,8 +288,6 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache) {
 
     //----------------------------------
     // JavaScript
-
-    private val jsExecutor = RhinoJavaScriptExecutor()
 
     fun doAction(script: String, runInEdt: Boolean): Result<Unit> {
         return getResult(RobotContext(robot)) { ctx ->

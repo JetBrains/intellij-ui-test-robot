@@ -6,7 +6,7 @@ import com.intellij.remoterobot.data.ComponentContext
 import com.intellij.remoterobot.data.RobotContext
 import org.mozilla.javascript.*
 
-class RhinoJavaScriptExecutor : JavaScriptExecutor {
+class RhinoJavaScriptExecutor(private val appClassLoader: ClassLoader? = null) : JavaScriptExecutor {
     private val globalObjectMap by lazy { mutableMapOf<String, Any>() }
     override fun execute(script: String, componentContext: ComponentContext): Any? {
         return executeWithContext(script) {
@@ -31,11 +31,12 @@ class RhinoJavaScriptExecutor : JavaScriptExecutor {
         script: String,
         contextFunction: ScriptableObject.() -> Unit
     ): Any? {
-        val context = Context.enter()
+        val context = Context.enter().apply {
+            applicationClassLoader = appClassLoader ?: javaClass.classLoader
+            optimizationLevel = 9
+            languageVersion = Context.VERSION_ES6
+        }
 
-        context.applicationClassLoader = javaClass.classLoader
-        context.optimizationLevel = 9
-        context.languageVersion = Context.VERSION_ES6
         try {
             val scope = ImporterTopLevel(context)
             scope.contextFunction()

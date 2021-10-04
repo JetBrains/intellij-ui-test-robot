@@ -9,7 +9,6 @@ import com.intellij.remoterobot.encryption.Encryptor
 import com.intellij.remoterobot.encryption.EncryptorFactory
 import com.intellij.remoterobot.services.IdeRobot
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCacheGlobal
-import com.intellij.remoterobot.services.js.RhinoJavaScriptExecutor
 import com.intellij.remoterobot.services.xpath.XpathDataModelCreator
 import com.intellij.remoterobot.services.xpath.convertToHtml
 import com.intellij.remoterobot.utils.ComponentLookupExceptionSerializer
@@ -28,20 +27,8 @@ import io.ktor.util.pipeline.*
 import org.assertj.swing.exception.ComponentLookupException
 import java.text.DateFormat
 
-class RobotServerImpl(robotProvider: () -> IdeRobot = { IdeRobot(TextToKeyCacheGlobal.cache, RhinoJavaScriptExecutor()) }) {
-    init {
-        TextToKeyCacheGlobal.cache
-    }
-
+class RobotServerImpl(private val serverHost: String, private val serverPort: Int, robotProvider: () -> IdeRobot) {
     private val ideRobot: IdeRobot by lazy { robotProvider() }
-    private val serverHost by lazy {
-        if (System.getProperty("robot-server.host.public")?.toBoolean() == true) {
-            "0.0.0.0"
-        } else {
-            "127.0.0.1"
-        }
-    }
-    private val serverPort by lazy { System.getProperty("robot-server.port")?.toIntOrNull() ?: 8580 }
     private val encryptor: Encryptor by lazy { EncryptorFactory().getInstance() }
 
     fun startServer() {

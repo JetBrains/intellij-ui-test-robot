@@ -172,4 +172,44 @@ class EditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) 
         )
         Thread.sleep(500)
     }
+
+    fun insertTextAtLine(line: Int, offset: Int, value: String) {
+        val lineOffsetBegin = getLineOffsetBegin(line, offset)
+        clickOnOffset(lineOffsetBegin)
+        runJs("""
+            // import package with WriteCommandAction
+            importPackage(com.intellij.openapi.command)
+
+            const editor = local.get('editor')
+            const document = local.get('document')
+            const project = editor.getProject()
+
+            WriteCommandAction.runWriteCommandAction(project, new Runnable({
+                run: function () {
+                    document.insertString('$lineOffsetBegin', '$value')
+                }
+            }))
+        """)
+    }
+
+    private fun getLineOffsetBegin(line: Int, offset: Int): Int {
+        if (line < 0 || offset < 0) {
+            throw IllegalArgumentException("line number: '$line' and offset: '$offset' can not be less then 0")
+        }
+
+        var lineOffsetBegin = 0
+        val allLines = this.text.split("\n", limit = line + 2)
+        if (allLines.size - 1 < line){
+            throw StringIndexOutOfBoundsException("line number: '$line' should be less or equal then lines count")
+        }
+        for (i in 0 until line) {
+            lineOffsetBegin += allLines[i].length + 1
+        }
+
+        val lineLength = allLines[line].length
+        if (lineLength < offset) {
+            throw StringIndexOutOfBoundsException("offset : '$offset' should be less or equal then length of line : '$lineLength' ")
+        }
+        return lineOffsetBegin + offset
+    }
 }

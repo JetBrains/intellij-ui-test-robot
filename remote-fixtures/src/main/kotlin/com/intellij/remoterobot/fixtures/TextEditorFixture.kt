@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.data.RemoteComponent
 import com.intellij.remoterobot.search.locators.byXpath
+import com.intellij.remoterobot.stepsProcessing.step
 import org.assertj.swing.core.MouseButton
 import java.awt.Point
 
@@ -113,8 +114,24 @@ class EditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) 
         )
     }
 
-    val text: String
+    var text: String
         get() = callJs("local.get('document').getText()")
+        set(value) = step("Set text '$value'") {
+            runJs("""
+            // import package with WriteCommandAction
+            importPackage(com.intellij.openapi.command)
+
+            const editor = local.get('editor')
+            const document = local.get('document')
+            const project = editor.getProject()
+            
+            WriteCommandAction.runWriteCommandAction(project, new Runnable({
+                run: function () {
+                    document.setText("$value")
+                }
+            }))
+        """)
+        }
 
     val selectedText: String
         get() = callJs(

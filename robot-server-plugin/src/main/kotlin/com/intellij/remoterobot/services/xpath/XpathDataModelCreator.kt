@@ -215,7 +215,7 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : Compon
         try {
             component.toolTipText ?: component.getClientProperty("JComponent.helpTooltip")?.let {
                 ReflectionUtil.getField(
-                    Class.forName("com.intellij.ide.HelpTooltip"),
+                    Class.forName("com.intellij.ide.HelpTooltip", true, component::class.java.classLoader),
                     it,
                     String::class.java,
                     "title"

@@ -8,9 +8,9 @@ import java.io.InputStream
 import java.io.ObjectInputStream
 import java.io.ObjectStreamClass
 
-object LambdaLoader {
+class LambdaLoader(classLoader: ClassLoader? = null) {
 
-    private val byteClassLoader = ByteClassLoader(javaClass.classLoader)
+    private val byteClassLoader = ByteClassLoader(classLoader ?: javaClass.classLoader)
     private var tempDebuggerClassLoader: ClassLoader? = null
 
     fun getFunction(container: ObjectContainer): Any {

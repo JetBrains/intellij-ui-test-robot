@@ -23,14 +23,18 @@ import java.util.*
 import javax.imageio.ImageIO
 
 @Suppress("UNCHECKED_CAST")
-class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecutor: JavaScriptExecutor) {
+class IdeRobot(
+    private val textToKeyCache: TextToKeyCache,
+    private val jsExecutor: JavaScriptExecutor,
+    private val lambdaLoader: LambdaLoader,
+) {
 
     private val componentContextCache = Collections.synchronizedMap(LruCache<String, ComponentContext>())
     private val robot = SmoothRobot()
     private val xpathSearcher = XpathSearcher(textToKeyCache)
 
     fun find(lambdaContainer: ObjectContainer): Result<RemoteComponent> {
-        val lambda = LambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
+        val lambda = lambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
         return getResult(RobotContext(robot)) { ctx ->
             val c = robot.finder().find { ctx.lambda(it) }
             val id = addComponentToStorage(c)
@@ -40,7 +44,7 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecuto
     }
 
     fun find(containerId: String, lambdaContainer: ObjectContainer): Result<RemoteComponent> {
-        val lambda = LambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
+        val lambda = lambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
         val component = componentContextCache[containerId]?.component
             ?: throw IllegalStateException("Unknown component id $containerId")
 
@@ -75,7 +79,7 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecuto
     }
 
     fun findParentOf(containerId: String, lambdaContainer: ObjectContainer): Result<RemoteComponent> {
-        val lambda = LambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
+        val lambda = lambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
         val component = componentContextCache[containerId]?.component
             ?: throw IllegalStateException("Unknown component id $containerId")
 
@@ -101,7 +105,7 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecuto
     }
 
     fun findAll(lambdaContainer: ObjectContainer): Result<List<RemoteComponent>> {
-        val lambda = LambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
+        val lambda = lambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
 
         return getResult(RobotContext(robot)) { ctx ->
             robot.finder()
@@ -114,7 +118,7 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecuto
     }
 
     fun findAll(containerId: String, lambdaContainer: ObjectContainer): Result<List<RemoteComponent>> {
-        val lambda = LambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
+        val lambda = lambdaLoader.getFunction(lambdaContainer) as RobotContext.(c: Component) -> Boolean
         val component = componentContextCache[containerId]?.component
             ?: throw IllegalStateException("Unknown component id $containerId")
 
@@ -160,12 +164,12 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecuto
             if (actionContainer.runInEdt) {
                 execute(object : GuiTask() {
                     override fun executeInEDT() {
-                        val action = LambdaLoader.getFunction(actionContainer) as RobotContext.() -> Unit
+                        val action = lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Unit
                         ctx.action()
                     }
                 })
             } else {
-                val action = LambdaLoader.getFunction(actionContainer) as RobotContext.() -> Unit
+                val action = lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Unit
                 ctx.action()
             }
         }
@@ -178,12 +182,12 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecuto
             if (actionContainer.runInEdt) {
                 execute(object : GuiTask() {
                     override fun executeInEDT() {
-                        val action = LambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Unit
+                        val action = lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Unit
                         ctx.action()
                     }
                 })
             } else {
-                val action = LambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Unit
+                val action = lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Unit
                 ctx.action()
             }
         }
@@ -203,7 +207,7 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecuto
         val componentContext = componentContextCache[componentId]
             ?: throw IllegalStateException("Unknown component id $componentId")
         return getResult(componentContext) { ctx ->
-            val action = LambdaLoader.getFunction(actionContainer) as ComponentContext.() -> String
+            val action = lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> String
             return@getResult ctx.action()
         }
     }
@@ -213,12 +217,12 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecuto
             if (actionContainer.runInEdt) {
                 return@getResult execute(object : GuiQuery<Serializable>() {
                     override fun executeInEDT(): Serializable {
-                        val action = LambdaLoader.getFunction(actionContainer) as RobotContext.() -> Serializable
+                        val action = lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Serializable
                         return ctx.action()
                     }
                 })
             } else {
-                val action = LambdaLoader.getFunction(actionContainer) as RobotContext.() -> Serializable
+                val action = lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Serializable
                 return@getResult ctx.action()
             }
         }
@@ -231,12 +235,12 @@ class IdeRobot(private val textToKeyCache: TextToKeyCache, private val jsExecuto
             if (actionContainer.runInEdt) {
                 return@getResult execute(object : GuiQuery<Serializable>() {
                     override fun executeInEDT(): Serializable {
-                        val action = LambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Serializable
+                        val action = lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Serializable
                         return ctx.action()
                     }
                 })
             } else {
-                val action = LambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Serializable
+                val action = lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Serializable
                 return@getResult ctx.action()
             }
         }

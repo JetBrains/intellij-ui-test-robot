@@ -3,7 +3,7 @@
 package com.intellij.remoterobot
 
 import com.intellij.ide.ApplicationInitializedListener
-import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCacheGlobal
+import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
 import com.intellij.remoterobot.services.IdeRobot
 import com.intellij.remoterobot.services.LambdaLoader
 import com.intellij.remoterobot.services.js.RhinoJavaScriptExecutor
@@ -17,7 +17,7 @@ class RobotServerStarter : ApplicationInitializedListener {
                 "127.0.0.1"
             }
         val serverPort = System.getProperty("robot-server.port")?.toIntOrNull() ?: 8580
-        val textToKeyCache = TextToKeyCacheGlobal.cache
-        RobotServerImpl(serverHost, serverPort) { IdeRobot(textToKeyCache, RhinoJavaScriptExecutor(), LambdaLoader()) }.startServer()
+        TextToKeyCache.init(javaClass.classLoader)
+        RobotServerImpl(serverHost, serverPort) { IdeRobot(TextToKeyCache, RhinoJavaScriptExecutor(), LambdaLoader()) }.startServer()
     }
 }

@@ -1,20 +1,15 @@
 package com.intellij.remoterobot.fixtures.dataExtractor.server
 
 import com.intellij.remoterobot.utils.LruCache
-import com.intellij.util.ui.UIUtil
 import java.util.*
 import java.util.function.BiConsumer
 import java.util.function.Consumer
 
-object TextToKeyCacheGlobal {
-    val cache = TextToKeyCache()
-}
-
-class TextToKeyCache {
+object TextToKeyCache {
     private val textToKeyMap = Collections.synchronizedMap(LruCache<String, MutableSet<String>>(10_000))
 
-    init {
-        val bundleClass = com.intellij.BundleBase::class.java
+    fun init(ideClassLoader: ClassLoader) {
+        val bundleClass = Class.forName("com.intellij.BundleBase", true, ideClassLoader)
 
         // 213
         val setTranslationConsumerFunction = try {
@@ -24,7 +19,7 @@ class TextToKeyCache {
         }
         if (setTranslationConsumerFunction != null) {
             val consumer = BiConsumer<String, String> { key, t ->
-                val text = UIUtil.removeMnemonic(t)
+                val text = removeMnemonic(ideClassLoader, t)
                 if (textToKeyMap.containsKey(text).not()) {
                     textToKeyMap[text] = mutableSetOf()
                 }
@@ -40,10 +35,11 @@ class TextToKeyCache {
             }
             if (messageCallConsumerListField != null) {
                 val list =
-                    messageCallConsumerListField.get(null) as MutableList<Consumer<com.intellij.openapi.util.Pair<String, String>>>
+                    messageCallConsumerListField.get(null) as MutableList<Consumer<*>>
                 list.add {
-                    val text = UIUtil.removeMnemonic(it.second)
-                    val key = it.first
+                    val key = it.javaClass.getDeclaredField("first").get(it) as String
+                    val value = it.javaClass.getDeclaredField("second").get(it) as String
+                    val text = removeMnemonic(ideClassLoader, value)
                     if (textToKeyMap.containsKey(text).not()) {
                         textToKeyMap[text] = mutableSetOf()
                     }
@@ -65,4 +61,9 @@ class TextToKeyCache {
         }
         return key?.joinToString(" ") { it }
     }
+
+    private fun removeMnemonic(ideClassLoader: ClassLoader, str: String): String =
+        Class.forName("com.intellij.util.ui.UIUtil", true, ideClassLoader)
+            .getDeclaredMethod("removeMnemonic", String::class.java)
+            .invoke(null, str) as String
 }

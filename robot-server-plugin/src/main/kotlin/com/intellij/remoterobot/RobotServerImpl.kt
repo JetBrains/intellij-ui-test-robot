@@ -7,8 +7,8 @@ import com.intellij.remoterobot.data.*
 import com.intellij.remoterobot.data.js.ExecuteScriptRequest
 import com.intellij.remoterobot.encryption.Encryptor
 import com.intellij.remoterobot.encryption.EncryptorFactory
+import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
 import com.intellij.remoterobot.services.IdeRobot
-import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCacheGlobal
 import com.intellij.remoterobot.services.xpath.XpathDataModelCreator
 import com.intellij.remoterobot.services.xpath.convertToHtml
 import com.intellij.remoterobot.utils.ComponentLookupExceptionSerializer
@@ -321,7 +321,7 @@ class RobotServerImpl(private val serverHost: String, private val serverPort: In
     }
 
     private suspend fun PipelineContext<*, ApplicationCall>.hierarchy() {
-        val doc = XpathDataModelCreator(TextToKeyCacheGlobal.cache).create(null)
+        val doc = XpathDataModelCreator(TextToKeyCache).create(null)
         call.respondText(doc.convertToHtml(), ContentType.Text.Html)
     }
 

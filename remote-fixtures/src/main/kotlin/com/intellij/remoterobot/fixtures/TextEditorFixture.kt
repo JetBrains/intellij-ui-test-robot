@@ -192,6 +192,26 @@ class EditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) 
         """)
     }
 
+    fun selectText(text: String) {
+        val stringBeginOffset = this.text.indexOf(text);
+        val stringEndOffset = text.length + stringBeginOffset
+        scrollToOffset(stringBeginOffset);
+
+        runJs("""
+            // import package with WriteCommandAction
+            importPackage(com.intellij.openapi.command)
+
+            const editor = local.get('editor')
+            const project = editor.getProject()
+            
+            WriteCommandAction.runWriteCommandAction(project, new Runnable({
+                run: function () {
+                    editor.getSelectionModel().setSelection($stringBeginOffset, $stringEndOffset);
+                }
+            }))
+        """)
+    }
+
     private fun getLineOffsetBegin(line: Int, offset: Int): Int {
         if (line < 0 || offset < 0) {
             throw IllegalArgumentException("line number: '$line' and offset: '$offset' can not be less then 0")

@@ -192,6 +192,27 @@ class EditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) 
         """)
     }
 
+    fun replaceText(textInEditor: String, raplaceWithText: String) {
+        val stringBeginOffset = this.text.indexOf(textInEditor);
+        val stringEndOffset = textInEditor.length + stringBeginOffset
+        scrollToOffset(stringBeginOffset);
+
+        runJs("""
+            // import package with WriteCommandAction
+            importPackage(com.intellij.openapi.command)
+
+            const editor = local.get('editor')
+            const document = local.get('document')
+            const project = editor.getProject()
+            
+            WriteCommandAction.runWriteCommandAction(project, new Runnable({
+                run: function () {
+                    document.replaceString($stringBeginOffset, $stringEndOffset, '$raplaceWithText')
+                }
+            }))
+        """)
+    }
+
     fun selectText(text: String) {
         val stringBeginOffset = this.text.indexOf(text);
         val stringEndOffset = text.length + stringBeginOffset

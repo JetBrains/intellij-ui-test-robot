@@ -32,10 +32,16 @@ open class ComboBoxFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
     }
 
     fun selectItem(text: String) = step("Select '$text'") {
+        if (listValues().contains(text).not()) {
+            click()
+        }
         runJs("""ctx.get('fixture').selectItem("$text")""")
     }
 
     open fun selectItemContains(text: String) = step("Select '$text'") {
+        if (listValues().singleOrNull { it.contains(text) } == null) {
+            click()
+        }
         selectItem(listValues().single { it.contains(text) })
     }
 

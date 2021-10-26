@@ -36,7 +36,7 @@ jobs:
       - name: Tests
         run: gradle :ui-test-example:test
       - name: Stop video
-        run: ps -ef | grep ffmpeg | awk '{print $2} | xargs kill -2'
+        run: ps -ef | grep ffmpeg | awk '{print $2}' | xargs kill -2
         if: ${{ always() }}
       - name: Save fails report
         if: ${{ failure() }}

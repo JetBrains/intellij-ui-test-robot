@@ -25,7 +25,7 @@ jobs:
           Xvfb -ac :99 -screen 0 1920x1080x24 &
           sleep 10
           mkdir -p ui-test-example/build/reports
-          gradle :ui-test-example:runIdeForUiTests &
+          gradle :ui-test-example:runIdeForUiTests > ui-test-example/build/reports/idea.log &
       - name: Wait for Idea started
         uses: jtalk/url-health-check-action@v2
         with:
@@ -33,7 +33,9 @@ jobs:
           max-attempts: 15
           retry-delay: 30s
       - name: Tests
-        run: gradle :ui-test-example:test
+        run: |
+          export DISPLAY=:99.0
+          gradle :ui-test-example:test
       - name: Move video
         if: ${{ failure() }}
         run: mv ui-test-example/video ui-test-example/build/reports

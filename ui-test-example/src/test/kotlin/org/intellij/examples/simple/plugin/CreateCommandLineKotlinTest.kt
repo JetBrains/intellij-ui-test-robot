@@ -2,6 +2,7 @@
 
 package org.intellij.examples.simple.plugin
 
+import com.automation.remarks.junit5.Video
 import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.fixtures.CommonContainerFixture
 import com.intellij.remoterobot.fixtures.ComponentFixture
@@ -46,6 +47,7 @@ class CreateCommandLineKotlinTest {
     }
 
     @Test
+    @Video
     fun createCommandLineApp(remoteRobot: RemoteRobot) = with(remoteRobot) {
         val sharedSteps = JavaExampleSteps(this)
 

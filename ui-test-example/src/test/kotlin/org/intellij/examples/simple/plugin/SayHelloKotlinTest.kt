@@ -2,6 +2,7 @@
 
 package org.intellij.examples.simple.plugin
 
+import com.automation.remarks.junit5.Video
 import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.data.RemoteComponent
 import com.intellij.remoterobot.fixtures.ComponentFixture
@@ -22,6 +23,7 @@ class SayHelloKotlinTest {
     }
 
     @Test
+    @Video
     fun checkHelloMessage(remoteRobot: RemoteRobot) = with(remoteRobot) {
         find(WelcomeFrame::class.java, timeout = Duration.ofSeconds(10)).apply {
             if (hasText("Say Hello")) {

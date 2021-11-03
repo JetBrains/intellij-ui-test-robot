@@ -2,6 +2,7 @@
 
 package org.intellij.examples.simple.plugin;
 
+import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
 import org.intellij.examples.simple.plugin.pages.WelcomeFrame;
 import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension;
@@ -22,6 +23,7 @@ public class SayHelloJavaTest {
     }
 
     @Test
+    @Video
     void checkSayHello(final RemoteRobot remoteRobot) {
         final WelcomeFrame welcomeFrame = remoteRobot.find(WelcomeFrame.class, Duration.ofSeconds(10));
         assert (welcomeFrame.hasText(startsWith("IntelliJ IDEA")));

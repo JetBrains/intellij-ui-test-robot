@@ -11,12 +11,19 @@ jobs:
         with:
           distribution: zulu
           java-version: 11
+      - name: Setup FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v1
+        with:
+          # Not strictly necessary, but it may prevent rate limit
+          # errors especially on GitHub-hosted macos machines.
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Clean
         run: gradle :ui-test-example:clean
       - name: Run Idea
         run: |
           export DISPLAY=:99.0
-          Xvfb -ac :99 -screen 0 1920x1080x16 &
+          Xvfb -ac :99 -screen 0 1920x1080x24 &
+          mkdir -p ui-test-example/build/reports
           gradle :ui-test-example:runIdeForUiTests &
       - name: Wait for Idea started
         uses: jtalk/url-health-check-action@v2
@@ -26,6 +33,9 @@ jobs:
           retry-delay: 30s
       - name: Tests
         run: gradle :ui-test-example:test
+      - name: Move video
+        if: ${{ failure() }}
+        run: mv ui-test-example/video ui-test-example/build/reports
       - name: Save fails report
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
@@ -42,6 +52,12 @@ jobs:
         with:
           distribution: zulu
           java-version: 11
+      - name: Setup FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v1
+        with:
+          # Not strictly necessary, but it may prevent rate limit
+          # errors especially on GitHub-hosted macos machines.
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Clean
         run: gradle :ui-test-example:clean
       - name: Run Idea
@@ -54,6 +70,9 @@ jobs:
           retry-delay: 30s
       - name: Tests
         run: gradle :ui-test-example:test
+      - name: Move video
+        if: ${{ failure() }}
+        run: mv ui-test-example/video ui-test-example/build/reports
       - name: Save fails report
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
@@ -70,6 +89,12 @@ jobs:
         with:
           distribution: zulu
           java-version: 11
+      - name: Setup FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v1
+        with:
+          # Not strictly necessary, but it may prevent rate limit
+          # errors especially on GitHub-hosted macos machines.
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Clean
         run: gradle :ui-test-example:clean
       - name: Run Idea
@@ -82,6 +107,9 @@ jobs:
           retry-delay: 30s
       - name: Tests
         run: gradle :ui-test-example:test
+      - name: Move video
+        if: ${{ failure() }}
+        run: mv ui-test-example/video ui-test-example/build/reports
       - name: Save fails report
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2

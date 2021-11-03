@@ -2,6 +2,7 @@
 
 package org.intellij.examples.simple.plugin;
 
+import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.*;
 import com.intellij.remoterobot.search.locators.Locator;
@@ -52,6 +53,7 @@ public class CreateCommandLineJavaTest {
     }
 
     @Test
+    @Video
     void createCommandLineProject(final RemoteRobot remoteRobot) {
         sharedSteps.createNewCommandLineProject();
         sharedSteps.closeTipOfTheDay();

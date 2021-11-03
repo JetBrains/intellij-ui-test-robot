@@ -63,16 +63,10 @@ object Locators {
         vararg properties: Pair<XpathProperty, String>
     ): Locator {
         val allProperties = listOf(property, *properties)
-        val joinedProperties = allProperties.joinToString(" and ") { "${it.first.title}=\"${it.second}\"" }.let {
-            if (allProperties.isNotEmpty()) {
-                " and $it"
-            } else {
-                it
-            }
-        }
+        val joinedProperties = allProperties.joinToString(" and ") { "${it.first.title}=\"${it.second}\"" }
         return byXpath(
             "by type $clsName properties ${allProperties.joinToString(",") { "(${it.first.title}, ${it.second})" }}",
-            """//div[(@javaclass="$clsName" or contains(@classhierarchy, "$clsName ") or contains(@classhierarchy, " $clsName "))$joinedProperties]"""
+            """//div[(@javaclass="$clsName" or contains(@classhierarchy, "$clsName ") or contains(@classhierarchy, " $clsName ")) and $joinedProperties]"""
         )
     }
 
@@ -90,17 +84,10 @@ object Locators {
         vararg properties: Pair<XpathProperty, String>
     ): Locator {
         val allProperties = listOf(property, *properties)
-        val joinedProperties =
-            allProperties.joinToString(" and ") { "contains(${it.first.title}, \"${it.second}\")" }.let {
-                if (allProperties.isNotEmpty()) {
-                    " and $it"
-                } else {
-                    it
-                }
-            }
+        val joinedProperties = allProperties.joinToString(" and ") { "contains(${it.first.title}, \"${it.second}\")" }
         return byXpath(
             "by type $clsName properties ${allProperties.joinToString(",") { "(${it.first.title}, ${it.second})" }}",
-            """//div[(@javaclass="$clsName" or contains(@classhierarchy, "$clsName ") or contains(@classhierarchy, " $clsName "))$joinedProperties]"""
+            """//div[(@javaclass="$clsName" or contains(@classhierarchy, "$clsName ") or contains(@classhierarchy, " $clsName ")) and $joinedProperties]"""
         )
     }
 }

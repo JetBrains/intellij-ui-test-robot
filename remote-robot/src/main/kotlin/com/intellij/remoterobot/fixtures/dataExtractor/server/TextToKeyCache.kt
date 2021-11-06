@@ -23,7 +23,7 @@ object TextToKeyCache {
                 if (textToKeyMap.containsKey(text).not()) {
                     textToKeyMap[text] = mutableSetOf()
                 }
-                textToKeyMap[text]!!.add(key)
+                textToKeyMap[text]?.add(key)
             }
             setTranslationConsumerFunction.invoke(null, consumer)
         } else {
@@ -43,7 +43,7 @@ object TextToKeyCache {
                     if (textToKeyMap.containsKey(text).not()) {
                         textToKeyMap[text] = mutableSetOf()
                     }
-                    textToKeyMap[text]!!.add(key)
+                    textToKeyMap[text]?.add(key)
                 }
             }
         }

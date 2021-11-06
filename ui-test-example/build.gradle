@@ -57,6 +57,7 @@ runIdeForUiTests {
     systemProperty "jb.privacy.policy.text", "<!--999.999-->"
     systemProperty "jb.consents.confirmation.enabled", "false"
     systemProperty "ide.mac.file.chooser.native", "false"
+    systemProperty "idea.trust.all.projects", "true"
 //    systemProperty "eap.require.license", "true"
 }
 

@@ -103,7 +103,7 @@ jobs:
       - name: Run Idea
         run: start gradlew.bat :ui-test-example:runIdeForUiTests
       - name: Wait for Idea started
-        uses: jtalk/url-health-check-action@v2
+        uses: jtalk/url-health-check-action@v1.5
         with:
           url: http://localhost:8082
           max-attempts: 15

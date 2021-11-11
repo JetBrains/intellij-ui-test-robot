@@ -23,6 +23,7 @@ import static com.intellij.remoterobot.stepsProcessing.StepWorkerKt.step;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
 import static java.awt.event.KeyEvent.*;
 import static java.time.Duration.ofMinutes;
+import static java.time.Duration.ofSeconds;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenu;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenuItem;
 
@@ -58,7 +59,7 @@ public class CreateCommandLineJavaTest {
         sharedSteps.createNewCommandLineProject();
         sharedSteps.closeTipOfTheDay();
 
-        final IdeaFrame idea = remoteRobot.find(IdeaFrame.class);
+        final IdeaFrame idea = remoteRobot.find(IdeaFrame.class, ofSeconds(10));
         waitFor(ofMinutes(5), () -> !idea.isDumbMode());
 
         step("Create New Kotlin file", () -> {

@@ -4,10 +4,7 @@ package org.intellij.examples.simple.plugin.pages
 
 import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.data.RemoteComponent
-import com.intellij.remoterobot.fixtures.CommonContainerFixture
-import com.intellij.remoterobot.fixtures.ContainerFixture
-import com.intellij.remoterobot.fixtures.DefaultXpath
-import com.intellij.remoterobot.fixtures.FixtureName
+import com.intellij.remoterobot.fixtures.*
 import com.intellij.remoterobot.search.locators.byXpath
 import com.intellij.remoterobot.stepsProcessing.step
 import com.intellij.remoterobot.utils.waitFor
@@ -26,6 +23,11 @@ class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : Co
 
     val projectName
         get() = step("Get project name") { return@step callJs<String>("component.getProject().getName()") }
+
+    val menuBar: JMenuBarFixture
+        get() = step("Menu...") {
+            return@step remoteRobot.find(JMenuBarFixture::class.java, JMenuBarFixture.byType())
+        }
 
     @JvmOverloads
     fun dumbAware(timeout: Duration = Duration.ofMinutes(5), function: () -> Unit) {

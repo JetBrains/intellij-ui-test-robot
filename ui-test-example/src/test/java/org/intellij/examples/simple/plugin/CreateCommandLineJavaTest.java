@@ -70,18 +70,20 @@ public class CreateCommandLineJavaTest {
             }
             projectView.findText("src").click(MouseButton.RIGHT_BUTTON);
             actionMenu(remoteRobot, "New").click();
-            actionMenuItem(remoteRobot, "Kotlin Class/File").click();
+            actionMenuItem(remoteRobot, "Java Class").click();
             keyboard.enterText("App");
-            keyboard.down();
             keyboard.enter();
         });
 
         final TextEditorFixture editor = idea.textEditor(Duration.ofSeconds(2));
 
         step("Write a code", () -> {
-            editor.click();
+            editor.getEditor().findText("App").click();
+            keyboard.key(VK_END);
+            keyboard.enter();
             sharedSteps.autocomplete("main");
-            keyboard.enterText("println(\"");
+            sharedSteps.autocomplete("sout");
+            keyboard.enterText("\"");
             keyboard.enterText("Hello from UI test");
         });
 

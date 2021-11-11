@@ -32,17 +32,7 @@ class CreateCommandLineKotlinTest {
     @AfterEach
     fun closeProject(remoteRobot: RemoteRobot) = with(remoteRobot) {
         idea {
-            when {
-                isMac() -> keyboard {
-                    hotKey(VK_SHIFT, VK_META, VK_A)
-                    enterText("Close Project")
-                    enter()
-                }
-                else -> {
-                    actionMenu("File").click()
-                    actionMenuItem("Close Project").click()
-                }
-            }
+            menuBar.select("File", "Close Project")
         }
     }
 
@@ -55,16 +45,12 @@ class CreateCommandLineKotlinTest {
             createNewProjectLink.click()
             dialog("New Project") {
                 findText("Java").click()
-                find(
-                    ComponentFixture::class.java,
-                    byXpath("//div[@class='FrameworksTree']")
-                ).findText("Kotlin/JVM").click()
-                runJs("robot.pressAndReleaseKey($VK_SPACE)")
+                button("Next").click()
+                checkBox("Create project from template").select()
                 button("Next").click()
                 button("Finish").click()
             }
         }
-        sharedSteps.closeTipOfTheDay()
         idea {
             waitFor(ofMinutes(5)) { isDumbMode().not() }
             step("Create App file") {
@@ -76,17 +62,23 @@ class CreateCommandLineKotlinTest {
                     findText("src").click(MouseButton.RIGHT_BUTTON)
                 }
                 actionMenu("New").click()
-                actionMenuItem("Kotlin Class/File").click()
-                keyboard { enterText("App"); down(); enter() }
+                actionMenuItem("Java Class").click()
+                keyboard { enterText("App"); enter() }
             }
             with(textEditor()) {
                 step("Write a code") {
-                    click()
+                    editor.findText("App").click()
+                    keyboard {
+                        key(VK_END)
+                        enter()
+                    }
                     sharedSteps.autocomplete("main")
-                    keyboard { enterText("println(\""); enterText("Hello from UI test") }
+                    sharedSteps.autocomplete("sout")
+                    keyboard { enterText("\""); enterText("Hello from UI test") }
                 }
                 step("Launch application") {
                     waitFor(ofSeconds(10)) { statusButton.hasText("Analyzing...").not() }
+                    menuBar.select("Build", "Build Project")
                     gutter.getIcons().first { it.description.contains("run.svg") }.click()
                     this@idea.find<CommonContainerFixture>(
                         byXpath("//div[@class='HeavyWeightWindow']")

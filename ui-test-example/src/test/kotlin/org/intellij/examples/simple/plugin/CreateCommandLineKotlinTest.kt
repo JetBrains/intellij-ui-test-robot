@@ -79,6 +79,7 @@ class CreateCommandLineKotlinTest {
                 step("Launch application") {
                     waitFor(ofSeconds(20)) { statusButton.hasText("Analyzing...").not() }
                     menuBar.select("Build", "Build Project")
+                    waitFor { gutter.getIcons().isNotEmpty() }
                     gutter.getIcons().first { it.description.contains("run.svg") }.click()
                     this@idea.find<CommonContainerFixture>(
                         byXpath("//div[@class='HeavyWeightWindow']"), ofSeconds(4)

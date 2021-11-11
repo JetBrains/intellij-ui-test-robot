@@ -26,7 +26,7 @@ dependencies {
     implementation("io.ktor:ktor-gson:$ktor_version") {
         exclude("org.slf4j", "slf4j-api")
     }
-    implementation("ch.qos.logback:logback-classic:1.2.6")
+    implementation("ch.qos.logback:logback-classic:1.2.7")
     implementation("org.assertj:assertj-swing-junit:3.17.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")

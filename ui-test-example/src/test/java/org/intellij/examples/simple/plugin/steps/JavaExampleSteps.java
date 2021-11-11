@@ -51,7 +51,7 @@ public class JavaExampleSteps {
     public void closeTipOfTheDay() {
         step("Close Tip of the Day if it appears", () -> {
             waitFor(Duration.ofSeconds(20), () -> remoteRobot.findAll(DialogFixture.class, byXpath("//div[@class='MyDialog'][.//div[@text='Running startup activities...']]")).size() == 0);
-            final IdeaFrame idea = remoteRobot.find(IdeaFrame.class);
+            final IdeaFrame idea = remoteRobot.find(IdeaFrame.class, ofSeconds(10));
             idea.dumbAware(() -> {
                 try {
                     idea.find(DialogFixture.class, byTitle("Tip of the Day")).button("Close").click();

@@ -7,6 +7,7 @@ import com.intellij.remoterobot.search.locators.byXpath
 import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.time.Duration
 
 @ExtendWith(RemoteRobotExtension::class)
 class GlobalAndLocalMapExamplesTest {
@@ -46,7 +47,7 @@ class GlobalAndLocalMapExamplesTest {
     @Test
     fun local(remoteRobot: RemoteRobot) {
         // local map is unique for each fixture even if two fixtures refers to the same component
-        val frame1 = remoteRobot.find<FrameFixture>(byXpath("//div[@class='FlatWelcomeFrame']"))
+        val frame1 = remoteRobot.find<FrameFixture>(byXpath("//div[@class='FlatWelcomeFrame']"), Duration.ofSeconds(10))
         val frame2 = remoteRobot.find<FrameFixture>(byXpath("//div[@class='FlatWelcomeFrame']"))
         assert(frame1.id != frame2.id)
     }

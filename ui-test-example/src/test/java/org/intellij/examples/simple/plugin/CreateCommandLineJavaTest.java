@@ -16,6 +16,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import java.time.Duration;
 
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
@@ -88,7 +89,7 @@ public class CreateCommandLineJavaTest {
         });
 
         step("Launch the application", () -> {
-            waitFor(Duration.ofSeconds(10), ()-> !editor.getStatusButton().hasText("Analyzing..."));
+            waitFor(Duration.ofSeconds(20), () -> !editor.getStatusButton().hasText("Analyzing..."));
             final GutterIcon runIcon = editor.getGutter().getIcons()
                     .stream()
                     .filter((it) -> it.getDescription().contains("run.svg"))
@@ -97,8 +98,8 @@ public class CreateCommandLineJavaTest {
                         throw new IllegalStateException("No Run icon presents in the gutter");
                     });
             runIcon.click();
-            idea.find(CommonContainerFixture.class, byXpath("//div[@class='HeavyWeightWindow']"))
-                    .button(byXpath("//div[@disabledicon='execute.svg']"), Duration.ofSeconds(2))
+            idea.find(CommonContainerFixture.class, byXpath("//div[@class='HeavyWeightWindow']"), Duration.ofSeconds(4))
+                    .button(byXpath("//div[@disabledicon='execute.svg']"), Duration.ofSeconds(4))
                     .click();
         });
         step("Check console output", () -> {

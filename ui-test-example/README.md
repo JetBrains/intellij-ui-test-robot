@@ -41,3 +41,7 @@ runIdeForUiTests {
     systemProperty "eap.require.license", "true"
 }
 ```
+
+### Video recording
+This project contains usage example of test recording. It uses `FedericoCarboni/setup-ffmpeg` github action and `com.automation-remarks:video-recorder-junit5` library with extension for JUnit5.
+Check [video-recorder-java](https://automation-remarks.com/video-recorder-java/) for more information.

@@ -16,7 +16,7 @@ open class JMenuBarFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
     }
 
     open fun select(vararg items: String) {
-        if (remoteRobot.isMac() && remoteRobot.getSystemProperty("apple.laf.useScreenMenuBar").toBoolean()) {
+        if (remoteRobot.isMac() && isMacMenuEnabled()) {
             selectOnMac(*items)
         } else {
             openMenu(items[0]).select(*items.sliceArray(1..items.lastIndex))
@@ -72,4 +72,7 @@ open class JMenuBarFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
         }.replace("\n", "\\n")
         remoteRobot.runJs("java.lang.Runtime.getRuntime().exec(['osascript', '-e', '$command'])")
     }
+
+    private fun isMacMenuEnabled() = remoteRobot.getSystemProperty("apple.laf.useScreenMenuBar").toBoolean()
+            || remoteRobot.getSystemProperty("jbScreenMenuBar.enabled").toBoolean()
 }

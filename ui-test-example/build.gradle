@@ -30,7 +30,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
     // Logging Network Calls
-    testImplementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+    testImplementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
 
     // Video Recording
     implementation 'com.automation-remarks:video-recorder-junit5:2.0'

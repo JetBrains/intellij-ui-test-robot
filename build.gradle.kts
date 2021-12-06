@@ -2,13 +2,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.6.0"
-    id("org.jetbrains.intellij") version "1.2.1"
+    id("org.jetbrains.intellij") version "1.3.0"
 }
 
 repositories {
     mavenCentral()
 }
 
+intellij {
+    version.set("LATEST-EAP-SNAPSHOT")
+}
 subprojects {
     apply {
         plugin(JavaPlugin::class.java)

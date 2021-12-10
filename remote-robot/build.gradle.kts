@@ -9,7 +9,7 @@ dependencies {
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
 
     api("org.assertj:assertj-swing-junit:3.17.1")
-    api("org.apache.logging.log4j:log4j-api:2.14.1")
+    api("org.apache.logging.log4j:log4j-api:2.15.0")
     api("org.apache.logging.log4j:log4j-core:2.14.1")
 
     implementation("commons-io:commons-io:2.11.0") {

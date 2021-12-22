@@ -31,7 +31,8 @@ annotation class RemoteCommand
 
 class RemoteRobot @JvmOverloads constructor(
     robotServerUrl: String,
-    okHttpClient: OkHttpClient = DefaultHttpClient.client
+    okHttpClient: OkHttpClient = DefaultHttpClient.client,
+    secret: String? = null
 ) : SearchContext, JavaScriptApi, LambdaApi {
     override val ideRobotClient = IdeRobotClient(
         Retrofit.Builder().baseUrl(robotServerUrl)
@@ -40,7 +41,7 @@ class RemoteRobot @JvmOverloads constructor(
             .build()
             .create(IdeRobotApi::class.java)
     )
-    override val encryptor: Encryptor = EncryptorFactory().getInstance()
+    override val encryptor: Encryptor = EncryptorFactory().getInstance(secret)
 
     override val finder = Finder(ideRobotClient)
 

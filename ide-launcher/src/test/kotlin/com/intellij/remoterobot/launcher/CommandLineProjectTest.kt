@@ -36,7 +36,7 @@ class CommandLineProjectTest {
                 listOf(ideDownloader.downloadRobotPlugin(tmpDir)),
                 tmpDir
             )
-            waitFor(Duration.ofMinutes(1), Duration.ofSeconds(5)) {
+            waitFor(Duration.ofSeconds(90), Duration.ofSeconds(5)) {
                 remoteRobot.isAvailable()
             }
         }

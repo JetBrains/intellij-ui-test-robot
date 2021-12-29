@@ -21,7 +21,7 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.Duration
@@ -31,10 +31,11 @@ class SayHelloKotlinTest {
 
     companion object {
         private var ideaProcess: Process? = null
+        private val tmpDir: Path = Files.createTempDirectory("ide-test")
 
         @BeforeAll
         @JvmStatic
-        fun startIdea(remoteRobot: RemoteRobot, @TempDir tmpDir: Path) {
+        fun startIdea(remoteRobot: RemoteRobot) {
             val ideDownloader = IdeDownloader()
             ideaProcess = IdeLauncher.launchIde(
                 ideDownloader.downloadAndExtractLatestEap(Ide.IDEA_COMMUNITY, tmpDir),
@@ -50,8 +51,9 @@ class SayHelloKotlinTest {
 
         @AfterAll
         @JvmStatic
-        fun killIdeaProcess() {
+        fun cleanUp() {
             ideaProcess?.destroyForcibly()
+            tmpDir.toFile().deleteRecursively()
         }
     }
 

@@ -135,6 +135,6 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
-          name: ui-test-fails-report-linux
+          name: ui-test-fails-report-linux-launcher
           path: |
-            ui-test-example/build/reports
+            ide-launcher/build/reports

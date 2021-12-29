@@ -48,16 +48,16 @@ fun extractZip(zip: Path, to: Path): List<Path> {
     }
 }
 
-fun extractDmg(pathToApp: Path, to: Path): Path {
-    check(Files.exists(pathToApp)) { "dmg is not exists" }
+fun extractDmgApp(dmg: Path, to: Path): Path {
+    check(Files.exists(dmg)) { "dmg is not exists" }
     check(Files.exists(to)) { "target directory is not exists" }
     check(ProcessBuilder().command("which", "hdiutil").start().waitFor() == 0)
     check(
         ProcessBuilder()
-            .command("hdiutil", "verify", pathToApp.toAbsolutePath().toString())
+            .command("hdiutil", "verify", dmg.toAbsolutePath().toString())
             .start()
             .waitFor() == 0
-    ) { "${pathToApp.toAbsolutePath()} is not valid disk image" }
+    ) { "${dmg.toAbsolutePath()} is not valid disk image" }
 
     val mountPoint: Path = Paths.get(to.toAbsolutePath().toString(), "mnt")
     if (!Files.exists(mountPoint)) Files.createDirectory(mountPoint)
@@ -65,7 +65,7 @@ fun extractDmg(pathToApp: Path, to: Path): Path {
         ProcessBuilder()
             .command(
                 "hdiutil",
-                "attach", pathToApp.toAbsolutePath().toString(),
+                "attach", dmg.toAbsolutePath().toString(),
                 "-mountpoint", mountPoint.toString(),
                 "-noautoopen",
                 "-nobrowse"
@@ -73,20 +73,20 @@ fun extractDmg(pathToApp: Path, to: Path): Path {
             .inheritIO()
             .start()
             .waitFor() == 0
-    ) { "failed to mount $pathToApp to $mountPoint" }
+    ) { "failed to mount $dmg to $mountPoint" }
 
-    val mountedIdeApp: Path =
+    val mounted: Path =
         Files.list(mountPoint).filter { it.fileName.toString().endsWith(".app") }.findFirst().orElseThrow {
             IllegalStateException("ide app is not found")
         }
-    val ideApp: Path = Paths.get(to.toAbsolutePath().toString(), mountedIdeApp.fileName.toString())
+    val app: Path = Paths.get(to.toAbsolutePath().toString(), mounted.fileName.toString())
 
     check(
         ProcessBuilder().command(
             "cp",
             "-R",
-            mountedIdeApp.toAbsolutePath().toString(),
-            ideApp.toAbsolutePath().toString()
+            mounted.toAbsolutePath().toString(),
+            app.toAbsolutePath().toString()
         ).inheritIO().start().waitFor() == 0
     ) { "failed to copy ide app from mounted .dmg" }
 
@@ -104,7 +104,7 @@ fun extractDmg(pathToApp: Path, to: Path): Path {
 
     Files.delete(mountPoint)
 
-    return ideApp
+    return app
 }
 
 private fun getCreatedFilesAfter(dir: Path, action: () -> Unit): List<Path> {

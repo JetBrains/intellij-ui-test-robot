@@ -25,16 +25,22 @@ class IdeDownloader @JvmOverloads constructor(private val httpClient: OkHttpClie
 
     fun downloadAndExtractLatestEap(ide: Ide, toDir: Path): Path {
         val idePackage = downloadIde(ide, toDir)
-        return when (Os.hostOS()) {
-            Os.LINUX -> extractTar(idePackage, toDir).single()
-            Os.MAC -> extractDmg(idePackage, toDir)
-            Os.WINDOWS -> extractZip(idePackage, toDir).single()
-        }
+        return extractIde(idePackage, toDir)
     }
 
     @JvmOverloads
     fun downloadRobotPlugin(toDir: Path, version: String = ROBOT_PLUGIN_VERSION_DEFAULT): Path {
         return downloadFile(getRobotServerPluginDownloadUrl(version), toDir.resolve("robot-server-plugin-$version"))
+    }
+
+    private fun extractIde(idePackage: Path, toDir: Path): Path = when (Os.hostOS()) {
+        Os.LINUX -> extractTar(idePackage, toDir).single()
+        Os.MAC -> extractDmgApp(idePackage, toDir)
+        Os.WINDOWS -> {
+            val appDir = Files.createDirectory(toDir.resolve(idePackage.fileName.toString().substringBefore(".win.zip")))
+            extractZip(idePackage, appDir)
+            appDir
+        }
     }
 
     private fun downloadIde(ide: Ide, toDir: Path): Path {

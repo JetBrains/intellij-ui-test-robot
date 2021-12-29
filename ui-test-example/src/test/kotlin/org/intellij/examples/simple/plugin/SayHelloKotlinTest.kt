@@ -43,7 +43,7 @@ class SayHelloKotlinTest {
                 listOf(ideDownloader.downloadRobotPlugin(tmpDir), Paths.get("build", "distributions", "ui-test-example.zip")),
                 tmpDir
             )
-            waitFor(Duration.ofSeconds(30), Duration.ofSeconds(5)) {
+            waitFor(Duration.ofMinutes(1), Duration.ofSeconds(5)) {
                 remoteRobot.isAvailable()
             }
         }

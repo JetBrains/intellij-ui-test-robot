@@ -8,16 +8,53 @@ import com.intellij.remoterobot.data.RemoteComponent
 import com.intellij.remoterobot.fixtures.ComponentFixture
 import com.intellij.remoterobot.fixtures.ContainerFixture
 import com.intellij.remoterobot.fixtures.DefaultXpath
+import com.intellij.remoterobot.launcher.Ide
+import com.intellij.remoterobot.launcher.IdeDownloader
+import com.intellij.remoterobot.launcher.IdeLauncher
 import com.intellij.remoterobot.search.locators.byXpath
+import com.intellij.remoterobot.utils.waitFor
 import org.intellij.examples.simple.plugin.pages.WelcomeFrame
 import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension
 import org.intellij.examples.simple.plugin.utils.StepsLogger
+import org.intellij.examples.simple.plugin.utils.isAvailable
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.Duration
 
 @ExtendWith(RemoteRobotExtension::class)
 class SayHelloKotlinTest {
+
+    companion object {
+        private var ideaProcess: Process? = null
+
+        @BeforeAll
+        @JvmStatic
+        fun startIdea(remoteRobot: RemoteRobot, @TempDir tmpDir: Path) {
+            val ideDownloader = IdeDownloader()
+            ideaProcess = IdeLauncher.launchIde(
+                ideDownloader.downloadAndExtractLatestEap(Ide.IDEA_COMMUNITY, tmpDir),
+                mapOf("robot-server.port" to 8082),
+                emptyList(),
+                listOf(ideDownloader.downloadRobotPlugin(tmpDir), Paths.get("build", "distributions", "ui-test-example.zip")),
+                tmpDir
+            )
+            waitFor(Duration.ofSeconds(30), Duration.ofSeconds(5)) {
+                remoteRobot.isAvailable()
+            }
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun killIdeaProcess() {
+            ideaProcess?.destroyForcibly()
+        }
+    }
+
     init {
         StepsLogger.init()
     }

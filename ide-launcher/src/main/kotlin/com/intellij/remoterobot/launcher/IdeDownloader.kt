@@ -14,7 +14,7 @@ class IdeDownloader @JvmOverloads constructor(private val httpClient: OkHttpClie
         const val ROBOT_PLUGIN_VERSION_DEFAULT = "0.11.9"
 
         fun getRobotServerPluginDownloadUrl(version: String): String =
-            "https://repo.labs.intellij.net/artifactory/intellij-dependencies/com/intellij/remoterobot/robot-server-plugin/$version/robot-server-plugin-$version.zip"
+            "https://packages.jetbrains.team/maven/p/ij/intellij-dependencies/com/intellij/remoterobot/robot-server-plugin/$version/robot-server-plugin-$version.zip"
 
         fun getFeedsOsPropertyName() = when (Os.hostOS()) {
             Os.WINDOWS -> "windowsZip"

@@ -28,6 +28,11 @@ jobs:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
         run: gradle :remote-fixtures:publishRemoteFixturesPublicationToSpacePublicRepository
+      - name: Publish the ide-launcher lib
+        env:
+          SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
+          SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
+        run: gradle :ide-launcher:publishIdeLauncherPublicationToSpacePublicRepository
       - name: Upload the plugin to the relase page
         uses: skx/github-action-publish-binaries@master
         env:

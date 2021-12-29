@@ -41,3 +41,9 @@ jobs:
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
         run: gradle :remote-fixtures:publishRemoteFixturesPublicationToSpaceInternalRepository
+      - name: Publish the ide-launcher lib
+        env:
+          SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
+          SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: gradle :ide-launcher:publishIdeLauncherPublicationToSpaceInternalRepository

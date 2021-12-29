@@ -19,18 +19,8 @@ import javax.imageio.ImageIO
 
 class RemoteRobotExtension : AfterTestExecutionCallback, ParameterResolver {
     private val url: String = System.getProperty("remote-robot-url") ?: "http://127.0.0.1:8082"
-    private val remoteRobot: RemoteRobot = if (System.getProperty("debug-retrofit")?.equals("enable") == true) {
-        val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-            this.level = HttpLoggingInterceptor.Level.BODY
-        }
-        val client = OkHttpClient.Builder().apply {
-            this.addInterceptor(interceptor)
-        }.build()
-        RemoteRobot(url, client)
-    } else {
-        RemoteRobot(url)
-    }
-    private val client = OkHttpClient()
+    private val client: OkHttpClient = createHttpClient()
+    private val remoteRobot: RemoteRobot = RemoteRobot(url, client)
 
     override fun supportsParameter(parameterContext: ParameterContext?, extensionContext: ExtensionContext?): Boolean {
         return parameterContext?.parameter?.type?.equals(RemoteRobot::class.java) ?: false
@@ -132,5 +122,14 @@ class RemoteRobotExtension : AfterTestExecutionCallback, ParameterResolver {
             ImageIO.read(it)
         }
     }
+
+    private fun createHttpClient(): OkHttpClient = OkHttpClient.Builder().apply {
+        if (System.getProperty("debug-retrofit")?.equals("enable") == true) {
+            val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+                this.level = HttpLoggingInterceptor.Level.BODY
+            }
+            addInterceptor(interceptor)
+        }
+    }.build()
 }
 

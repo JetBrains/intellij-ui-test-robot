@@ -120,3 +120,21 @@ jobs:
           name: ui-test-fails-report-windows
           path: |
             ui-test-example/build/reports
+  build-for-ui-test-linux-launcher:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2.5.0
+        with:
+          distribution: zulu
+          java-version: 11
+      - name: Tests
+        run: gradle :ide-launcher:test
+      - name: Save fails report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ui-test-fails-report-linux
+          path: |
+            ui-test-example/build/reports

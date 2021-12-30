@@ -75,11 +75,13 @@ class IdeDownloader @JvmOverloads constructor(private val httpClient: OkHttpClie
             JsonParser.parseReader(response.body!!.charStream())
                 .asJsonObject[ide.feedsCode]
                 .asJsonArray
-                .first()
-                .asJsonObject["downloads"]
-                .asJsonObject[getFeedsOsPropertyName()]
-                .asJsonObject["link"]
-                .asString
+                .firstOrNull {
+                    it.asJsonObject["downloads"]?.asJsonObject?.keySet()?.isNotEmpty() ?: false
+                }
+                ?.asJsonObject?.get("downloads")
+                ?.asJsonObject?.get(getFeedsOsPropertyName())
+                ?.asJsonObject?.get("link")
+                ?.asString ?: error("no suitable ide found")
         }
     }
 }

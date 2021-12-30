@@ -11,12 +11,18 @@ import okhttp3.OkHttpClient
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.extension.ExtensionContext
+import org.junit.jupiter.api.extension.TestWatcher
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.time.Duration
+import javax.imageio.ImageIO
 import javax.swing.Box
 import javax.swing.JDialog
 
+@ExtendWith(CommandLineProjectTest.IdeTestWatcher::class)
 class CommandLineProjectTest {
     companion object {
         private var ideaProcess: Process? = null
@@ -74,6 +80,12 @@ class CommandLineProjectTest {
             waitFor(Duration.ofSeconds(30)) {
                 hasSingleComponent(Locators.byPropertiesContains(Locators.XpathProperty.TEXT to "Process finished with exit code 0"))
             }
+        }
+    }
+
+    class IdeTestWatcher: TestWatcher {
+        override fun testFailed(context: ExtensionContext, cause: Throwable?) {
+            ImageIO.write(remoteRobot.getScreenshot(), "png", File("build/reports", "${context.testMethod}.png"))
         }
     }
 }

@@ -44,7 +44,7 @@ class CommandLineProjectTest {
         @AfterAll
         @JvmStatic
         fun cleanUp() {
-            ideaProcess?.destroyForcibly()
+            ideaProcess?.destroy()
             tmpDir.toFile().deleteRecursively()
         }
     }

@@ -10,7 +10,7 @@ dependencies {
 
     api("org.assertj:assertj-swing-junit:3.17.1")
     api("org.apache.logging.log4j:log4j-api:2.17.1")
-    api("org.apache.logging.log4j:log4j-core:2.17.0")
+    api("org.apache.logging.log4j:log4j-core:2.17.1")
 
     implementation("commons-io:commons-io:2.11.0") {
         isForce = true

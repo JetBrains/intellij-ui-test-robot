@@ -33,7 +33,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.8.2")
 
-    implementation("org.mozilla:rhino:1.7.13")
+    implementation("org.mozilla:rhino:1.7.14")
 }
 
 // Create sources Jar from main kotlin sources

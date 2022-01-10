@@ -85,9 +85,7 @@ class CommandLineProjectTest {
 
     class IdeTestWatcher: TestWatcher {
         override fun testFailed(context: ExtensionContext, cause: Throwable?) {
-            if (!ImageIO.write(remoteRobot.getScreenshot(), "png", File("build/reports", "${context.displayName}.png"))) {
-                println("failed to save screenshot")
-            }
+            ImageIO.write(remoteRobot.getScreenshot(), "png", File("build/reports", "${context.displayName}.png"))
         }
     }
 }

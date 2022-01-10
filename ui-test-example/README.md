@@ -21,14 +21,15 @@ However, this can be implemented using a separate docker container.
 For an example, see [CodeTester-IDEA](https://github.com/fxnm/CodeTester-IDEA/pull/19).
 
 ### Pass ide license
-Find `idea.key` file in configuration directory of [activated ide](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs) 
-and copy it to new folder and then pass this folder as configuration directory to `runIdeForUiTests` task.
+It is important to use license file generated with offline activation code. Get your offline activation code from [jba](https://account.jetbrains.com/licenses) and activate it in the Idea. Find `idea.key` file in configuration directory of [activated ide](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs) 
+and copy it to a new folder and then pass this folder as configuration directory to `runIdeForUiTests` task.
 
 ```
 runIdeForUiTests {
     configDirectory file('/path/to/folder')
 }
 ```
+Or put the `idea.key` file to a default config directory `build/idea-sandbox/config-uiTest`
 
 ### How can I switch off EAP Login
 Since 2021.3 EAP version of paid ideas demand either login or license to run. 

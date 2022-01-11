@@ -60,11 +60,13 @@ open class JPopupMenuFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCo
         item.extractData().joinToString("\t") { it.text }
     }
 
-    fun jMenu(item: String): ComponentFixture = step("Search for menu item '$item'") {
-        find(Locators.byTypeAndProperties(JMenu::class.java, Locators.XpathProperty.ACCESSIBLE_NAME to item))
+    @JvmOverloads
+    fun jMenu(item: String, timeout: Duration = Duration.ofSeconds(5)): ComponentFixture = step("Search for menu item '$item'") {
+        find(Locators.byTypeAndProperties(JMenu::class.java, Locators.XpathProperty.ACCESSIBLE_NAME to item), timeout)
     }
 
-    fun menuItem(item: String): ComponentFixture = step("Search for menu item with text '$item'") {
-        find(Locators.byTypeAndProperties(JMenuItem::class.java, Locators.XpathProperty.ACCESSIBLE_NAME to item))
+    @JvmOverloads
+    fun menuItem(item: String, timeout: Duration = Duration.ofSeconds(5)): ComponentFixture = step("Search for menu item with text '$item'") {
+        find(Locators.byTypeAndProperties(JMenuItem::class.java, Locators.XpathProperty.ACCESSIBLE_NAME to item), timeout)
     }
 }

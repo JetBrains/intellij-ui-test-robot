@@ -204,7 +204,7 @@ open class CommonContainerFixture(
     //----------------------------------------
 
     fun heavyWeightWindow(timeout: Duration = defaultFindTimeout): HeavyWeightWindowFixture =
-        heavyWeightWindow(HeavyWeightWindowFixture.byXpath)
+        heavyWeightWindow(HeavyWeightWindowFixture.byXpath, timeout)
 
     fun heavyWeightWindow(locator: Locator, timeout: Duration = defaultFindTimeout): HeavyWeightWindowFixture =
         find(locator, timeout)

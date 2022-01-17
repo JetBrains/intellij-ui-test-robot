@@ -1,0 +1,23 @@
+name: Run example UI Tests
+on:
+  workflow_dispatch
+jobs:
+  ui-tests-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2.5.0
+        with:
+          distribution: zulu
+          java-version: 11
+      - name: Tests
+        run: |
+          ./gradlew :ide-launcher:test
+      - name: Save fails report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ui-tests-fails-report-windows
+          path: |
+            ide-launcher/build/reports

@@ -15,6 +15,6 @@ jobs:
       - name: Build the remote-fixtures lib
         run: gradle :remote-fixtures:build
       - name: Build the ide-launcher lib
-        run: gradle :ide-launcher:build
+        run: ./gradlew :ide-launcher:build -x test
       - name: Build the plugin
         run: gradle :robot-server-plugin:buildPlugin

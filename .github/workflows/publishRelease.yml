@@ -9,6 +9,11 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@master
+      - name: Setup Java
+        uses: actions/setup-java@v2.5.0
+        with:
+          distribution: zulu
+          java-version: 11
       - name: Build the lib
         run: gradle :remote-robot:build
       - name: Build the plugin

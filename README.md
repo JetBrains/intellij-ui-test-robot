@@ -60,7 +60,7 @@ runIdeForUiTests {
 }
 
 downloadRobotServerPlugin {
-    version = REMOTE - ROBOT_VERSION
+    version = REMOTE-ROBOT_VERSION
 }
 ```
 
@@ -113,13 +113,13 @@ Next, we can use `IdeLauncher` to start Idea:
 ```java
 final OkHttpClient client=new OkHttpClient();
 final IdeDownloader ideDownloader=new IdeDownloader(client);
-        ideaProcess=IdeLauncher.INSTANCE.launchIde(
-        ideDownloader.downloadAndExtractLatestEap(Ide.IDEA_COMMUNITY,tmpDir),
-        Map.of("robot-server.port",8082),
-        List.of(),
-        List.of(ideDownloader.downloadRobotPlugin(tmpDir), pathToOurPlugin),
-        tmpDir
-        );
+     ideaProcess = IdeLauncher.INSTANCE.launchIde(
+     ideDownloader.downloadAndExtractLatestEap(Ide.IDEA_COMMUNITY,tmpDir),
+     Map.of("robot-server.port",8082),
+     List.of(),
+     List.of(ideDownloader.downloadRobotPlugin(tmpDir), pathToOurPlugin),
+     tmpDir
+);
 ```
 Check [Java](ide-launcher/src/test/java/com/intellij/remoterobot/launcher/LauncherJavaExampleTest.java) and [Kotlin](ide-launcher/src/test/kotlin/com/intellij/remoterobot/launcher/CommandLineProjectTest.kt) examples.
 ### Create RemoteRobot
@@ -127,7 +127,7 @@ Check [Java](ide-launcher/src/test/java/com/intellij/remoterobot/launcher/Launch
 In the UI test project:
 
 ```java
-RemoteRobot remoteRobot=new RemoteRobot("http://127.0.0.1:8082");
+RemoteRobot remoteRobot = new RemoteRobot("http://127.0.0.1:8082");
 ```
 
 ### Searching Components
@@ -155,9 +155,9 @@ Find many components:
 
 ```java
 List<ContainterFixture> dialogs = remoteRobot.findAll(
-        ComponentFixture.class,
-        byXpath("//div[@class='MyDialog']")
-        );
+    ComponentFixture.class,
+    byXpath("//div[@class='MyDialog']")
+);
 ```
 
 ### Fixtures
@@ -193,7 +193,7 @@ public class WelcomeFrameFixture extends ContainerFixture {
 ```java
 // find the custom fixture by its default XPath
 WelcomeFrameFixture welcomeFrame=remoteRobot.find(WelcomeFrameFixture.class);
-        welcomeFrame.createNewProjectLink().click();
+welcomeFrame.createNewProjectLink().click();
 ```
 
 ### Remote-Fixtures
@@ -240,38 +240,38 @@ found (see Searching Components) and used to initialize the `ComponentFixture`.
 The `runJs` method works the same way without any return value:
 
 ```java
-public void click(){
-        runJs("const offset = component.getHeight()/2;"+
+public void click() {
+    runJs("const offset = component.getHeight()/2;"+
         "robot.click("+
         "component, "+
         "new Point(offset, offset), "+
         "MouseButton.LEFT_BUTTON, 1);"
-        );
-        }
+    );
+}
 ```
 
 We import some packages to the context before the script is executed:
 
 ```java
-    java.awt
-        org.assertj.swing.core
-        org.assertj.swing.fixture
+ java.awt
+ org.assertj.swing.core
+ org.assertj.swing.fixture
 ```
 
 You can add other packages or classes with
 js [methods](https://www-archive.mozilla.org/rhino/apidocs/org/mozilla/javascript/importertoplevel):
 
 ```java
-    importClass(java.io.File);
-        importPackage(java.io);
+importClass(java.io.File);
+importPackage(java.io);
 ```
 
 Or just use the full path:
 
 ```java
-    Boolean isDumbMode=ideaFtame.callJs(
-        "com.intellij.openapi.project.DumbService.isDumb(component.project);"
-        );
+Boolean isDumbMode=ideaFtame.callJs(
+    "com.intellij.openapi.project.DumbService.isDumb(component.project);"
+);
 ```
 
 #### Store data between `runJs/callJs` requests
@@ -302,13 +302,11 @@ use `fixture` methods:
 
 ```java
 welcomeFrame.findText("Create New Project").click();
-
-        assert(welcomeFrame.hasText(startsWith("Version 20")));
-
-        List<String> renderedText=welcomeFrame.findAllText()
-        .stream()
-        .map(RemoteText::getText)
-        .collect(Collectors.toList());
+assert(welcomeFrame.hasText(startsWith("Version 20")));
+List<String> renderedText=welcomeFrame.findAllText()
+    .stream()
+    .map(RemoteText::getText)
+    .collect(Collectors.toList());
 ```
 
 Instead of looking for text inside the component structure, we render it on a fake `Graphics` to collect text data and
@@ -330,8 +328,8 @@ remoteRobot.getScreenshot()
    component of your interest.
 
 ```java
-someFixture.getScreenshot()
-        someFixture.getScreenshot(true)
+someFixture.getScreenshot();
+someFixture.getScreenshot(true);
 ```
 
 In both cases, you will get `BufferedImage` object specified as `.png`

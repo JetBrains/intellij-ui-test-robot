@@ -38,7 +38,7 @@ class CommandLineProjectTest {
         @JvmStatic
         fun startIdea() {
             StepWorker.registerProcessor(StepLogger())
-            
+
             val client = OkHttpClient()
             remoteRobot = RemoteRobot("http://localhost:8082", client)
             val ideDownloader = IdeDownloader(client)
@@ -67,9 +67,15 @@ class CommandLineProjectTest {
         remoteRobot.find<CommonContainerFixture>(
             Locators.byProperties(Locators.XpathProperty.SIMPLE_CLASS_NAME to "FlatWelcomeFrame"),
             Duration.ofSeconds(20)
-        ).button(byXpath("""//div[contains(@defaulticon, 'createNewProject') or (@accessiblename='New Project' and @class='JBOptionButton')]"""))
+        )
+            .button(byXpath("""//div[contains(@defaulticon, 'createNewProject') or (@accessiblename='New Project' and @class='JBOptionButton')]"""))
             .click()
-        remoteRobot.find<CommonContainerFixture>(Locators.byTypeAndProperties(JDialog::class.java, Locators.XpathProperty.ACCESSIBLE_NAME to "New Project"), Duration.ofSeconds(10)).run {
+        remoteRobot.find<CommonContainerFixture>(
+            Locators.byTypeAndProperties(
+                JDialog::class.java,
+                Locators.XpathProperty.ACCESSIBLE_NAME to "New Project"
+            ), Duration.ofSeconds(10)
+        ).run {
             jList().clickItem("Java")
             button("Next").click()
             checkBox("Create project from template").select()
@@ -77,8 +83,16 @@ class CommandLineProjectTest {
             button("Next").click()
             button("Finish").click()
         }
-        remoteRobot.find<CommonContainerFixture>(Locators.byProperties(Locators.XpathProperty.SIMPLE_CLASS_NAME to "IdeFrameImpl"), Duration.ofSeconds(20)).run {
-            find<CommonContainerFixture>(Locators.byTypeAndProperties(JDialog::class.java, Locators.XpathProperty.ACCESSIBLE_NAME to "Tip of the Day"), Duration.ofSeconds(20))
+        remoteRobot.find<CommonContainerFixture>(
+            Locators.byProperties(Locators.XpathProperty.SIMPLE_CLASS_NAME to "IdeFrameImpl"),
+            Duration.ofSeconds(20)
+        ).run {
+            find<CommonContainerFixture>(
+                Locators.byTypeAndProperties(
+                    JDialog::class.java,
+                    Locators.XpathProperty.ACCESSIBLE_NAME to "Tip of the Day"
+                ), Duration.ofSeconds(20)
+            )
                 .button("Close").click()
             runCatching { button("Got It").click() }
             find<CommonContainerFixture>(Locators.byType(Box::class.java))
@@ -90,7 +104,7 @@ class CommandLineProjectTest {
         }
     }
 
-    class IdeTestWatcher: TestWatcher {
+    class IdeTestWatcher : TestWatcher {
         override fun testFailed(context: ExtensionContext, cause: Throwable?) {
             ImageIO.write(remoteRobot.getScreenshot(), "png", File("build/reports", "${context.displayName}.png"))
         }

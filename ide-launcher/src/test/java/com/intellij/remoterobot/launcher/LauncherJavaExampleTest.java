@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import static com.intellij.remoterobot.launcher.RemoteRobotExtKt.isAvailable;
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(CommandLineProjectTest.IdeTestWatcher.class)
 @Timeout(value = 25, unit = TimeUnit.MINUTES)
@@ -66,6 +67,6 @@ public class LauncherJavaExampleTest {
     @Test
     public void test() {
         final JLabelFixture welcomeLabel = remoteRobot.find(JLabelFixture.class, byXpath("//div[@text.key='label.welcome.to.0']"));
-        assert welcomeLabel.getValue().equals("Welcome to IntelliJ IDEA");
+        assertEquals(welcomeLabel.getValue(), "Welcome to IntelliJ IDEA");
     }
 }

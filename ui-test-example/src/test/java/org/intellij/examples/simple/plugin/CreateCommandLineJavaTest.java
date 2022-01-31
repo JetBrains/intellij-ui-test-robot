@@ -63,7 +63,7 @@ public class CreateCommandLineJavaTest {
         final IdeaFrame idea = remoteRobot.find(IdeaFrame.class, ofSeconds(10));
         waitFor(ofMinutes(5), () -> !idea.isDumbMode());
 
-        step("Create New Kotlin file", () -> {
+        step("Create Java file", () -> {
             final ContainerFixture projectView = idea.getProjectViewTree();
             if (!projectView.hasText("src")) {
                 projectView.findText(idea.getProjectName()).doubleClick();

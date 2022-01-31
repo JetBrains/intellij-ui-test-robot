@@ -43,7 +43,7 @@ class SayHelloKotlinTest {
     @DefaultXpath("title Hello", "//div[@title='Hello' and @class='MyDialog']")
     class HelloWorldDialog(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : ContainerFixture(remoteRobot, remoteComponent) {
         val textPane: ComponentFixture
-            get() = find(byXpath("//div[@class='Wrapper']//div[@class='JTextPane']"))
+            get() = find(byXpath("//div[@class='Wrapper']//div[@class='JEditorPane']"))
         val ok: ComponentFixture
             get() = find(byXpath("//div[@class='JButton' and @text='OK']"))
     }

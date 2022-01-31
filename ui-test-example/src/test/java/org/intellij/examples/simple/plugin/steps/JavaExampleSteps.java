@@ -4,6 +4,7 @@ package org.intellij.examples.simple.plugin.steps;
 
 import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.ComponentFixture;
+import com.intellij.remoterobot.fixtures.JListFixture;
 import com.intellij.remoterobot.search.locators.Locator;
 import com.intellij.remoterobot.utils.Keyboard;
 import kotlin.Unit;
@@ -32,19 +33,14 @@ public class JavaExampleSteps {
     }
 
     public void createNewCommandLineProject() {
-        step("Create New Command Line Project", () -> {
+        step("Create New Project", () -> {
             final WelcomeFrameFixture welcomeFrame = remoteRobot.find(WelcomeFrameFixture.class, Duration.ofSeconds(10));
             welcomeFrame.createNewProjectLink().click();
 
             final DialogFixture newProjectDialog = welcomeFrame.find(DialogFixture.class, DialogFixture.byTitle("New Project"), Duration.ofSeconds(20));
+            newProjectDialog.find(JListFixture.class, byXpath("//div[@class='JBList']")).clickItem("New Project", true);
             newProjectDialog.findText("Java").click();
-            newProjectDialog.find(ComponentFixture.class,
-                    byXpath("FrameworksTree", "//div[@class='FrameworksTree']"))
-                    .findText("Kotlin/JVM")
-                    .click();
-            keyboard.key(KeyEvent.VK_SPACE, Duration.ZERO);
-            newProjectDialog.button("Next").click();
-            newProjectDialog.button("Finish").click();
+            newProjectDialog.button("Create").click();
         });
     }
 

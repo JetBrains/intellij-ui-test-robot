@@ -32,7 +32,15 @@ class CreateCommandLineKotlinTest {
     @AfterEach
     fun closeProject(remoteRobot: RemoteRobot) = with(remoteRobot) {
         idea {
-            menuBar.select("File", "Close Project")
+            if (remoteRobot.isMac()) {
+                keyboard {
+                    hotKey(VK_SHIFT, VK_META, VK_A);
+                    enterText("Close Project");
+                    enter()
+                }
+            } else {
+                menuBar.select("File", "Close Project")
+            }
         }
     }
 
@@ -45,10 +53,8 @@ class CreateCommandLineKotlinTest {
             createNewProjectLink.click()
             dialog("New Project") {
                 findText("Java").click()
-                button("Next").click()
-                checkBox("Create project from template").select()
-                button("Next").click()
-                button("Finish").click()
+                checkBox("Add sample code").select()
+                button("Create").click()
             }
         }
         idea {

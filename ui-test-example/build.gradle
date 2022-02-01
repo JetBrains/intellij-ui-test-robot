@@ -38,7 +38,7 @@ dependencies {
 
 
 intellij {
-    version.set('LATEST-EAP-SNAPSHOT')
+    version.set('IU-213.5744.223')
 }
 
 downloadRobotServerPlugin {

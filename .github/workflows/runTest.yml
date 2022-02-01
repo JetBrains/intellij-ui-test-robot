@@ -64,7 +64,7 @@ jobs:
       - name: Clean
         run: gradle :ui-test-example:clean
       - name: Run Idea
-        run: gradle :ui-test-example:runIdeForUiTests &
+        run: gradle :ui-test-example:runIdeForUiTests > ui-test-example/build/reports/idea.log &
       - name: Wait for Idea started
         uses: jtalk/url-health-check-action@v2
         with:

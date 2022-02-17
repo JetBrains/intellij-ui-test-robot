@@ -31,6 +31,10 @@ enum class Ide(val code: String, val feedsCode: String) {
         }
     }
 
+    enum class BuildType(val title: String) {
+        EAP("eap"), RELEASE("release")
+    }
+
     companion object {
         fun withCode(code: String) = values().single { it.code == code }
     }

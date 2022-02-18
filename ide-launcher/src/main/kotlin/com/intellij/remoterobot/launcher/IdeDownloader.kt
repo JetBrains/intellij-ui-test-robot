@@ -24,15 +24,16 @@ class IdeDownloader @JvmOverloads constructor(private val httpClient: OkHttpClie
     }
 
     fun downloadAndExtractLatestEap(ide: Ide, toDir: Path): Path {
-        return downloadAndExtract(ide, Ide.BuildType.EAP, toDir = toDir)
+        return downloadAndExtract(ide, toDir, Ide.BuildType.EAP)
     }
 
+    @JvmOverloads
     fun downloadAndExtract(
         ide: Ide,
+        toDir: Path,
         buildType: Ide.BuildType = Ide.BuildType.EAP,
         version: String? = null,
-        buildNumber: String? = null,
-        toDir: Path
+        buildNumber: String? = null
     ): Path {
         val idePackage = downloadIde(ide, buildType, version, buildNumber, toDir)
         return extractIde(idePackage, toDir)

@@ -19,8 +19,12 @@ object IdeLauncher {
         val configDir = Files.createTempDirectory(ideSandboxDir, "config")
         val systemDir = Files.createTempDirectory(ideSandboxDir, "system")
         val pluginsDir = Files.createTempDirectory(ideSandboxDir, "plugins")
-        for (pluginZip in requiredPluginsArchives) {
-            extractZip(pluginZip, pluginsDir)
+        for (pluginPath in requiredPluginsArchives) {
+            if (pluginPath.fileName.toString().endsWith(".jar")) {
+                Files.copy(pluginPath, pluginsDir.resolve(pluginPath.fileName.toString()))
+            } else {
+                extractZip(pluginPath, pluginsDir)
+            }
         }
         val logDir = Files.createTempDirectory(ideSandboxDir, "log")
 

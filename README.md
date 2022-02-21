@@ -39,7 +39,7 @@ launch IDEA on remote machines or in docker containers to check your plugin with
 
 ### Setup
 
-The last version of the Remote-Robot is `0.11.12`.
+The last version of the Remote-Robot is `0.11.13`.
 
 In the test project:
 
@@ -114,7 +114,7 @@ Next, we can use `IdeLauncher` to start Idea:
 final OkHttpClient client=new OkHttpClient();
 final IdeDownloader ideDownloader=new IdeDownloader(client);
      ideaProcess = IdeLauncher.INSTANCE.launchIde(
-     ideDownloader.downloadAndExtractLatestEap(Ide.IDEA_COMMUNITY,tmpDir),
+     ideDownloader.downloadAndExtract(Ide.IDEA_COMMUNITY, tmpDir),
      Map.of("robot-server.port",8082),
      List.of(),
      List.of(ideDownloader.downloadRobotPlugin(tmpDir), pathToOurPlugin),
@@ -122,6 +122,18 @@ final IdeDownloader ideDownloader=new IdeDownloader(client);
 );
 ```
 Check [Java](ide-launcher/src/test/java/com/intellij/remoterobot/launcher/LauncherJavaExampleTest.java) and [Kotlin](ide-launcher/src/test/kotlin/com/intellij/remoterobot/launcher/CommandLineProjectTest.kt) examples.
+
+#### Useful launch properties
+
+| Property                                | Value | Description                                                                                                                                                                                                              |
+|-----------------------------------------|-------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| jb.consents.confirmation.enabled        | false | Disable consent dialog                                                                                                                                                                                                   |
+| eap.require.license                     | true  | EAP version requires license the same way as Release version. That could help to [avoid EAP login](https://github.com/JetBrains/intellij-ui-test-robot/tree/master/ui-test-example#how-can-i-switch-off-eap-login) on CI |
+| ide.mac.message.dialogs.as.sheets       | false | Disable Sheet dialogs on Mac, they are not recognizable by Java Robot                                                                                                                                                    |
+| ide.mac.file.chooser.native             | false | Disable Mac native file chooser, it is not recognizable by Java Robot                                                                                                                                                    
+| apple.laf.useScreenMenuBar              | false | Disable Mac native menu, it is not recognizable by Java Robot                                                                                                                                                            
+| idea.trust.all.projects                 | true  | Disable Thrust Project dialog when project is opened                                                                                                                                                                     |
+| ide.show.tips.on.startup.default.value  | false | Disable Tips Of the Day dialog on startup                                                                                                                                                                                |
 ### Create RemoteRobot
 
 In the UI test project:

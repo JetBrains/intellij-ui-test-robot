@@ -29,6 +29,8 @@ public class LauncherJavaExampleTest {
     private static Process ideaProcess;
     private static Path tmpDir;
     private static RemoteRobot remoteRobot;
+    private final static Ide.BuildType buildType = Ide.BuildType.RELEASE;
+    private final static String version = "2021.3.2";
     static {
         try {
             tmpDir = Files.createTempDirectory("launcher");
@@ -49,7 +51,7 @@ public class LauncherJavaExampleTest {
         plugins.add(ideDownloader.downloadRobotPlugin(tmpDir));
         // plugins.add(path to your plugin)
         ideaProcess = IdeLauncher.INSTANCE.launchIde(
-                ideDownloader.downloadAndExtractLatestEap(Ide.IDEA_COMMUNITY, tmpDir),
+                ideDownloader.downloadAndExtract(Ide.IDEA_COMMUNITY, tmpDir, buildType, version),
                 additionalProperties,
                 Collections.emptyList(),
                 plugins,

@@ -27,7 +27,12 @@ open class JMenuBarFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
         find<ComponentFixture>(
             Locators.byTypeAndProperties(JMenu::class.java, Locators.XpathProperty.ACCESSIBLE_NAME to menuItem)
         ).click()
-        jPopupMenu().also { it.runJs("robot.moveMouse(component)") }
+        jPopupMenu().also {
+            it.runJs("""
+                const point = new Point(5, component.getHeight())
+                robot.moveMouse(component, point)
+            """)
+        }
     }
 
     private fun selectOnMac(vararg items: String) {

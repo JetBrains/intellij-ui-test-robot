@@ -27,10 +27,10 @@ open class JMenuBarFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
         find<ComponentFixture>(
             Locators.byTypeAndProperties(JMenu::class.java, Locators.XpathProperty.ACCESSIBLE_NAME to menuItem)
         ).click()
-        if (remoteRobot.isWin()) Thread.sleep(500)
         jPopupMenu().also {
             it.runJs(
                 """
+                robot.moveMouse(component, new Point(0, 0))
                 const point = new Point(5, component.getHeight()/2)
                 robot.moveMouse(component, point)
             """

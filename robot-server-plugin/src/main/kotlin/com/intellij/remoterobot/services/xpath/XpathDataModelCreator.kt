@@ -15,6 +15,7 @@ import org.w3c.dom.Element
 import java.awt.Component
 import java.awt.Container
 import java.lang.reflect.Field
+import java.lang.reflect.InaccessibleObjectException
 import java.util.*
 import javax.swing.JComponent
 import javax.xml.parsers.DocumentBuilderFactory
@@ -86,30 +87,34 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : Compon
         allFields
             .filter(fieldsFilter)
             .forEach { field ->
-
-                field.isAccessible = true
-                val attributeName = field.name.replace("$", "_").toLowerCase()
-                val value = field.get(this)?.toString()?.let {
-                    if (it.contains(".svg")) {
-                        return@let it
-                            .substringBeforeLast(".svg")
-                            .substringAfterLast("/")
-                            .substringAfterLast("\\") + ".svg"
-                    } else {
-                        return@let it
+                try {
+                    field.isAccessible = true
+                    val attributeName = field.name.replace("$", "_").toLowerCase()
+                    val value = field.get(this)?.toString()?.let {
+                        if (it.contains(".svg")) {
+                            return@let it
+                                .substringBeforeLast(".svg")
+                                .substringAfterLast("/")
+                                .substringAfterLast("\\") + ".svg"
+                        } else {
+                            return@let it
+                        }
+                    }?.apply {
+                        element.setAttribute(attributeName, this)
                     }
-                }?.apply {
-                    element.setAttribute(attributeName, this)
-                }
-                field.isAccessible = false
-                value?.apply {
-                    if (textFieldsFilter(attributeName, value)) {
-                        elementText.append("$attributeName: '$this'. ")
-                        textToKeyCache.findKey(value)?.apply {
-                            elementText.append("${attributeName}.key: '$this'. ")
-                            element.setAttribute(attributeName + ".key", this)
+                    value?.apply {
+                        if (textFieldsFilter(attributeName, value)) {
+                            elementText.append("$attributeName: '$this'. ")
+                            textToKeyCache.findKey(value)?.apply {
+                                elementText.append("${attributeName}.key: '$this'. ")
+                                element.setAttribute(attributeName + ".key", this)
+                            }
                         }
                     }
+                } catch (e: InaccessibleObjectException){
+                    e.printStackTrace()
+                } finally {
+                    field.isAccessible = false
                 }
             }
 

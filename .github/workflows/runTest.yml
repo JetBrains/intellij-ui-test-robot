@@ -41,7 +41,7 @@ jobs:
         run: mv ui-test-example/video ui-test-example/build/reports
       - name: Save fails report
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ui-test-fails-report-linux
           path: |
@@ -80,7 +80,7 @@ jobs:
         run: mv ui-test-example/video ui-test-example/build/reports
       - name: Save fails report
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ui-test-fails-report-mac
           path: |
@@ -117,7 +117,7 @@ jobs:
         run: mv ui-test-example/video ui-test-example/build/reports
       - name: Save fails report
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ui-test-fails-report-windows
           path: |
@@ -135,7 +135,7 @@ jobs:
         run: gradle :ide-launcher:test
       - name: Save fails report
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ui-test-fails-report-linux-launcher
           path: |

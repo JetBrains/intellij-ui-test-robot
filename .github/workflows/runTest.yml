@@ -101,7 +101,7 @@ jobs:
           # errors especially on GitHub-hosted macos machines.
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Clean
-        run: gradlew.bat :ui-test-example:clean
+        run: gradle :ui-test-example:clean
       - name: Run Idea
         run: start gradlew.bat :ui-test-example:runIdeForUiTests
       - name: Wait for Idea started
@@ -111,7 +111,7 @@ jobs:
           max-attempts: 15
           retry-delay: 30s
       - name: Tests
-        run: gradlew.bat :ui-test-example:test
+        run: gradle :ui-test-example:test
       - name: Move video
         if: ${{ failure() }}
         run: mv ui-test-example/video ui-test-example/build/reports

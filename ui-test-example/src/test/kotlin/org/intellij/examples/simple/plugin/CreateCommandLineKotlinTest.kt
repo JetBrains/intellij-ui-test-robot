@@ -5,7 +5,6 @@ package org.intellij.examples.simple.plugin
 import com.automation.remarks.junit5.Video
 import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.fixtures.CommonContainerFixture
-import com.intellij.remoterobot.fixtures.ComponentFixture
 import com.intellij.remoterobot.fixtures.ContainerFixture
 import com.intellij.remoterobot.search.locators.byXpath
 import com.intellij.remoterobot.stepsProcessing.step
@@ -34,8 +33,8 @@ class CreateCommandLineKotlinTest {
         idea {
             if (remoteRobot.isMac()) {
                 keyboard {
-                    hotKey(VK_SHIFT, VK_META, VK_A);
-                    enterText("Close Project");
+                    hotKey(VK_SHIFT, VK_META, VK_A)
+                    enterText("Close Project")
                     enter()
                 }
             } else {
@@ -73,6 +72,7 @@ class CreateCommandLineKotlinTest {
             }
             with(textEditor()) {
                 step("Write a code") {
+                    Thread.sleep(1_000)
                     editor.findText("App").click()
                     keyboard {
                         key(VK_END)

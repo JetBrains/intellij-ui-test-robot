@@ -46,8 +46,13 @@ class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : Co
 
     fun isDumbMode(): Boolean {
         return callJs("""
-            const project = com.intellij.openapi.wm.impl.ProjectFrameHelper.getFrameHelper(component).getProject()
-            project ? com.intellij.openapi.project.DumbService.isDumb(project) : true
+            const frameHelper = com.intellij.openapi.wm.impl.ProjectFrameHelper.getFrameHelper(component)
+            if (frameHelper) {
+                const project = frameHelper.getProject()
+                project ? com.intellij.openapi.project.DumbService.isDumb(project) : true
+            } else { 
+                true 
+            }
         """, true)
     }
 }

@@ -23,7 +23,7 @@ import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(CommandLineProjectTest.IdeTestWatcher.class)
+@ExtendWith(LauncherExampleTest.IdeTestWatcher.class)
 @Timeout(value = 25, unit = TimeUnit.MINUTES)
 public class LauncherJavaExampleTest {
     private static Process ideaProcess;

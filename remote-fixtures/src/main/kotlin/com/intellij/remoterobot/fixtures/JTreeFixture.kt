@@ -12,6 +12,18 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
         fun byType() = Locators.byType(JTree::class.java)
     }
 
+    init {
+        runJs(
+            """
+            const fixture = new JTreeFixture(robot, component);
+            const cellReader = new com.intellij.remoterobot.fixtures.dataExtractor.server.textCellRenderers.JTreeTextCellReader();
+            fixture.replaceCellReader(cellReader);
+            ctx.put("fixture", fixture);
+            ctx.put("reader", cellReader)
+        """
+        )
+    }
+
     fun clickPath(vararg path: String, fullMatch: Boolean = true) {
         findExpandedPath(*path, fullMatch = fullMatch)?.let {
             clickRow(it.row)
@@ -50,28 +62,29 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
 
     fun clickRow(rowNumber: Int) {
         runJs("""
-           JTreeFixture(robot, component).clickRow($rowNumber) 
+           ctx.get("fixture").clickRow($rowNumber) 
         """)
     }
 
     fun doubleClickRow(rowNumber: Int) {
         runJs("""
-           JTreeFixture(robot, component).doubleClickRow($rowNumber) 
+           ctx.get("fixture").doubleClickRow($rowNumber) 
         """)
     }
 
     fun rightClickRow(rowNumber: Int) {
         runJs("""
-           JTreeFixture(robot, component).rightClickRow($rowNumber) 
+           ctx.get("fixture").rightClickRow($rowNumber) 
         """)
     }
 
     fun collectExpandedPaths(): List<TreePathToRow> = callJs<ArrayList<ArrayList<String?>>>("""
             const paths = new java.util.ArrayList()
+            const cellReader = ctx.get("reader")
             com.intellij.util.ui.tree.TreeUtil.visitVisibleRows(component, (p) => {
                 const nodes = new java.util.ArrayList()
                 for (let node of p.getPath()) {
-                    nodes.add(node.toString())
+                    nodes.add(cellReader.valueAt(component, node))
                 }
                 
                 // If the root node is not visible, remove it
@@ -87,12 +100,13 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
     fun collectSelectedPaths(): List<List<String>> = callJs<ArrayList<ArrayList<String?>>>("""
         const paths = new java.util.ArrayList()
         const treePaths = component.getSelectionPaths()
+        const cellReader = ctx.get("reader")
 
         if (treePaths) {
             for (let i = 0; i < treePaths.length; ++i) {
                 const nodes = new java.util.ArrayList()
                 for (let node of treePaths[i].getPath()) {
-                    nodes.add(node.toString())
+                    nodes.add(cellReader.valueAt(component, node))
                 }
                 
                 // If the root node is not visible, remove it
@@ -154,7 +168,7 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
 
     fun collapsePath(vararg path: String, fullMatch: Boolean = true) = findExpandedPath(*path, fullMatch = fullMatch)?.let {
         runJs("""
-            JTreeFixture(robot, component).collapseRow(${it.row})
+            ctx.get("fixture").collapseRow(${it.row})
         """)
     }
 

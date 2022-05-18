@@ -155,6 +155,18 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
+    @JvmOverloads
+    fun jTree(
+        locator: Locator = JTreeFixture.byType(),
+        timeout: Duration = defaultFindTimeout,
+        func: JTreeFixture.() -> Unit = {}
+    ): JTreeFixture =
+        find<JTreeFixture>(locator, timeout).apply(func)
+
+    @JvmOverloads
+    fun jTrees(locator: Locator = JTreeFixture.byType()): List<JTreeFixture> = findAll(locator)
+
+    //----------------------------------------
     fun jMenuBar(func: JMenuBarFixture.() -> Unit = {}) = find<JMenuBarFixture>(JMenuBarFixture.byType()).apply(func)
 
     fun jMenuBar(locator: Locator, func: JMenuBarFixture.() -> Unit = {}) = find<JMenuBarFixture>(locator).apply(func)

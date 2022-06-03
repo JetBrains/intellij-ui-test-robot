@@ -83,7 +83,7 @@ class CreateCommandLineKotlinTest {
                     keyboard { enterText("\""); enterText("Hello from UI test") }
                 }
                 step("Launch application") {
-                    waitFor(ofSeconds(20)) { statusButton.hasText("Analyzing...").not() }
+                    waitFor(ofSeconds(20)) { button(byXpath("//div[@class='TrafficLightButton']")).hasText("Analyzing...").not() }
                     menuBar.select("Build", "Build Project")
                     waitFor { gutter.getIcons().isNotEmpty() }
                     gutter.getIcons().first { it.description.contains("run.svg") }.click()

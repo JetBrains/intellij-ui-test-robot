@@ -89,7 +89,9 @@ public class CreateCommandLineJavaTest {
         });
 
         step("Launch the application", () -> {
-            waitFor(Duration.ofSeconds(20), () -> !editor.getStatusButton().hasText("Analyzing..."));
+            waitFor(Duration.ofSeconds(20), () -> !editor
+                    .find(JButtonFixture.class, byXpath("//div[@class='TrafficLightButton']"))
+                    .hasText("Analyzing..."));
             waitFor(Duration.ofSeconds(10), () -> editor.getGutter().getIcons().size() > 0);
             final GutterIcon runIcon = editor.getGutter().getIcons()
                     .stream()

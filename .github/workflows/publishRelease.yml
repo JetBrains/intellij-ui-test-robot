@@ -23,6 +23,11 @@ jobs:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
         run: gradle :robot-server:publishRobotServerPluginPublicationToSpacePublicRepository
+      - name: Publish the plugin jars
+        env:
+          SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
+          SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
+        run: gradle :robot-server:publishRobotServerJarPublicationToSpacePublicRepository
       - name: Publish the remote-robot lib
         env:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
@@ -38,7 +43,7 @@ jobs:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
         run: gradle :ide-launcher:publishIdeLauncherPublicationToSpacePublicRepository
-      - name: Upload the plugin to the relase page
+      - name: Upload the plugin to the release page
         uses: skx/github-action-publish-binaries@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

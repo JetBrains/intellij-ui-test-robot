@@ -11,11 +11,8 @@ dependencies {
     api("org.assertj:assertj-swing-junit:3.17.1")
     api("org.apache.logging.log4j:log4j-api:2.17.2")
 
-    implementation("commons-io:commons-io:2.11.0") {
-        isForce = true
-    }
-    api("com.squareup.retrofit2:retrofit:2.9.0")
-    api("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
 
 // Create sources Jar from main kotlin sources

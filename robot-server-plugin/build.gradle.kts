@@ -12,18 +12,21 @@ repositories {
     maven("https://repo.labs.intellij.net/intellij")
 }
 
-configurations.runtimeClasspath {
-    exclude("org.slf4j", "slf4j-api")
-}
-
 dependencies {
     val ktor_version: String by project
 
     implementation(project(":remote-robot"))
 
-    implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
-    implementation("io.ktor:ktor-gson:$ktor_version")
+    implementation("io.ktor:ktor-server-core:$ktor_version") {
+        exclude("org.slf4j", "slf4j-api")
+    }
+    implementation("io.ktor:ktor-server-netty:$ktor_version") {
+        exclude("org.slf4j", "slf4j-api")
+    }
+    implementation("io.ktor:ktor-gson:$ktor_version") {
+        exclude("org.slf4j", "slf4j-api")
+    }
+    implementation("ch.qos.logback:logback-classic:1.2.11")
     implementation("org.assertj:assertj-swing-junit:3.17.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")

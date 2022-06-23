@@ -3,6 +3,7 @@
 package com.intellij.remoterobot.data
 
 import com.intellij.remoterobot.utils.serializeToBytes
+import org.apache.commons.io.IOUtils
 import java.io.File
 import java.io.Serializable
 import java.nio.file.FileSystems
@@ -29,7 +30,7 @@ fun Function<*>.pack(runInEdt: Boolean = false): ObjectContainer {
     if (klass.name.contains("Generated_for_debugger", true)) {
         val classBytes = debuggerClassesDir()?.listFiles()?.firstOrNull {
             it.name.startsWith(klass.name)
-        }?.readBytes() ?: throw Exception("ByteArray for class ${klass.name} is null")
+        }?.let { IOUtils.toByteArray(it.toURI()) } ?: throw Exception("ByteArray for class ${klass.name} is null")
         val objectBytes = this.serializeToBytes()
         return ObjectContainer(klass.name, mapOf(klass.canonicalName to classBytes), objectBytes, runInEdt)
     }

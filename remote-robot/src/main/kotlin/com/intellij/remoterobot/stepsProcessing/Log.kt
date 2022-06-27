@@ -2,7 +2,7 @@
 
 package com.intellij.remoterobot.stepsProcessing
 
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
-val log: Logger = LogManager.getLogger("logger")
+val log: Logger = LoggerFactory.getLogger("logger")

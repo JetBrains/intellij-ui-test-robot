@@ -111,8 +111,8 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : Compon
                             }
                         }
                     }
-                } catch (e: InaccessibleObjectException){
-                    e.printStackTrace()
+                } catch (ignore: InaccessibleObjectException) {
+
                 } finally {
                     field.isAccessible = false
                 }

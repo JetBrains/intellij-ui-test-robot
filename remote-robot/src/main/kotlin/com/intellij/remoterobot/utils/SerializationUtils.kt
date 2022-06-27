@@ -2,12 +2,10 @@
 
 package com.intellij.remoterobot.utils
 
-import org.apache.commons.io.IOUtils
 import java.io.ByteArrayOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
-import java.net.URL
 
 fun Serializable.serializeToBytes(): ByteArray = ByteArrayOutputStream().use { baos ->
     ObjectOutputStream(baos).use { oos ->
@@ -22,11 +20,6 @@ fun Function<*>.serializeToBytes(): ByteArray = ByteArrayOutputStream().use { ba
     }
     baos
 }.toByteArray()
-
-fun Class<*>.getClassByteArray(): ByteArray? {
-    val classUrl: URL = this.classLoader.getResource(this.name.replace(".", "/") + ".class")
-    return IOUtils.toByteArray(classUrl)
-}
 
 @Suppress("UNCHECKED_CAST")
 fun <T : Any> ByteArray.deserialize(): T? {

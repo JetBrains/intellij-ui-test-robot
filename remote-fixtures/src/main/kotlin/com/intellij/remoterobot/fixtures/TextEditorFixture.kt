@@ -26,7 +26,7 @@ class TextEditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
 }
 
 
-class GutterIcon(private val gutter: GutterFixture, private val gutterIconInfo: GutterIconInfo) {
+class GutterIcon(private val gutter: GutterFixture, gutterIconInfo: GutterIconInfo) {
     val lineNumber = gutterIconInfo.lineNumber
     val description = gutterIconInfo.description
     val point = gutterIconInfo.point
@@ -194,10 +194,10 @@ class EditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) 
     }
 
     fun replaceText(textInEditor: String, raplaceWithText: String) {
-        val stringBeginOffset = this.text.indexOf(textInEditor);
+        val stringBeginOffset = this.text.indexOf(textInEditor)
         if (stringBeginOffset != -1) {
             val stringEndOffset = textInEditor.length + stringBeginOffset
-            scrollToOffset(stringBeginOffset);
+            scrollToOffset(stringBeginOffset)
 
             runJs("""
             // import package with WriteCommandAction
@@ -219,10 +219,10 @@ class EditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) 
     }
 
     fun selectText(text: String) {
-        val stringBeginOffset = this.text.indexOf(text);
+        val stringBeginOffset = this.text.indexOf(text)
         if (stringBeginOffset != -1) {
             val stringEndOffset = text.length + stringBeginOffset
-            scrollToOffset(stringBeginOffset);
+            scrollToOffset(stringBeginOffset)
 
             runJs("""
             // import package with WriteCommandAction

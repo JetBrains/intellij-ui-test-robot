@@ -386,7 +386,6 @@ public final class com/intellij/remoterobot/fixtures/JListFixture : com/intellij
 	public static final fun byItem (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
 	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
 	public final fun clickItem (Ljava/lang/String;Z)V
-	public final fun clickItem (Lkotlin/jvm/functions/Function1;)V
 	public static synthetic fun clickItem$default (Lcom/intellij/remoterobot/fixtures/JListFixture;Ljava/lang/String;ZILjava/lang/Object;)V
 	public final fun clickItemAtIndex (I)V
 	public final fun collectItems ()Ljava/util/List;

@@ -12,6 +12,7 @@ class JRadioButtonFixture(
     remoteComponent: RemoteComponent
 ) : ComponentFixture(remoteRobot, remoteComponent) {
     companion object {
+        @JvmStatic
         fun byText(text: String) = Locators.byTypeAndProperties(JRadioButton::class.java, Locators.XpathProperty.TEXT to text)
     }
 

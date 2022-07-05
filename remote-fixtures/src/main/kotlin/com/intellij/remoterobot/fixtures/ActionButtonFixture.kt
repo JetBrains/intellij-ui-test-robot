@@ -14,12 +14,14 @@ class ActionButtonFixture(
 ) : ComponentFixture(remoteRobot, remoteComponent) {
 
     companion object {
-
+        @JvmStatic
         fun byType() = Locators.byType(ActionButton::class.java)
 
+        @JvmStatic
         fun byTooltipText(tooltipText: String) =
             Locators.byTypeAndProperties(ActionButton::class.java, Locators.XpathProperty.TOOLTIP to tooltipText)
 
+        @JvmStatic
         fun byTooltipTextContains(tooltipText: String) =
             Locators.byTypeAndPropertiesContains(ActionButton::class.java, Locators.XpathProperty.TOOLTIP to tooltipText)
     }

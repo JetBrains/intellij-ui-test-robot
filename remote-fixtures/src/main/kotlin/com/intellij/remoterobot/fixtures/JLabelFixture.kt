@@ -14,12 +14,15 @@ class JLabelFixture(
     remoteComponent: RemoteComponent
 ) : ComponentFixture(remoteRobot, remoteComponent) {
     companion object {
+        @JvmStatic
         fun byText(text: String) =
             Locators.byTypeAndProperties(JLabel::class.java, Locators.XpathProperty.TEXT to text)
 
+        @JvmStatic
         fun byContainsText(text: String) =
             Locators.byTypeAndPropertiesContains(JLabel::class.java, Locators.XpathProperty.TEXT to text)
 
+        @JvmStatic
         fun byLinkLabelText(linkLabelText: String) =
             Locators.byTypeAndPropertiesContains(LinkLabel::class.java, Locators.XpathProperty.TEXT to linkLabelText)
     }

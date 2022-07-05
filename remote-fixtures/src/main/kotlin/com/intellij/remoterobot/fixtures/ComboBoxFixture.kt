@@ -13,8 +13,10 @@ import javax.swing.JComboBox
 open class ComboBoxFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
     ComponentFixture(remoteRobot, remoteComponent) {
     companion object {
+        @JvmStatic
         fun byType() = Locators.byType(JComboBox::class.java)
 
+        @JvmStatic
         fun byLabel(fixture: JLabelFixture): Locator {
             return RelativeLocators.byLabel<JComboBox<*>>(fixture)
         }

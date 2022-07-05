@@ -9,6 +9,7 @@ import javax.swing.JTree
 open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : ComponentFixture(remoteRobot, remoteComponent) {
 
     companion object {
+        @JvmStatic
         fun byType() = Locators.byType(JTree::class.java)
     }
 

@@ -28,8 +28,10 @@ the slots could be run out. It is preferable to create one fixture and then reus
 class JCefBrowserFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
     ComponentFixture(remoteRobot, remoteComponent) {
     companion object {
-        val canvasLocator by lazy { byXpath("//div[contains(@class, 'Canvas')]") }
-        val macLocator by lazy { byXpath("//div[@class='JPanel' and contains(@javaclass, 'CefBrowserWr')]") }
+        @JvmStatic
+        val canvasLocator = byXpath("//div[contains(@class, 'Canvas')]")
+        @JvmStatic
+        val macLocator = byXpath("//div[@class='JPanel' and contains(@javaclass, 'CefBrowserWr')]")
 
         private const val FINDER = "window.elementFinder"
         private const val INIT_FINDER = """

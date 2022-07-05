@@ -12,8 +12,10 @@ class JCheckboxFixture(
     remoteComponent: RemoteComponent
 ) : ComponentFixture(remoteRobot, remoteComponent) {
     companion object {
+        @JvmStatic
         fun byText(text: String) = Locators.byTypeAndProperties(JCheckBox::class.java, Locators.XpathProperty.TEXT to text)
 
+        @JvmStatic
         fun byTextContains(text: String) = Locators.byTypeAndPropertiesContains(JCheckBox::class.java, Locators.XpathProperty.TEXT to text)
     }
 

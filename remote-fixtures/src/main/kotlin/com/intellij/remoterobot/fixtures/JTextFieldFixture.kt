@@ -13,8 +13,10 @@ class JTextFieldFixture(
     remoteComponent: RemoteComponent
 ) : ComponentFixture(remoteRobot, remoteComponent) {
     companion object {
+        @JvmStatic
         fun byType() = Locators.byType(JTextField::class.java)
 
+        @JvmStatic
         fun byLabel(fixture: JLabelFixture): Locator {
             return RelativeLocators.byLabel<JTextField>(fixture)
         }

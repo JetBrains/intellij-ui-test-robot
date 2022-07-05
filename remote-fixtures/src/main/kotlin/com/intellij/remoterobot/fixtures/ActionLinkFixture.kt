@@ -13,9 +13,11 @@ class ActionLinkFixture(
 ) : ComponentFixture(remoteRobot, remoteComponent) {
 
     companion object {
+        @JvmStatic
         fun byText(text: String) =
             Locators.byTypeAndProperties(ActionLink::class.java, Locators.XpathProperty.TEXT to text)
 
+        @JvmStatic
         fun byTextContains(text: String) =
             Locators.byTypeAndPropertiesContains(ActionLink::class.java, Locators.XpathProperty.TEXT to text)
     }

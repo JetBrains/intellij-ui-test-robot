@@ -12,6 +12,7 @@ open class JMenuBarFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComp
     CommonContainerFixture(remoteRobot, remoteComponent) {
 
     companion object {
+        @JvmStatic
         fun byType() = Locators.byType(JMenuBar::class.java)
     }
 

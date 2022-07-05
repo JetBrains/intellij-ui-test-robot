@@ -17,10 +17,13 @@ open class JButtonFixture(
 ) : ComponentFixture(remoteRobot, remoteComponent) {
 
     companion object {
+        @JvmStatic
         fun byText(text: String) = Locators.byTypeAndProperties(JButton::class.java, Locators.XpathProperty.TEXT to text)
 
+        @JvmStatic
         fun byFixedSizeButtonType() = Locators.byType(FixedSizeButton::class.java)
 
+        @JvmStatic
         fun byMainButtonType(text: String) =
             Locators.byTypeAndProperties(BasicOptionButtonUI.MainButton::class.java, Locators.XpathProperty.TEXT to text)
     }

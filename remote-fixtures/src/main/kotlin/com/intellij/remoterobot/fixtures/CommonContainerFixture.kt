@@ -27,6 +27,7 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
+    @JvmOverloads
     fun actionLink(locator: Locator, timeout: Duration = defaultFindTimeout): ActionLinkFixture =
         find(locator, timeout)
 
@@ -40,6 +41,7 @@ open class CommonContainerFixture(
 
     fun button(text: String): JButtonFixture = button(JButtonFixture.byText(text))
 
+    @JvmOverloads
     fun button(locator: Locator, timeout: Duration = defaultFindTimeout): JButtonFixture {
         return find(locator, timeout)
     }
@@ -50,6 +52,7 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
+    @JvmOverloads
     fun jLabel(locator: Locator, timeout: Duration = defaultFindTimeout): JLabelFixture =
         find(locator, timeout)
 
@@ -60,12 +63,14 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
+    @JvmOverloads
     fun textField(locator: Locator, timeout: Duration = defaultFindTimeout): JTextFieldFixture =
         find(locator, timeout)
 
     fun textFields(locator: Locator): List<JTextFieldFixture> =
         findAll(locator)
 
+    @JvmOverloads
     fun textField(labelText: String, contains: Boolean = true) = textField(
         if (contains) {
             JTextFieldFixture.byLabel(jLabel(JLabelFixture.byContainsText(labelText)))
@@ -76,22 +81,23 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
-    fun textArea(locator: Locator, timeout: Duration = defaultFindTimeout): JTextAreaFixture =
+    @JvmOverloads
+    fun textArea(locator: Locator = JTextAreaFixture.byType(), timeout: Duration = defaultFindTimeout): JTextAreaFixture =
         find(locator, timeout)
 
     fun textAreas(locator: Locator): List<JTextAreaFixture> =
         findAll(locator)
 
-    fun textArea() = textArea(JTextAreaFixture.byType())
-
     //----------------------------------------
 
+    @JvmOverloads
     fun comboBox(locator: Locator, timeout: Duration = defaultFindTimeout): ComboBoxFixture =
         find(locator, timeout)
 
     fun comboBoxes(locator: Locator): List<ComboBoxFixture> =
         findAll(locator)
 
+    @JvmOverloads
     fun comboBox(labelText: String, contains: Boolean = true) = comboBox(
         if (contains) {
             ComboBoxFixture.byLabel(jLabel(JLabelFixture.byContainsText(labelText)))
@@ -102,12 +108,14 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
+    @JvmOverloads
     fun actionButton(
         locator: Locator = ActionButtonFixture.byType(),
         timeout: Duration = Duration.ofSeconds(5)
     ): ActionButtonFixture =
         find(locator, timeout)
 
+    @JvmOverloads
     fun actionButtons(
         locator: Locator = ActionButtonFixture.byType()
     ): List<ActionButtonFixture> =
@@ -115,12 +123,14 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
+    @JvmOverloads
     fun checkBox(locator: Locator, timeout: Duration = defaultFindTimeout): JCheckboxFixture =
         find(locator, timeout)
 
     fun checkBoxes(locator: Locator): List<JCheckboxFixture> =
         findAll(locator)
 
+    @JvmOverloads
     fun checkBox(text: String, contains: Boolean = false) = checkBox(
         if (contains)
             JCheckboxFixture.byTextContains(text)
@@ -130,6 +140,7 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
+    @JvmOverloads
     fun radioButton(locator: Locator, timeout: Duration = defaultFindTimeout): JRadioButtonFixture =
         find(locator, timeout)
 
@@ -140,17 +151,18 @@ open class CommonContainerFixture(
 
     //----------------------------------------
 
+    @JvmOverloads
     fun jList(
-        locator: Locator, timeout: Duration = defaultFindTimeout,
+        locator: Locator,
+        timeout: Duration = defaultFindTimeout,
         func: JListFixture.() -> Unit = {}
     ): JListFixture =
         find<JListFixture>(locator, timeout).apply(func)
 
-    fun jLists(locator: Locator): List<JListFixture> =
-        findAll(locator)
+    @JvmOverloads
+    fun jLists(locator: Locator = JListFixture.byType()): List<JListFixture> = findAll(locator)
 
-    fun jLists() = jLists(JListFixture.byType())
-
+    @JvmOverloads
     fun jList(func: JListFixture.() -> Unit = {}) = jList(JListFixture.byType(), func = func)
 
     //----------------------------------------
@@ -167,24 +179,28 @@ open class CommonContainerFixture(
     fun jTrees(locator: Locator = JTreeFixture.byType()): List<JTreeFixture> = findAll(locator)
 
     //----------------------------------------
+    @JvmOverloads
     fun jMenuBar(func: JMenuBarFixture.() -> Unit = {}) = find<JMenuBarFixture>(JMenuBarFixture.byType()).apply(func)
 
+    @JvmOverloads
     fun jMenuBar(locator: Locator, func: JMenuBarFixture.() -> Unit = {}) = find<JMenuBarFixture>(locator).apply(func)
 
     //----------------------------------------
 
-    fun jPopupMenus(): List<JPopupMenuFixture> = findAll(JPopupMenuFixture.byType())
+    @JvmOverloads
+    fun jPopupMenus(locator: Locator= JPopupMenuFixture.byType()): List<JPopupMenuFixture> = findAll(locator)
 
-    fun jPopupMenus(locator: Locator): List<JPopupMenuFixture> = findAll(locator)
-
+    @JvmOverloads
     fun jPopupMenu(timeout: Duration = defaultFindTimeout, func: JPopupMenuFixture.() -> Unit = {}) =
         find<JPopupMenuFixture>(JPopupMenuFixture.byType(), timeout).apply(func)
 
+    @JvmOverloads
     fun jPopupMenu(locator: Locator, timeout: Duration = defaultFindTimeout, func: JPopupMenuFixture.() -> Unit = {}) =
         find<JPopupMenuFixture>(locator, timeout).apply(func)
 
     //----------------------------------------
 
+    @JvmOverloads
     fun browser(timeout: Duration = defaultFindTimeout): JCefBrowserFixture {
         val locator = if (remoteRobot.isMac()) {
             JCefBrowserFixture.macLocator
@@ -194,36 +210,36 @@ open class CommonContainerFixture(
         return find(locator, timeout)
     }
 
+    @JvmOverloads
     fun browser(locator: Locator, timeout: Duration = defaultFindTimeout): JCefBrowserFixture =
         find(locator, timeout)
 
     //----------------------------------------
 
+    @JvmOverloads
+    fun textEditor(locator: Locator, timeout: Duration = defaultFindTimeout): TextEditorFixture =
+        find(locator, timeout)
+
+    @JvmOverloads
     fun textEditor(timeout: Duration = defaultFindTimeout): TextEditorFixture {
         return textEditor(TextEditorFixture.locator, timeout)
     }
 
-    fun textEditor(locator: Locator, timeout: Duration = defaultFindTimeout): TextEditorFixture =
-        find(locator, timeout)
-
-    fun textEditors(): List<TextEditorFixture> {
-        return textEditors(TextEditorFixture.locator)
-    }
-
-    fun textEditors(locator: Locator): List<TextEditorFixture> =
+    @JvmOverloads
+    fun textEditors(locator: Locator = TextEditorFixture.locator): List<TextEditorFixture> =
         findAll(locator)
 
     //----------------------------------------
 
-    fun heavyWeightWindow(timeout: Duration = defaultFindTimeout): HeavyWeightWindowFixture =
-        heavyWeightWindow(HeavyWeightWindowFixture.byXpath, timeout)
-
+    @JvmOverloads
     fun heavyWeightWindow(locator: Locator, timeout: Duration = defaultFindTimeout): HeavyWeightWindowFixture =
         find(locator, timeout)
 
-    fun heavyWeightWindows(): List<HeavyWeightWindowFixture> =
-        heavyWeightWindows(HeavyWeightWindowFixture.byXpath)
+    @JvmOverloads
+    fun heavyWeightWindow(timeout: Duration = defaultFindTimeout): HeavyWeightWindowFixture =
+        heavyWeightWindow(HeavyWeightWindowFixture.byXpath, timeout)
 
-    fun heavyWeightWindows(locator: Locator): List<HeavyWeightWindowFixture> =
+    @JvmOverloads
+    fun heavyWeightWindows(locator: Locator = HeavyWeightWindowFixture.byXpath): List<HeavyWeightWindowFixture> =
         findAll(locator)
 }

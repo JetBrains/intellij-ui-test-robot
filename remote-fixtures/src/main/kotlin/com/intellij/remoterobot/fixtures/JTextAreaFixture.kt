@@ -13,8 +13,10 @@ import javax.swing.JTextArea
 class JTextAreaFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : ComponentFixture(remoteRobot, remoteComponent) {
 
     companion object {
+        @JvmStatic
         fun byType() = Locators.byType(JTextArea::class.java)
 
+        @JvmStatic
         fun byLabel(fixture: JLabelFixture): Locator {
             return RelativeLocators.byLabel<JTextArea>(fixture)
         }

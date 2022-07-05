@@ -12,6 +12,7 @@ class HeavyWeightWindowFixture(
 ) : ContainerFixture(remoteRobot, remoteComponent) {
 
     companion object{
+        @JvmStatic
         val byXpath = byXpath("//div[@class='HeavyWeightWindow']")
     }
 

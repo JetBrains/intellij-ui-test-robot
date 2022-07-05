@@ -9,6 +9,7 @@ open class JTableFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompon
     ContainerFixture(remoteRobot, remoteComponent) {
 
     companion object {
+        @JvmStatic
         fun byType() = Locators.byType(JTable::class.java)
     }
 

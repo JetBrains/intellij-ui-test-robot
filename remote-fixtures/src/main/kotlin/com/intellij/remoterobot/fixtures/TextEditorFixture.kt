@@ -11,6 +11,7 @@ import java.awt.Point
 class TextEditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
     ContainerFixture(remoteRobot, remoteComponent) {
     companion object {
+        @JvmStatic
         val locator = byXpath("//div[@class='PsiAwareTextEditorComponent']")
     }
 

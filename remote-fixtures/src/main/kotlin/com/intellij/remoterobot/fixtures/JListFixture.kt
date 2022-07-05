@@ -9,8 +9,10 @@ class JListFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
     ContainerFixture(remoteRobot, remoteComponent) {
 
     companion object {
+        @JvmStatic
         fun byType() = Locators.byType(JList::class.java)
 
+        @JvmStatic
         fun byItem(itemText: String) =
             Locators.byTypeAndPropertiesContains(JList::class.java, Locators.XpathProperty.TEXT to itemText)
     }

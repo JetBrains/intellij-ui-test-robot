@@ -16,8 +16,10 @@ open class JPopupMenuFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCo
     CommonContainerFixture(remoteRobot, remoteComponent) {
 
     companion object {
+        @JvmStatic
         fun byType() = Locators.byType(JPopupMenu::class.java)
 
+        @JvmStatic
         fun byContainsItem(item: String) = JPopupMenu::class.java.let { cls ->
             byXpath("""//div[@javaclass="${cls.name}" or contains(@classhierarchy, "${cls.name} ") or contains(@classhierarchy, " ${cls.name} ")][.//div[@text="$item"]]""")
         }

@@ -1,0 +1,632 @@
+public final class com/intellij/remoterobot/fixtures/ActionButtonFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byTooltipText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byTooltipTextContains (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getTemplatePresentationText ()Ljava/lang/String;
+	public final fun getTooltipText ()Ljava/lang/String;
+	public final fun isEnabled ()Z
+	public final fun popState ()Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
+}
+
+public final class com/intellij/remoterobot/fixtures/ActionButtonFixture$Companion {
+	public final fun byTooltipText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byTooltipTextContains (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/ActionButtonFixture$PopState : java/lang/Enum {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState$Companion;
+	public static final field NORMAL Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
+	public static final field POPPED Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
+	public static final field PUSHED Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
+	public static final field SELECTED Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
+	public static fun valueOf (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
+	public static fun values ()[Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
+}
+
+public final class com/intellij/remoterobot/fixtures/ActionButtonFixture$PopState$Companion {
+	public final fun byInt (I)Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
+}
+
+public final class com/intellij/remoterobot/fixtures/ActionLinkFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/ActionLinkFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byTextContains (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/ActionLinkFixture$Companion {
+	public final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byTextContains (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public class com/intellij/remoterobot/fixtures/ComboBoxFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/ComboBoxFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byLabel (Lcom/intellij/remoterobot/fixtures/JLabelFixture;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun listValues ()Ljava/util/List;
+	public final fun selectItem (Ljava/lang/String;)V
+	public fun selectItemContains (Ljava/lang/String;)V
+	public final fun selectedText ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/ComboBoxFixture$Companion {
+	public final fun byLabel (Lcom/intellij/remoterobot/fixtures/JLabelFixture;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public class com/intellij/remoterobot/fixtures/CommonContainerFixture : com/intellij/remoterobot/fixtures/ContainerFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/CommonContainerFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public final fun actionButton ()Lcom/intellij/remoterobot/fixtures/ActionButtonFixture;
+	public final fun actionButton (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/ActionButtonFixture;
+	public final fun actionButton (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/ActionButtonFixture;
+	public static synthetic fun actionButton$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/ActionButtonFixture;
+	public final fun actionButtons ()Ljava/util/List;
+	public final fun actionButtons (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public static synthetic fun actionButtons$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;ILjava/lang/Object;)Ljava/util/List;
+	public final fun actionLink (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/ActionLinkFixture;
+	public final fun actionLink (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/ActionLinkFixture;
+	public final fun actionLink (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/ActionLinkFixture;
+	public static synthetic fun actionLink$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/ActionLinkFixture;
+	public final fun actionLinks (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public final fun browser ()Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;
+	public final fun browser (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;
+	public final fun browser (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;
+	public final fun browser (Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;
+	public static synthetic fun browser$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;
+	public static synthetic fun browser$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;
+	public final fun button (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JButtonFixture;
+	public final fun button (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JButtonFixture;
+	public final fun button (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/JButtonFixture;
+	public static synthetic fun button$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JButtonFixture;
+	public final fun buttons (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public final fun checkBox (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JCheckboxFixture;
+	public final fun checkBox (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JCheckboxFixture;
+	public final fun checkBox (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/JCheckboxFixture;
+	public final fun checkBox (Ljava/lang/String;Z)Lcom/intellij/remoterobot/fixtures/JCheckboxFixture;
+	public static synthetic fun checkBox$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JCheckboxFixture;
+	public static synthetic fun checkBox$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Ljava/lang/String;ZILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JCheckboxFixture;
+	public final fun checkBoxes (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public final fun comboBox (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/ComboBoxFixture;
+	public final fun comboBox (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/ComboBoxFixture;
+	public final fun comboBox (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/ComboBoxFixture;
+	public final fun comboBox (Ljava/lang/String;Z)Lcom/intellij/remoterobot/fixtures/ComboBoxFixture;
+	public static synthetic fun comboBox$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/ComboBoxFixture;
+	public static synthetic fun comboBox$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Ljava/lang/String;ZILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/ComboBoxFixture;
+	public final fun comboBoxes (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public final fun heavyWeightWindow ()Lcom/intellij/remoterobot/fixtures/HeavyWeightWindowFixture;
+	public final fun heavyWeightWindow (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/HeavyWeightWindowFixture;
+	public final fun heavyWeightWindow (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/HeavyWeightWindowFixture;
+	public final fun heavyWeightWindow (Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/HeavyWeightWindowFixture;
+	public static synthetic fun heavyWeightWindow$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/HeavyWeightWindowFixture;
+	public static synthetic fun heavyWeightWindow$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/HeavyWeightWindowFixture;
+	public final fun heavyWeightWindows ()Ljava/util/List;
+	public final fun heavyWeightWindows (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public static synthetic fun heavyWeightWindows$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;ILjava/lang/Object;)Ljava/util/List;
+	public final fun jLabel (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JLabelFixture;
+	public final fun jLabel (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JLabelFixture;
+	public final fun jLabel (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/JLabelFixture;
+	public static synthetic fun jLabel$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JLabelFixture;
+	public final fun jLabels (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public final fun jList ()Lcom/intellij/remoterobot/fixtures/JListFixture;
+	public final fun jList (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JListFixture;
+	public final fun jList (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JListFixture;
+	public final fun jList (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;Lkotlin/jvm/functions/Function1;)Lcom/intellij/remoterobot/fixtures/JListFixture;
+	public final fun jList (Lkotlin/jvm/functions/Function1;)Lcom/intellij/remoterobot/fixtures/JListFixture;
+	public static synthetic fun jList$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JListFixture;
+	public static synthetic fun jList$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JListFixture;
+	public final fun jLists ()Ljava/util/List;
+	public final fun jLists (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public static synthetic fun jLists$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;ILjava/lang/Object;)Ljava/util/List;
+	public final fun jMenuBar ()Lcom/intellij/remoterobot/fixtures/JMenuBarFixture;
+	public final fun jMenuBar (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JMenuBarFixture;
+	public final fun jMenuBar (Lcom/intellij/remoterobot/search/locators/Locator;Lkotlin/jvm/functions/Function1;)Lcom/intellij/remoterobot/fixtures/JMenuBarFixture;
+	public final fun jMenuBar (Lkotlin/jvm/functions/Function1;)Lcom/intellij/remoterobot/fixtures/JMenuBarFixture;
+	public static synthetic fun jMenuBar$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JMenuBarFixture;
+	public static synthetic fun jMenuBar$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JMenuBarFixture;
+	public final fun jPopupMenu ()Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;
+	public final fun jPopupMenu (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;
+	public final fun jPopupMenu (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;
+	public final fun jPopupMenu (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;Lkotlin/jvm/functions/Function1;)Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;
+	public final fun jPopupMenu (Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;
+	public final fun jPopupMenu (Ljava/time/Duration;Lkotlin/jvm/functions/Function1;)Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;
+	public static synthetic fun jPopupMenu$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;
+	public static synthetic fun jPopupMenu$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Ljava/time/Duration;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;
+	public final fun jPopupMenus ()Ljava/util/List;
+	public final fun jPopupMenus (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public static synthetic fun jPopupMenus$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;ILjava/lang/Object;)Ljava/util/List;
+	public final fun jTree ()Lcom/intellij/remoterobot/fixtures/JTreeFixture;
+	public final fun jTree (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JTreeFixture;
+	public final fun jTree (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JTreeFixture;
+	public final fun jTree (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;Lkotlin/jvm/functions/Function1;)Lcom/intellij/remoterobot/fixtures/JTreeFixture;
+	public static synthetic fun jTree$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JTreeFixture;
+	public final fun jTrees ()Ljava/util/List;
+	public final fun jTrees (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public static synthetic fun jTrees$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;ILjava/lang/Object;)Ljava/util/List;
+	public final fun radioButton (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JRadioButtonFixture;
+	public final fun radioButton (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JRadioButtonFixture;
+	public final fun radioButton (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/JRadioButtonFixture;
+	public static synthetic fun radioButton$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JRadioButtonFixture;
+	public final fun radioButtons (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public final fun textArea ()Lcom/intellij/remoterobot/fixtures/JTextAreaFixture;
+	public final fun textArea (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JTextAreaFixture;
+	public final fun textArea (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JTextAreaFixture;
+	public static synthetic fun textArea$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JTextAreaFixture;
+	public final fun textAreas (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public final fun textEditor ()Lcom/intellij/remoterobot/fixtures/TextEditorFixture;
+	public final fun textEditor (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/TextEditorFixture;
+	public final fun textEditor (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/TextEditorFixture;
+	public final fun textEditor (Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/TextEditorFixture;
+	public static synthetic fun textEditor$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/TextEditorFixture;
+	public static synthetic fun textEditor$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/TextEditorFixture;
+	public final fun textEditors ()Ljava/util/List;
+	public final fun textEditors (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+	public static synthetic fun textEditors$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;ILjava/lang/Object;)Ljava/util/List;
+	public final fun textField (Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/JTextFieldFixture;
+	public final fun textField (Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/JTextFieldFixture;
+	public final fun textField (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/JTextFieldFixture;
+	public final fun textField (Ljava/lang/String;Z)Lcom/intellij/remoterobot/fixtures/JTextFieldFixture;
+	public static synthetic fun textField$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JTextFieldFixture;
+	public static synthetic fun textField$default (Lcom/intellij/remoterobot/fixtures/CommonContainerFixture;Ljava/lang/String;ZILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JTextFieldFixture;
+	public final fun textFields (Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+}
+
+public final class com/intellij/remoterobot/fixtures/CommonContainerFixture$Companion {
+}
+
+public final class com/intellij/remoterobot/fixtures/DomElement {
+	public fun <init> (Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementData;)V
+	public final fun click ()V
+	public final fun clickAtCenter ()V
+	public final fun getContainer ()Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;
+	public final fun getElementData ()Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementData;
+	public final fun getHtml ()Ljava/lang/String;
+	public final fun scroll ()V
+	public final fun setElementData (Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementData;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/EditorFixture : com/intellij/remoterobot/fixtures/ContainerFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/EditorFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public final fun clickOnOffset (ILorg/assertj/swing/core/MouseButton;I)V
+	public static synthetic fun clickOnOffset$default (Lcom/intellij/remoterobot/fixtures/EditorFixture;ILorg/assertj/swing/core/MouseButton;IILjava/lang/Object;)V
+	public final fun getCaretOffset ()I
+	public final fun getFileName ()Ljava/lang/String;
+	public final fun getFilePath ()Ljava/lang/String;
+	public final fun getSelectedText ()Ljava/lang/String;
+	public final fun getText ()Ljava/lang/String;
+	public final fun insertTextAtLine (IILjava/lang/String;)V
+	public final fun replaceText (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun scrollToOffset (I)V
+	public final fun selectText (Ljava/lang/String;)V
+	public final fun setText (Ljava/lang/String;)V
+}
+
+public final class com/intellij/remoterobot/fixtures/EditorFixture$Companion {
+	public final fun getLocator ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/GutterFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/GutterFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public final fun getIcons ()Ljava/util/List;
+}
+
+public final class com/intellij/remoterobot/fixtures/GutterFixture$Companion {
+	public final fun getLocator ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/GutterIcon {
+	public fun <init> (Lcom/intellij/remoterobot/fixtures/GutterFixture;Lcom/intellij/remoterobot/fixtures/GutterIconInfo;)V
+	public final fun click ()V
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getLineNumber ()I
+	public final fun getPoint ()Ljava/awt/Point;
+	public final fun moveMouse ()V
+	public final fun rightClick ()V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/GutterIconInfo {
+	public fun <init> (Ljava/lang/String;ILjava/awt/Point;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/awt/Point;
+	public final fun copy (Ljava/lang/String;ILjava/awt/Point;)Lcom/intellij/remoterobot/fixtures/GutterIconInfo;
+	public static synthetic fun copy$default (Lcom/intellij/remoterobot/fixtures/GutterIconInfo;Ljava/lang/String;ILjava/awt/Point;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/GutterIconInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getLineNumber ()I
+	public final fun getPoint ()Ljava/awt/Point;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/HeavyWeightWindowFixture : com/intellij/remoterobot/fixtures/ContainerFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/HeavyWeightWindowFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun getByXpath ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getItemsList ()Lcom/intellij/remoterobot/fixtures/JListFixture;
+}
+
+public final class com/intellij/remoterobot/fixtures/HeavyWeightWindowFixture$Companion {
+	public final fun getByXpath ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public class com/intellij/remoterobot/fixtures/JButtonFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JButtonFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byFixedSizeButtonType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byMainButtonType (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun clickWhenEnabled ()V
+	public final fun getIcon ()Ljava/lang/String;
+	public final fun getText ()Ljava/lang/String;
+	public fun isEnabled ()Z
+}
+
+public final class com/intellij/remoterobot/fixtures/JButtonFixture$Companion {
+	public final fun byFixedSizeButtonType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byMainButtonType (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/JCefBrowserFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public final fun exist (Ljava/lang/String;)Z
+	public final fun findElement (Ljava/lang/String;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/DomElement;
+	public static synthetic fun findElement$default (Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;Ljava/lang/String;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/DomElement;
+	public final fun findElementByContainsText (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/DomElement;
+	public final fun findElementByText (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/DomElement;
+	public final fun findElements (Ljava/lang/String;)Ljava/util/List;
+	public final fun findElementsByContainsText (Ljava/lang/String;)Ljava/util/List;
+	public final fun findElementsByText (Ljava/lang/String;)Ljava/util/List;
+	public static final fun getCanvasLocator ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getDom ()Ljava/lang/String;
+	public static final fun getMacLocator ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun scrollTo (Ljava/lang/String;)V
+}
+
+public final class com/intellij/remoterobot/fixtures/JCefBrowserFixture$Companion {
+	public final fun getCanvasLocator ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getMacLocator ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementData {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Location;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Location;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Location;Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementData;
+	public static synthetic fun copy$default (Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementData;Ljava/lang/String;Ljava/lang/String;Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Location;Ljava/lang/String;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHtml ()Ljava/lang/String;
+	public final fun getLocation ()Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Location;
+	public final fun getTag ()Ljava/lang/String;
+	public final fun getXpath ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementDataList {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementDataList;
+	public static synthetic fun copy$default (Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementDataList;Ljava/util/List;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementDataList;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getElms ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/JCefBrowserFixture$JCEFScriptExecutionError : java/lang/AssertionError {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+}
+
+public final class com/intellij/remoterobot/fixtures/JCefBrowserFixture$Location {
+	public fun <init> (DDDD)V
+	public final fun component1 ()D
+	public final fun component2 ()D
+	public final fun component3 ()D
+	public final fun component4 ()D
+	public final fun copy (DDDD)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Location;
+	public static synthetic fun copy$default (Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Location;DDDDILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Location;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHeight ()D
+	public final fun getWidth ()D
+	public final fun getX ()D
+	public final fun getY ()D
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/JCheckboxFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JCheckboxFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byTextContains (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getText ()Ljava/lang/String;
+	public final fun isSelected ()Z
+	public final fun select ()V
+	public final fun setValue (Z)V
+	public final fun unselect ()V
+}
+
+public final class com/intellij/remoterobot/fixtures/JCheckboxFixture$Companion {
+	public final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byTextContains (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/JLabelFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JLabelFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byContainsText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byLinkLabelText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getValue ()Ljava/lang/String;
+	public final fun isVisible ()Z
+}
+
+public final class com/intellij/remoterobot/fixtures/JLabelFixture$Companion {
+	public final fun byContainsText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byLinkLabelText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/JListFixture : com/intellij/remoterobot/fixtures/ContainerFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JListFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byItem (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun clickItem (Ljava/lang/String;Z)V
+	public final fun clickItem (Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun clickItem$default (Lcom/intellij/remoterobot/fixtures/JListFixture;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun clickItemAtIndex (I)V
+	public final fun collectItems ()Ljava/util/List;
+	public final fun collectSelectedItems ()Ljava/util/List;
+}
+
+public final class com/intellij/remoterobot/fixtures/JListFixture$Companion {
+	public final fun byItem (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public class com/intellij/remoterobot/fixtures/JMenuBarFixture : com/intellij/remoterobot/fixtures/CommonContainerFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JMenuBarFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public fun select ([Ljava/lang/String;)V
+}
+
+public final class com/intellij/remoterobot/fixtures/JMenuBarFixture$Companion {
+	public final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public class com/intellij/remoterobot/fixtures/JPopupMenuFixture : com/intellij/remoterobot/fixtures/CommonContainerFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byContainsItem (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public fun collectItems ()Ljava/util/List;
+	public final fun jMenu (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+	public final fun jMenu (Ljava/lang/String;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+	public static synthetic fun jMenu$default (Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;Ljava/lang/String;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+	public final fun menuItem (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+	public final fun menuItem (Ljava/lang/String;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+	public static synthetic fun menuItem$default (Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;Ljava/lang/String;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+	public fun select ([Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/JPopupMenuFixture;
+}
+
+public final class com/intellij/remoterobot/fixtures/JPopupMenuFixture$Companion {
+	public final fun byContainsItem (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/JRadioButtonFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JRadioButtonFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getText ()Ljava/lang/String;
+	public final fun isSelected ()Z
+	public final fun select ()V
+	public final fun setValue (Z)V
+	public final fun unselect ()V
+}
+
+public final class com/intellij/remoterobot/fixtures/JRadioButtonFixture$Companion {
+	public final fun byText (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public class com/intellij/remoterobot/fixtures/JTableFixture : com/intellij/remoterobot/fixtures/ContainerFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JTableFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun clickCell (II)V
+	public final fun collectItems ()Ljava/util/List;
+	public final fun doubleClickCell (II)V
+	public final fun getColumnCount ()I
+	public final fun getRowCount ()I
+	public final fun rightClickCell (II)V
+	public final fun selectedItem ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/JTableFixture$Companion {
+	public final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/JTextAreaFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JTextAreaFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byLabel (Lcom/intellij/remoterobot/fixtures/JLabelFixture;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getText ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/JTextAreaFixture$Companion {
+	public final fun byLabel (Lcom/intellij/remoterobot/fixtures/JLabelFixture;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/JTextFieldFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JTextFieldFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byLabel (Lcom/intellij/remoterobot/fixtures/JLabelFixture;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getText ()Ljava/lang/String;
+	public final fun isEnabled ()Z
+	public final fun setText (Ljava/lang/String;)V
+}
+
+public final class com/intellij/remoterobot/fixtures/JTextFieldFixture$Companion {
+	public final fun byLabel (Lcom/intellij/remoterobot/fixtures/JLabelFixture;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public class com/intellij/remoterobot/fixtures/JTreeFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/JTreeFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public static final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun clickPath ([Ljava/lang/String;Z)V
+	public static synthetic fun clickPath$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture;[Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun clickRow (I)V
+	public final fun clickRowWithText (Ljava/lang/String;Z)V
+	public static synthetic fun clickRowWithText$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun collapsePath ([Ljava/lang/String;Z)Lkotlin/Unit;
+	public static synthetic fun collapsePath$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture;[Ljava/lang/String;ZILjava/lang/Object;)Lkotlin/Unit;
+	public final fun collectExpandedPaths ()Ljava/util/List;
+	public final fun collectRows ()Ljava/util/List;
+	public final fun collectSelectedPaths ()Ljava/util/List;
+	public final fun doubleClickPath ([Ljava/lang/String;Z)V
+	public static synthetic fun doubleClickPath$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture;[Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun doubleClickRow (I)V
+	public final fun doubleClickRowWithText (Ljava/lang/String;Z)V
+	public static synthetic fun doubleClickRowWithText$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun expand ([Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/JTreeFixture;
+	public final fun expandAll ()Lcom/intellij/remoterobot/fixtures/JTreeFixture;
+	public final fun expandAllExcept ([Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/JTreeFixture;
+	public final fun getValueAtRow (I)Ljava/lang/String;
+	public final fun isPathExists ([Ljava/lang/String;Z)Z
+	public static synthetic fun isPathExists$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture;[Ljava/lang/String;ZILjava/lang/Object;)Z
+	public final fun isPathSelected ([Ljava/lang/String;)Z
+	public final fun rightClickPath ([Ljava/lang/String;Z)V
+	public static synthetic fun rightClickPath$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture;[Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun rightClickRow (I)V
+	public final fun rightClickRowWithText (Ljava/lang/String;Z)V
+	public static synthetic fun rightClickRowWithText$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture;Ljava/lang/String;ZILjava/lang/Object;)V
+}
+
+public final class com/intellij/remoterobot/fixtures/JTreeFixture$Companion {
+	public final fun byType ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/fixtures/JTreeFixture$PathNotFoundException : java/lang/Exception {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/util/List;)V
+}
+
+public final class com/intellij/remoterobot/fixtures/JTreeFixture$TreePathToRow {
+	public fun <init> (Ljava/util/List;I)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()I
+	public final fun copy (Ljava/util/List;I)Lcom/intellij/remoterobot/fixtures/JTreeFixture$TreePathToRow;
+	public static synthetic fun copy$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture$TreePathToRow;Ljava/util/List;IILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/JTreeFixture$TreePathToRow;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPath ()Ljava/util/List;
+	public final fun getRow ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/fixtures/TextEditorFixture : com/intellij/remoterobot/fixtures/ContainerFixture {
+	public static final field Companion Lcom/intellij/remoterobot/fixtures/TextEditorFixture$Companion;
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public final fun getEditor ()Lcom/intellij/remoterobot/fixtures/EditorFixture;
+	public final fun getGutter ()Lcom/intellij/remoterobot/fixtures/GutterFixture;
+	public static final fun getLocator ()Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun getStatusButton ()Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+}
+
+public final class com/intellij/remoterobot/fixtures/TextEditorFixture$Companion {
+	public final fun getLocator ()Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/utils/Direction : java/lang/Enum {
+	public static final field RIGHT Lcom/intellij/remoterobot/utils/Direction;
+	public static final field UNDER Lcom/intellij/remoterobot/utils/Direction;
+	public static fun valueOf (Ljava/lang/String;)Lcom/intellij/remoterobot/utils/Direction;
+	public static fun values ()[Lcom/intellij/remoterobot/utils/Direction;
+}
+
+public class com/intellij/remoterobot/utils/Keyboard {
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;)V
+	public final fun backspace ()V
+	public final fun doubleKeyPress (I)V
+	public final fun down ()V
+	public final fun enter ()V
+	public final fun enterText (Ljava/lang/String;)V
+	public final fun enterText (Ljava/lang/String;J)V
+	public static synthetic fun enterText$default (Lcom/intellij/remoterobot/utils/Keyboard;Ljava/lang/String;JILjava/lang/Object;)V
+	public final fun escape ()V
+	public final fun escape (Ljava/time/Duration;)V
+	public static synthetic fun escape$default (Lcom/intellij/remoterobot/utils/Keyboard;Ljava/time/Duration;ILjava/lang/Object;)V
+	public final fun hotKey ([I)V
+	public final fun key (I)V
+	public final fun key (ILjava/time/Duration;)V
+	public static synthetic fun key$default (Lcom/intellij/remoterobot/utils/Keyboard;ILjava/time/Duration;ILjava/lang/Object;)V
+	public final fun pressing (ILkotlin/jvm/functions/Function1;)V
+	public final fun selectAll ()V
+	public final fun up ()V
+}
+
+public final class com/intellij/remoterobot/utils/KeyboardUtilsKt {
+	public static final fun keyboard (Lcom/intellij/remoterobot/RemoteRobot;Lkotlin/jvm/functions/Function1;)V
+	public static final fun keyboard (Lcom/intellij/remoterobot/fixtures/Fixture;Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class com/intellij/remoterobot/utils/Locators {
+	public static final field INSTANCE Lcom/intellij/remoterobot/utils/Locators;
+	public final fun byProperties (Lkotlin/Pair;[Lkotlin/Pair;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byPropertiesContains (Lkotlin/Pair;[Lkotlin/Pair;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byType (Ljava/lang/Class;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byType (Ljava/lang/String;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byTypeAndProperties (Ljava/lang/Class;Lkotlin/Pair;[Lkotlin/Pair;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byTypeAndProperties (Ljava/lang/String;Lkotlin/Pair;[Lkotlin/Pair;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byTypeAndPropertiesContains (Ljava/lang/Class;Lkotlin/Pair;[Lkotlin/Pair;)Lcom/intellij/remoterobot/search/locators/Locator;
+	public final fun byTypeAndPropertiesContains (Ljava/lang/String;Lkotlin/Pair;[Lkotlin/Pair;)Lcom/intellij/remoterobot/search/locators/Locator;
+}
+
+public final class com/intellij/remoterobot/utils/Locators$XpathProperty : java/lang/Enum {
+	public static final field ACCESSIBLE_NAME Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+	public static final field CLASS_HIERARCHY Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+	public static final field ICON Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+	public static final field JAVA_CLASS Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+	public static final field SIMPLE_CLASS_NAME Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+	public static final field TEXT Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+	public static final field TOOLTIP Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+	public final fun getTitle ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+	public static fun values ()[Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+}
+
+public final class com/intellij/remoterobot/utils/RelativeLocators {
+	public static final field INSTANCE Lcom/intellij/remoterobot/utils/RelativeLocators;
+}
+
+public final class com/intellij/remoterobot/utils/UtilsKt {
+	public static final fun getIdeBuildNumber (Lcom/intellij/remoterobot/RemoteRobot;)Ljava/lang/String;
+	public static final fun getSystemProperty (Lcom/intellij/remoterobot/RemoteRobot;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun hasAnyComponent (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/search/locators/Locator;)Z
+	public static final fun hasAnyComponent (Lcom/intellij/remoterobot/fixtures/ContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;)Z
+	public static final fun hasSingleComponent (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/search/locators/Locator;)Z
+	public static final fun hasSingleComponent (Lcom/intellij/remoterobot/fixtures/ContainerFixture;Lcom/intellij/remoterobot/search/locators/Locator;)Z
+}
+

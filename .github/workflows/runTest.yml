@@ -1,123 +1,87 @@
 name: Run example UI Tests
 on:
   workflow_dispatch
+
 jobs:
-  build-for-ui-test-linux:
-    runs-on: ubuntu-latest
+  build-for-ui-test:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macOS-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2.3.1
         with:
           distribution: zulu
           java-version: 11
+
       - name: Setup FFmpeg
         uses: FedericoCarboni/setup-ffmpeg@v1
         with:
           # Not strictly necessary, but it may prevent rate limit
           # errors especially on GitHub-hosted macos machines.
           token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Clean
-        run: gradle :ui-test-example:clean
-      - name: Run Idea
+        run: ./gradlew :ui-test-example:clean
+
+      - name: Run Idea on Linux
+        if: matrix.os == 'ubuntu-latest'
         run: |
           export DISPLAY=:99.0
           Xvfb -ac :99 -screen 0 1920x1080x24 &
           sleep 10
           mkdir -p ui-test-example/build/reports
-          gradle :ui-test-example:runIdeForUiTests > ui-test-example/build/reports/idea.log &
+          ./gradlew :ui-test-example:runIdeForUiTests > ui-test-example/build/reports/idea.log &
+      - name: Run Idea on MacOS
+        if: matrix.os == 'macOS-latest'
+        run: ./gradlew :ui-test-example:runIdeForUiTests &
+
+      - name: Run Idea on Windows
+        if: matrix.os == 'windows-latest'
+        run: start gradlew.bat :ui-test-example:runIdeForUiTests
+
       - name: Wait for Idea started
         uses: jtalk/url-health-check-action@v2
         with:
           url: http://127.0.0.1:8082
           max-attempts: 15
           retry-delay: 30s
-      - name: Tests
+
+      - name: Tests for Linux
+        if: matrix.os == 'ubuntu-latest'
         run: |
           export DISPLAY=:99.0
-          gradle :ui-test-example:test
+          ./gradlew :ui-test-example:test
+      - name: Tests for Windows/MacOS
+        if:  matrix.os != 'ubuntu-latest'
+        run: ./gradlew :ui-test-example:test
+
       - name: Move video
         if: ${{ failure() }}
         run: mv ui-test-example/video ui-test-example/build/reports
-      - name: Save fails report
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+
+      - name: Save fails report Linux
+        if: ${{ failure() }} && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v2
         with:
           name: ui-test-fails-report-linux
           path: |
             ui-test-example/build/reports
-  build-for-ui-test-mac-os:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: zulu
-          java-version: 11
-      - name: Setup FFmpeg
-        uses: FedericoCarboni/setup-ffmpeg@v1
-        with:
-          # Not strictly necessary, but it may prevent rate limit
-          # errors especially on GitHub-hosted macos machines.
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Clean
-        run: gradle :ui-test-example:clean
-      - name: Run Idea
-        run: |
-          mkdir -p ui-test-example/build/reports
-          gradle :ui-test-example:runIdeForUiTests > ui-test-example/build/reports/idea.log &
-      - name: Wait for Idea started
-        uses: jtalk/url-health-check-action@v2
-        with:
-          url: http://127.0.0.1:8082
-          max-attempts: 15
-          retry-delay: 30s
-      - name: Tests
-        run: gradle :ui-test-example:test
-      - name: Move video
-        if: ${{ failure() }}
-        run: mv ui-test-example/video ui-test-example/build/reports
-      - name: Save fails report
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+
+      - name: Save fails report MacOS
+        if: ${{ failure() }} && matrix.os == 'macOS-latest'
+        uses: actions/upload-artifact@v2
         with:
           name: ui-test-fails-report-mac
           path: |
             ui-test-example/build/reports
-  build-for-ui-test-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: zulu
-          java-version: 11
-      - name: Setup FFmpeg
-        uses: FedericoCarboni/setup-ffmpeg@v1
-        with:
-          # Not strictly necessary, but it may prevent rate limit
-          # errors especially on GitHub-hosted macos machines.
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Clean
-        run: gradle :ui-test-example:clean
-      - name: Run Idea
-        run: start gradlew.bat :ui-test-example:runIdeForUiTests
-      - name: Wait for Idea started
-        uses: jtalk/url-health-check-action@v1.5
-        with:
-          url: http://localhost:8082
-          max-attempts: 15
-          retry-delay: 30s
-      - name: Tests
-        run: gradle :ui-test-example:test
-      - name: Move video
-        if: ${{ failure() }}
-        run: mv ui-test-example/video ui-test-example/build/reports
-      - name: Save fails report
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+
+      - name: Save fails report Windows
+        if: ${{ failure() }} && matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v2
         with:
           name: ui-test-fails-report-windows
           path: |

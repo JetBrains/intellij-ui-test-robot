@@ -70,4 +70,13 @@ public class JavaExampleSteps {
             keyboard.enter();
         });
     }
+
+    public void goToLineAndColumn(int row, int column) {
+        if (remoteRobot.isMac())
+            keyboard.hotKey(KeyEvent.VK_META, KeyEvent.VK_L);
+        else
+            keyboard.hotKey(KeyEvent.VK_CONTROL, KeyEvent.VK_G);
+        keyboard.enterText(row + ":" + column);
+        keyboard.enter();
+    }
 }

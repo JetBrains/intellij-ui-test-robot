@@ -25,6 +25,7 @@ import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
 import static java.awt.event.KeyEvent.*;
 import static java.time.Duration.ofMinutes;
 import static java.time.Duration.ofSeconds;
+import static org.assertj.swing.timing.Pause.pause;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenu;
 import static org.intellij.examples.simple.plugin.pages.ActionMenuFixtureKt.actionMenuItem;
 
@@ -79,6 +80,7 @@ public class CreateCommandLineJavaTest {
         final TextEditorFixture editor = idea.textEditor(Duration.ofSeconds(2));
 
         step("Write a code", () -> {
+            pause(ofSeconds(5).toMillis());
             editor.getEditor().findText("App").click();
             sharedSteps.goToLineAndColumn(1, 19);
             keyboard.enter();

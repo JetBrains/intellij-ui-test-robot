@@ -82,7 +82,7 @@ public class CreateCommandLineJavaTest {
         step("Write a code", () -> {
             pause(ofSeconds(5).toMillis());
             editor.getEditor().findText("App").click();
-            sharedSteps.goToLineAndColumn(1, 19);
+            keyboard.key(VK_END);
             keyboard.enter();
             sharedSteps.autocomplete("main");
             sharedSteps.autocomplete("sout");

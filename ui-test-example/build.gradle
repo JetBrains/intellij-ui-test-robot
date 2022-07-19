@@ -57,7 +57,7 @@ runIdeForUiTests {
     systemProperty "jb.privacy.policy.text", "<!--999.999-->"
     systemProperty "jb.consents.confirmation.enabled", "false"
     systemProperty "ide.mac.file.chooser.native", "false"
-    systemProperty "apple.laf.useScreenMenuBar", "false"
+    systemProperty "jbScreenMenuBar.enabled", "false"
     systemProperty "idea.trust.all.projects", "true"
     systemProperty "ide.show.tips.on.startup.default.value", "false"
 //    systemProperty "eap.require.license", "true"

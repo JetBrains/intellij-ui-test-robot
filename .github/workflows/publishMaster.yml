@@ -28,14 +28,14 @@ jobs:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           SNAPSHOT: "true"
-        run: gradle :robot-server:publishRobotServerPluginPublicationToSpaceInternalRepository
+        run: gradle :robot-server-plugin:publishRobotServerPluginPublicationToSpaceInternalRepository
       - name: Publish the plugin jars
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
           SNAPSHOT: "true"
-        run: gradle :robot-server:publishRobotServerJarPublicationToSpaceInternalRepository
+        run: gradle :robot-server-plugin:publishRobotServerJarPublicationToSpaceInternalRepository
       - name: Publish robot-server-core
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}

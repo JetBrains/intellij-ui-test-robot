@@ -22,12 +22,12 @@ jobs:
         env:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
-        run: gradle :robot-server:publishRobotServerPluginPublicationToSpacePublicRepository
+        run: gradle :robot-server-plugin:publishRobotServerPluginPublicationToSpacePublicRepository
       - name: Publish the plugin jars
         env:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
-        run: gradle :robot-server:publishRobotServerJarPublicationToSpacePublicRepository
+        run: gradle :robot-server-plugin:publishRobotServerJarPublicationToSpacePublicRepository
       - name: Publish robot-server-core
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}

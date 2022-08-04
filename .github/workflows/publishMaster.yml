@@ -17,6 +17,8 @@ jobs:
           java-version: 11
       - name: Build the lib
         run: gradle :remote-robot:build
+      - name: Build robot-server-core
+        run: gradle :robot-server-core:build
       - name: Build the plugin
         env:
           SNAPSHOT: "true"
@@ -34,6 +36,12 @@ jobs:
           RUN_NUMBER: ${{ github.run_number }}
           SNAPSHOT: "true"
         run: gradle :robot-server:publishRobotServerJarPublicationToSpaceInternalRepository
+      - name: Publish robot-server-core
+        env:
+          SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
+          SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: gradle :robot-server-core:publishRobotServerCoreJarPublicationToSpaceInternalRepository
       - name: Publish the remote-robot lib
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}

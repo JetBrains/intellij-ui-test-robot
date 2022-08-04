@@ -4,7 +4,7 @@ package com.intellij.remoterobot.services.xpath
 
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
-import com.intellij.util.ReflectionUtil
+import com.intellij.remoterobot.util.ReflectionUtil
 import org.assertj.swing.edt.GuiActionRunner
 import org.assertj.swing.edt.GuiTask
 import org.assertj.swing.hierarchy.ComponentHierarchy

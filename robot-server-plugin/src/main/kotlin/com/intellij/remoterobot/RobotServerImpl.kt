@@ -337,7 +337,7 @@ class RobotServerImpl(private val serverHost: String, private val serverPort: In
                 } else {
                     CommonResponse(
                         ResponseStatus.ERROR,
-                        result.exception.message,
+                        result.exception!!.message,
                         result.time,
                         result.exception,
                         result.logs
@@ -357,7 +357,7 @@ class RobotServerImpl(private val serverHost: String, private val serverPort: In
                 } else {
                     CommonResponse(
                         ResponseStatus.ERROR,
-                        result.exception.message,
+                        result.exception!!.message,
                         result.time,
                         result.exception,
                         result.logs

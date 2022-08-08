@@ -4,7 +4,6 @@ package com.intellij.remoterobot.services.xpath
 
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
-import com.intellij.remoterobot.util.ReflectionUtil
 import org.assertj.swing.edt.GuiActionRunner
 import org.assertj.swing.edt.GuiTask
 import org.assertj.swing.hierarchy.ComponentHierarchy
@@ -219,12 +218,9 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : Compon
     private fun getTooltipText(component: Component): String? = if (component is JComponent) {
         try {
             component.toolTipText ?: component.getClientProperty("JComponent.helpTooltip")?.let {
-                ReflectionUtil.getField(
-                    Class.forName("com.intellij.ide.HelpTooltip", true, component::class.java.classLoader),
-                    it,
-                    String::class.java,
-                    "title"
-                )
+                it.javaClass.getDeclaredField("title").apply {
+                    isAccessible = true
+                }.get(it) as String?
             }
         } catch (e: Throwable) {
             null

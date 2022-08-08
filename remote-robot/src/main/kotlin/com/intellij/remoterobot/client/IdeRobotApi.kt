@@ -8,64 +8,64 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface IdeRobotApi {
-    @POST("/component")
+    @POST("component")
     fun findByLambda(@Body lambda: ObjectContainer): Call<FindComponentsResponse>
 
-    @POST("/{containerId}/component")
+    @POST("{containerId}/component")
     fun findByLambda(@Path("containerId") containerId: String, @Body lambda: ObjectContainer): Call<FindComponentsResponse>
 
-    @POST("/components")
+    @POST("components")
     fun findAllByLambda(@Body lambda: ObjectContainer): Call<FindComponentsResponse>
 
-    @POST("/{containerId}/components")
+    @POST("{containerId}/components")
     fun findAllByLambda(@Path("containerId") containerId: String, @Body lambda: ObjectContainer): Call<FindComponentsResponse>
 
-    @POST("/xpath/component")
+    @POST("xpath/component")
     fun findByXpath(@Body xpath: FindByXpathRequest): Call<FindComponentsResponse>
 
-    @POST("/xpath/{containerId}/component")
+    @POST("xpath/{containerId}/component")
     fun findByXpath(@Path("containerId") containerId: String, @Body xpath: FindByXpathRequest): Call<FindComponentsResponse>
 
-    @POST("/xpath/components")
+    @POST("xpath/components")
     fun findAllByXpath(@Body xpath: FindByXpathRequest): Call<FindComponentsResponse>
 
-    @POST("/xpath/{containerId}/components")
+    @POST("xpath/{containerId}/components")
     fun findAllByXpath(@Path("containerId") containerId: String, @Body xpath: FindByXpathRequest): Call<FindComponentsResponse>
 
-    @POST("/{componentId}/parentOfComponent")
+    @POST("{componentId}/parentOfComponent")
     fun findParentOf(@Path("componentId") componentId: String, @Body lambda: ObjectContainer): Call<FindComponentsResponse>
 
-    @POST("/execute")
+    @POST("execute")
     fun execute(@Body lambda: ObjectContainer): Call<ExecuteResponse>
 
-    @POST("/{componentId}/execute")
+    @POST("{componentId}/execute")
     fun execute(@Path("componentId") componentId: String, @Body lambda: ObjectContainer): Call<ExecuteResponse>
 
-    @POST("/js/execute")
+    @POST("js/execute")
     fun execute(@Body request: ExecuteScriptRequest): Call<ExecuteResponse>
 
-    @POST("/{componentId}/js/execute")
+    @POST("{componentId}/js/execute")
     fun execute(@Path("componentId") componentId: String, @Body request: ExecuteScriptRequest): Call<ExecuteResponse>
 
-    @POST("/retrieveAny")
+    @POST("retrieveAny")
     fun retrieve(@Body lambda: ObjectContainer): Call<RetrieveResponse>
 
-    @POST("/{componentId}/retrieveAny")
+    @POST("{componentId}/retrieveAny")
     fun retrieve(@Path("componentId") componentId: String, @Body lambda: ObjectContainer): Call<RetrieveResponse>
 
-    @POST("/js/retrieveAny")
+    @POST("js/retrieveAny")
     fun retrieve(@Body request: ExecuteScriptRequest): Call<RetrieveResponse>
 
-    @POST("/{componentId}/js/retrieveAny")
+    @POST("{componentId}/js/retrieveAny")
     fun retrieve(@Path("componentId") componentId: String, @Body request: ExecuteScriptRequest): Call<RetrieveResponse>
 
-    @POST("/{componentId}/data")
+    @POST("{componentId}/data")
     fun retrieveComponentData(@Path("componentId") componentId: String): Call<ComponentDataResponse>
 
-    @GET("/screenshot")
+    @GET("screenshot")
     fun screenshot(): Call<RetrieveResponse>
 
-    @GET("/{componentId}/screenshot")
+    @GET("{componentId}/screenshot")
     fun componentScreenshot(
         @Path("componentId") componentId: String,
         @Query("isPaintingMode") isPaintingMode: Boolean = false

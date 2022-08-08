@@ -97,7 +97,6 @@ class IdeRobotClient(private val ideRobotApi: IdeRobotApi) {
         if (findResponse.exception != null) {
             throw IdeaSideException(cause = findResponse.exception)
         }
-
         return checkNotNull(findResponse.components)
     }
 

@@ -19,18 +19,15 @@ configurations.runtimeClasspath {
 dependencies {
     val ktor_version: String by project
 
-    implementation(project(":remote-robot"))
+    implementation(project(":robot-server-core"))
 
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-gson:$ktor_version")
-    implementation("org.assertj:assertj-swing-junit:3.17.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.8.2")
-
-    implementation("org.mozilla:rhino:1.7.14")
 }
 
 // Create sources Jar from main kotlin sources

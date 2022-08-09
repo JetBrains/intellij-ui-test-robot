@@ -4,17 +4,21 @@ import com.google.gson.JsonParser
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
+import javax.xml.parsers.DocumentBuilderFactory
 
 class IdeDownloader @JvmOverloads constructor(private val httpClient: OkHttpClient = OkHttpClient()) {
 
     private companion object {
-        const val ROBOT_PLUGIN_VERSION_DEFAULT = "0.11.9"
-
+        const val ROBOT_PLUGIN_VERSION_DEFAULT = "0.11.15"
+        private const val ROBOT_PLUGIN_MAVEN_URL =
+            "https://packages.jetbrains.team/maven/p/ij/intellij-dependencies/com/intellij/remoterobot/robot-server-plugin"
+        private const val ROBOT_PLUGIN_MAVEN_METADATA = "$ROBOT_PLUGIN_MAVEN_URL/maven-metadata.xml"
         fun getRobotServerPluginDownloadUrl(version: String): String =
-            "https://packages.jetbrains.team/maven/p/ij/intellij-dependencies/com/intellij/remoterobot/robot-server-plugin/$version/robot-server-plugin-$version.zip"
+            "$ROBOT_PLUGIN_MAVEN_URL/$version/robot-server-plugin-$version.zip"
 
         fun getFeedsOsPropertyName() = when (Os.hostOS()) {
             Os.WINDOWS -> "windowsZip"
@@ -40,8 +44,11 @@ class IdeDownloader @JvmOverloads constructor(private val httpClient: OkHttpClie
     }
 
     @JvmOverloads
-    fun downloadRobotPlugin(toDir: Path, version: String = ROBOT_PLUGIN_VERSION_DEFAULT): Path {
-        return downloadFile(getRobotServerPluginDownloadUrl(version), toDir.resolve("robot-server-plugin-$version"))
+    fun downloadRobotPlugin(toDir: Path, setVersion: String? = null): Path {
+        val version = setVersion ?: resolveRobotServerLatestVersion() ?: ROBOT_PLUGIN_VERSION_DEFAULT
+        return downloadFile(
+            getRobotServerPluginDownloadUrl(version), toDir.resolve("robot-server-plugin-$version")
+        )
     }
 
     private fun extractIde(idePackage: Path, toDir: Path): Path = when (Os.hostOS()) {
@@ -55,7 +62,13 @@ class IdeDownloader @JvmOverloads constructor(private val httpClient: OkHttpClie
         }
     }
 
-    private fun downloadIde(ide: Ide, buildType: Ide.BuildType, version: String?, buildNumber: String?, toDir: Path): Path {
+    private fun downloadIde(
+        ide: Ide,
+        buildType: Ide.BuildType,
+        version: String?,
+        buildNumber: String?,
+        toDir: Path
+    ): Path {
         val ideDownloadLink = getIdeDownloadUrl(ide, buildType, version, buildNumber)
         val idePackageName = ideDownloadLink.substringAfterLast("/").removeSuffix("/")
         val targetFile = toDir.resolve(idePackageName)
@@ -98,5 +111,15 @@ class IdeDownloader @JvmOverloads constructor(private val httpClient: OkHttpClie
                 ?.asJsonObject?.get("link")
                 ?.asString ?: error("no suitable ide found")
         }
+    }
+
+    private fun resolveRobotServerLatestVersion(): String? = try {
+        DocumentBuilderFactory.newInstance().newDocumentBuilder()
+            .parse(ROBOT_PLUGIN_MAVEN_METADATA)
+            .getElementsByTagName("latest")
+            .item(0)
+            .textContent
+    } catch (e: IOException) {
+        null
     }
 }

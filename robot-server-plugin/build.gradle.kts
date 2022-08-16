@@ -17,13 +17,14 @@ configurations.runtimeClasspath {
 }
 
 dependencies {
-    val ktor_version: String by project
-
     implementation(project(":robot-server-core"))
 
-    implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
-    implementation("io.ktor:ktor-gson:$ktor_version")
+    implementation(platform("io.ktor:ktor-bom:2.1.0"))
+    implementation("io.ktor:ktor-server-core")
+    implementation("io.ktor:ktor-server-netty")
+    implementation("io.ktor:ktor-server-content-negotiation")
+    implementation("io.ktor:ktor-serialization-gson")
+    implementation("io.ktor:ktor-server-default-headers")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")

@@ -17,7 +17,7 @@ configurations.runtimeClasspath {
 }
 
 dependencies {
-    implementation(project(":robot-server-core"))
+    api(project(":robot-server-core"))
 
     implementation(platform("io.ktor:ktor-bom:2.1.0"))
     implementation("io.ktor:ktor-server-core")

@@ -26,7 +26,7 @@ class AesEncryptor(password: String) : Encryptor {
         val input = text.toByteArray(charset("UTF8"))
 
         synchronized(Cipher::class.java) {
-            val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+            val cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING")
             cipher.init(Cipher.ENCRYPT_MODE, key)
 
             val cipherText = ByteArray(cipher.getOutputSize(input.size))
@@ -49,7 +49,7 @@ class AesEncryptor(password: String) : Encryptor {
         }
         try {
             synchronized(Cipher::class.java) {
-                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+                val cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING")
                 cipher.init(Cipher.DECRYPT_MODE, key)
 
                 val plainText = ByteArray(cipher.getOutputSize(input.size))

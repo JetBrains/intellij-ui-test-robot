@@ -30,8 +30,8 @@ jobs:
         run: gradle :robot-server-plugin:publishRobotServerJarPublicationToSpacePublicRepository
       - name: Publish robot-server-core
         env:
-          SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
-          SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
+          SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_ACTOR }}
+          SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_TOKEN }}
         run: gradle :robot-server-core:publishRobotServerCoreJarPublicationToSpacePublicRepository
       - name: Publish the remote-robot lib
         env:

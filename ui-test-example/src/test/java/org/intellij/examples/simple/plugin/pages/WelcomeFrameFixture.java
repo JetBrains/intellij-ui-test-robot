@@ -32,7 +32,7 @@ public class WelcomeFrameFixture extends CommonContainerFixture {
         }
         return find(
                 ComponentFixture.class,
-                byXpath("//div[@class='NonOpaquePanel'][./div[@text='" + text + "']]//div[@class='JButton']")
+                byXpath("//div[(@class='MainButton' and @text='"+ text +"') or (@accessiblename='"+ text +"' and @class='JButton')]")
         );
     }
 }

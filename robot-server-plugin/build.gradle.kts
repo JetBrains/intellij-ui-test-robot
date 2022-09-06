@@ -19,7 +19,7 @@ configurations.runtimeClasspath {
 dependencies {
     api(project(":robot-server-core"))
 
-    implementation(platform("io.ktor:ktor-bom:2.1.0"))
+    implementation(platform("io.ktor:ktor-bom:2.1.1"))
     implementation("io.ktor:ktor-server-core")
     implementation("io.ktor:ktor-server-netty")
     implementation("io.ktor:ktor-server-content-negotiation")

@@ -1,5 +1,9 @@
 version = rootProject.ext["publish_version"] as String
 
+plugins {
+    id("org.jetbrains.intellij")
+}
+
 repositories {
     maven("https://repo.labs.intellij.net/intellij")
 }
@@ -24,6 +28,10 @@ val sourcesJar by tasks.creating(Jar::class) {
     from(sourceSets.main.get().allSource)
 }
 
+intellij {
+    updateSinceUntilBuild.set(false)
+    version.set("LATEST-EAP-SNAPSHOT")
+}
 
 publishing {
     publications {

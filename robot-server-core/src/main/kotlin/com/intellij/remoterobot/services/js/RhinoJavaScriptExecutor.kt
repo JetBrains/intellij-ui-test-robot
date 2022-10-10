@@ -2,8 +2,12 @@
 
 package com.intellij.remoterobot.services.js
 
+import com.intellij.ide.plugins.PluginManager
+import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.openapi.extensions.PluginId
 import com.intellij.remoterobot.data.ComponentContext
 import com.intellij.remoterobot.data.RobotContext
+import kotlinx.coroutines.repackaged.net.bytebuddy.dynamic.loading.MultipleParentClassLoader
 import org.mozilla.javascript.*
 
 class RhinoJavaScriptExecutor(private val appClassLoader: ClassLoader? = null) : JavaScriptExecutor {
@@ -32,7 +36,24 @@ class RhinoJavaScriptExecutor(private val appClassLoader: ClassLoader? = null) :
         contextFunction: ScriptableObject.() -> Unit
     ): Any? {
         val context = Context.enter().apply {
-            applicationClassLoader = appClassLoader ?: javaClass.classLoader
+            val performancePluginId = PluginId.getId("com.jetbrains.performancePlugin")
+            val performancePlugin = PluginManagerCore.getPlugin(performancePluginId)
+
+            val defaultClassLoader = appClassLoader ?: javaClass.classLoader
+            val perfPluginClassLoader =
+                if (PluginManager.isPluginInstalled(performancePluginId) && performancePlugin != null) {
+                    performancePlugin.pluginClassLoader
+                } else {
+                    null
+                }
+
+            applicationClassLoader = if (perfPluginClassLoader != null) MultipleParentClassLoader(
+                listOf(
+                    defaultClassLoader,
+                    perfPluginClassLoader
+                )
+            )
+            else MultipleParentClassLoader(listOf(defaultClassLoader))
             optimizationLevel = 9
             languageVersion = Context.VERSION_ES6
         }

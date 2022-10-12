@@ -7,8 +7,8 @@ import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.remoterobot.data.ComponentContext
 import com.intellij.remoterobot.data.RobotContext
-import kotlinx.coroutines.repackaged.net.bytebuddy.dynamic.loading.MultipleParentClassLoader
 import org.mozilla.javascript.*
+import net.bytebuddy.dynamic.loading.MultipleParentClassLoader
 
 class RhinoJavaScriptExecutor(private val appClassLoader: ClassLoader? = null) : JavaScriptExecutor {
     private val globalObjectMap by lazy { mutableMapOf<String, Any>() }

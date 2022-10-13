@@ -1,5 +1,9 @@
 version = rootProject.ext["publish_version"] as String
 
+plugins {
+    id("org.jetbrains.intellij")
+}
+
 repositories {
     maven("https://repo.labs.intellij.net/intellij")
 }
@@ -10,6 +14,7 @@ dependencies {
 
     implementation("org.mozilla:rhino:1.7.14")
     implementation("org.assertj:assertj-swing-junit:3.17.1")
+    implementation("net.bytebuddy:byte-buddy-dep:1.12.18")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
@@ -24,6 +29,10 @@ val sourcesJar by tasks.creating(Jar::class) {
     from(sourceSets.main.get().allSource)
 }
 
+intellij {
+    updateSinceUntilBuild.set(false)
+    version.set("LATEST-EAP-SNAPSHOT")
+}
 
 publishing {
     publications {

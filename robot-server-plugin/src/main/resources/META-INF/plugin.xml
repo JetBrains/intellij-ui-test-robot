@@ -13,6 +13,9 @@
     </extensions>
 
     <idea-version since-build="183.2153.8"/>
-
+    <actions>
+        <action id="com.intellij.remoterobot.recorder.action.OpenRecorderAction" class="com.intellij.remoterobot.recorder.action.OpenRecorderAction"
+                text="Record UI Test"/>
+    </actions>
     <depends>com.intellij.modules.platform</depends>
 </idea-plugin>

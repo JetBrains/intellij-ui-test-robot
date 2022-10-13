@@ -1,4 +1,4 @@
-// Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+// Copyright 2000-2022 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 
 package com.intellij.remoterobot.services.xpath
 
@@ -20,15 +20,16 @@ import javax.swing.JComponent
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.math.absoluteValue
 
-class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : ComponentToDocument {
+class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) {
 
     private fun addComponent(
         doc: Document,
         parentElement: Element,
         hierarchy: ComponentHierarchy,
-        component: Component
+        component: Component,
+        targetComponent: Component? = null
     ) {
-        val element = createElement(doc, component)
+        val element = createElement(doc, component, targetComponent)
         parentElement.appendChild(element)
 
         val allChildren = hierarchy.childrenOf(component)
@@ -45,22 +46,22 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : Compon
             addAll(filteredChildren)
             addAll(exceptionChildren)
         }.sortedWith(ComponentOrderComparator).forEach {
-            addComponent(doc, element, hierarchy, it)
+            addComponent(doc, element, hierarchy, it, targetComponent)
         }
     }
 
-    private fun createElement(doc: Document, component: Component): Element {
+    private fun createElement(doc: Document, component: Component, targetComponent: Component? = null): Element {
 
         val element = doc.createElement("div")
 
-        component.fillElement(doc, element)
+        component.fillElement(doc, element, targetComponent)
 
         element.setUserData("component", component, null)
         return element
     }
 
 
-    private fun <C : Component> C.fillElement(doc: Document, element: Element) {
+    private fun <C : Component> C.fillElement(doc: Document, element: Element, targetComponent: Component? = null) {
         val jClass = if (javaClass.isAnonymousClass) {
             javaClass.superclass.name
         } else {
@@ -70,6 +71,10 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : Compon
         element.setAttribute("class", jClass)
         element.setAttribute("javaclass", javaClass.name)
         element.setAttribute("classhierarchy", getClassHierarchy(javaClass))
+
+        if (this == targetComponent) {
+            element.setAttribute("robot_target_element", "true")
+        }
 
         val elementText = StringBuilder().apply { append(jClass).append(". ") }
 
@@ -251,7 +256,7 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : Compon
     }
 
 
-    override fun create(component: Component?): Document {
+    fun create(rootComponent: Component?, targetComponent: Component? = null): Document {
 
         val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument()
 
@@ -260,13 +265,13 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) : Compon
                 val hierarchy = ExistingHierarchy()
                 val rootElement = doc.createElement("div")
                 doc.appendChild(rootElement)
-                val containers = if (component != null) {
-                    hierarchy.childrenOf(component)
+                val containers = if (rootComponent != null) {
+                    hierarchy.childrenOf(rootComponent)
                 } else {
                     hierarchy.roots()
                 }
                 containers.filter { it.isShowing || it.javaClass.name.endsWith("SharedOwnerFrame") }.forEach {
-                    addComponent(doc, rootElement, hierarchy, it)
+                    addComponent(doc, rootElement, hierarchy, it, targetComponent)
                 }
             }
         })

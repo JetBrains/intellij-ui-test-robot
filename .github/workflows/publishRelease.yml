@@ -33,6 +33,11 @@ jobs:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_TOKEN }}
         run: gradle :robot-server-core:publishRobotServerCoreJarPublicationToSpacePublicRepository
+      - name: Publish test-recorder
+        env:
+          SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_ACTOR }}
+          SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_TOKEN }}
+        run: gradle :robot-server-core:publishTestRecorderJarPublicationToSpacePublicRepository
       - name: Publish the remote-robot lib
         env:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}

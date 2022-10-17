@@ -25,10 +25,11 @@ import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.*
 
-internal class RecordUITestFrame(private val model: RecordUITestModel) : JFrame(), Disposable {
+
+class RecordUITestFrame(private val model: RecordUITestModel, onClose: () -> Unit) : JFrame(), Disposable {
     companion object {
         const val UI_TEST_RECORDER_TITLE = "UI Test Recorder"
-        var isOpened: Boolean = false
+
         fun isThisFromRecordTestFrame(targetComponent: Component): Boolean {
             var component: Component? = targetComponent
             while (component != null) {
@@ -42,7 +43,6 @@ internal class RecordUITestFrame(private val model: RecordUITestModel) : JFrame(
     }
 
     init {
-        isOpened = true
         title = UI_TEST_RECORDER_TITLE
         setSize(800, 600)
         glassPane = IdeGlassPaneImpl(rootPane)
@@ -54,11 +54,12 @@ internal class RecordUITestFrame(private val model: RecordUITestModel) : JFrame(
 
         })
         isVisible = true
+        Disposer.register(model.disposable, this)
         addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent?) {
                 println("Stop recording")
                 model.stop()
-                isOpened = false
+                onClose()
             }
         })
     }
@@ -98,7 +99,7 @@ private fun testEditor(model: RecordUITestModel): JComponent {
     val myEditor = editorFactory.createEditor(editorDocument, ProjectManager.getInstance().defaultProject) as EditorEx
     val panel = DisposableEditorPanel(myEditor)
 
-    Disposer.register(ProjectManager.getInstance().defaultProject, panel)
+    Disposer.register(model.disposable, panel)
 
     EditorTextField.SUPPLEMENTARY_KEY.set(myEditor, true)
     myEditor.colorsScheme = EditorColorsManager.getInstance().globalScheme

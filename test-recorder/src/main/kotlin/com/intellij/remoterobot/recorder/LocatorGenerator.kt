@@ -14,6 +14,7 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 import javax.xml.xpath.XPathConstants
+import javax.xml.xpath.XPathExpressionException
 import javax.xml.xpath.XPathFactory
 
 
@@ -40,29 +41,31 @@ internal class LocatorGenerator {
     }
 
     private val bestAttributes = listOf("accessiblename.key", "class", "text.key")
+
     private val nonLocalizedAttributes = listOf("accessiblename", "text")
     private val visibleTextKeysAttribute = "visible_text_keys"
 
     private fun findLocator(hierarchy: Document, element: Node): String? {
-        val foundPairs = bestAttributes.mapNotNull { attribute ->
-            element.attributes.getNamedItem(attribute)?.nodeValue?.takeIf { it.isNotEmpty() }
-                ?.let { value -> attribute to value }
-        }.toMap().toMutableMap()
+        val foundPairs = mutableMapOf<String, String>()
+        var locator: String
 
-        var locator = buildLocator(foundPairs)
-        if (isValidLocator(locator, hierarchy, element)) {
-            return locator
-        }
-
-        fun tryToAddAttribute(attribute: String): String? {
+        fun tryToAddAttribute(attribute: String, removeIfNotFinal: Boolean = true): String? {
             element.attributes.getNamedItem(attribute)?.nodeValue?.takeIf { it.isNotEmpty() && it.contains("@").not() }
                 ?.let { foundPairs[attribute] = it }
             locator = buildLocator(foundPairs)
-            if (isValidLocator(buildLocator(foundPairs), hierarchy, element)) {
-                return locator
+            return if (isValidLocator(buildLocator(foundPairs), hierarchy, element)) {
+                locator
             } else {
-                foundPairs.remove(attribute)
-                return null
+                if (removeIfNotFinal) {
+                    foundPairs.remove(attribute)
+                }
+                null
+            }
+        }
+        bestAttributes.forEach {
+            tryToAddAttribute(it, false)?.let { locator ->
+                println("found best locator: $locator")
+                return locator
             }
         }
 
@@ -79,7 +82,11 @@ internal class LocatorGenerator {
     }
 
     private fun isValidLocator(locator: String, hierarchy: Document, targetElement: Node): Boolean {
-        val nodes = hierarchy.findNodes(locator)
+        val nodes = try {
+            hierarchy.findNodes(locator)
+        } catch (e: XPathExpressionException) {
+            emptyList()
+        }
         println("$locator = ${nodes.size}")
         return nodes.size == 1 && nodes.firstOrNull() == targetElement
     }
@@ -87,7 +94,12 @@ internal class LocatorGenerator {
     private fun buildLocator(strictAttributes: Map<String, String>): String {
         val conditions = mutableListOf<String>()
         strictAttributes.forEach { (attribute, value) ->
-            conditions.add("@$attribute='$value'")
+            if (attribute.endsWith(".key") || attribute.endsWith("_keys")) {
+                val shortValue = value.split(" ").firstOrNull() ?: value
+                conditions.add("contains(@$attribute, '$shortValue')")
+            } else {
+                conditions.add("@$attribute='$value'")
+            }
         }
         return buildString {
             append("//div[")

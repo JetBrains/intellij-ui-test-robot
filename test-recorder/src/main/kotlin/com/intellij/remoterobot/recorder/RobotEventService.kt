@@ -11,7 +11,7 @@ import com.intellij.openapi.actionSystem.ex.AnActionListener
 import com.intellij.openapi.util.Disposer
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
-import com.intellij.remoterobot.recorder.ui.StepModel
+import com.intellij.remoterobot.recorder.steps.StepModel
 import java.awt.Component
 import java.awt.Container
 import java.awt.KeyboardFocusManager
@@ -46,7 +46,7 @@ internal class RobotEventService(private val newStepHandler: (StepModel) -> Unit
 
         val globalActionListener = object : AnActionListener {
             override fun beforeActionPerformed(action: AnAction, dataContext: DataContext, event: AnActionEvent) {
-                println("IDEA is going to perform action ${action.templatePresentation.text}")
+
             }
         }
 
@@ -68,12 +68,11 @@ internal class RobotEventService(private val newStepHandler: (StepModel) -> Unit
     }
 
     private fun processKeyEvent(awtEvent: KeyEvent) {
-        println(awtEvent)
+
     }
 
     fun deactivate() {
         if (isActive) {
-            println("Global action recorder is non active")
             disposable?.let {
                 this.disposable = null
                 Disposer.dispose(it)
@@ -126,7 +125,7 @@ internal class RobotEventService(private val newStepHandler: (StepModel) -> Unit
 
             else -> component.name
         }
-        return name?.takeIf { it.isNotEmpty() } ?: component::class.java.name.substringAfterLast(".")
+        return name?.takeIf { it.isNotEmpty() } ?: component::class.java.name.substringAfterLast(".").replace("$", " ")
     }
 
     private fun findComponent(event: MouseEvent): Component? {

@@ -36,7 +36,7 @@ subprojects {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     }
 
-    if (name in listOf("remote-robot", "remote-fixtures", "robot-server-plugin", "robot-server-core", "ide-launcher")) {
+    if (name in listOf("remote-robot", "remote-fixtures", "robot-server-plugin", "robot-server-core", "ide-launcher", "test-recorder")) {
         apply {
             plugin("maven-publish")
         }

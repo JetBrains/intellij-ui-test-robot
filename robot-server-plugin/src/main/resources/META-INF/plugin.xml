@@ -10,6 +10,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationInitializedListener implementation="com.intellij.remoterobot.RobotServerStarter"/>
+        <applicationService serviceImplementation="com.intellij.remoterobot.recorder.RecorderService"/>
     </extensions>
 
     <idea-version since-build="183.2153.8"/>

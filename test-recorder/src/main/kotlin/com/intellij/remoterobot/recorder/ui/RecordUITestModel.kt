@@ -1,11 +1,13 @@
 // Copyright 2000-2022 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.intellij.remoterobot.recorder.ui
 
+import com.intellij.openapi.Disposable
 import com.intellij.remoterobot.recorder.RobotEventService
+import com.intellij.remoterobot.recorder.steps.StepModel
 import com.intellij.remoterobot.recorder.ui.RecordUITestFrame.Companion.isThisFromRecordTestFrame
 import javax.swing.DefaultListModel
 
-internal class RecordUITestModel : DefaultListModel<StepModel>() {
+class RecordUITestModel(val disposable: Disposable) : DefaultListModel<StepModel>() {
     private val service = RobotEventService { addNewStep(it) }
 
     init {
@@ -20,9 +22,11 @@ internal class RecordUITestModel : DefaultListModel<StepModel>() {
 
     val code: String
         get() = buildString {
+            append("with(remoteRobot) {\n")
             elements().toList().forEach {
                 append(it.generateStep() + "\n")
             }
+            append("}")
         }
 
     fun codeIsUpdated() {

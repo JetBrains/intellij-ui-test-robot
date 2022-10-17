@@ -2,12 +2,14 @@
 
 package com.intellij.remoterobot
 
+import com.intellij.openapi.components.service
 import com.intellij.remoterobot.client.FindByXpathRequest
 import com.intellij.remoterobot.data.*
 import com.intellij.remoterobot.data.js.ExecuteScriptRequest
 import com.intellij.remoterobot.encryption.Encryptor
 import com.intellij.remoterobot.encryption.EncryptorFactory
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
+import com.intellij.remoterobot.recorder.RecorderService
 import com.intellij.remoterobot.services.IdeRobot
 import com.intellij.remoterobot.services.xpath.XpathDataModelCreator
 import com.intellij.remoterobot.services.xpath.convertToHtml
@@ -183,6 +185,9 @@ class RobotServerImpl(private val serverHost: String, private val serverPort: In
                 get("/hierarchy") {
                     hierarchy()
                 }
+                get("/recorder") {
+                    recorder()
+                }
                 post("/execute") {
                     val lambda = call.receive<ObjectContainer>()
                     call.commonRequest {
@@ -324,6 +329,17 @@ class RobotServerImpl(private val serverHost: String, private val serverPort: In
     private suspend fun PipelineContext<*, ApplicationCall>.hierarchy() {
         val doc = XpathDataModelCreator(TextToKeyCache).create(null)
         call.respondText(doc.convertToHtml(), ContentType.Text.Html)
+    }
+
+    private suspend fun PipelineContext<*, ApplicationCall>.recorder() {
+        val body = """
+            <html>
+            <body>
+            <textarea rows="50" cols="130">${RecorderService.getInstance().getCode()}</textarea>
+            </body>
+            </html>
+        """.trimIndent()
+        call.respondText(body, ContentType.Text.Html)
     }
 
     private companion object {

@@ -178,6 +178,13 @@ public class com/intellij/remoterobot/fixtures/CommonContainerFixture : com/inte
 public final class com/intellij/remoterobot/fixtures/CommonContainerFixture$Companion {
 }
 
+public final class com/intellij/remoterobot/fixtures/ComponentFixtureUtilsKt {
+	public static final fun component (Lcom/intellij/remoterobot/SearchContext;Lcom/intellij/remoterobot/search/locators/Locator;)Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+	public static final fun component (Lcom/intellij/remoterobot/SearchContext;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+	public static synthetic fun component$default (Lcom/intellij/remoterobot/SearchContext;Lcom/intellij/remoterobot/search/locators/Locator;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/ComponentFixture;
+	public static final fun components (Lcom/intellij/remoterobot/SearchContext;Lcom/intellij/remoterobot/search/locators/Locator;)Ljava/util/List;
+}
+
 public final class com/intellij/remoterobot/fixtures/DomElement {
 	public fun <init> (Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$ElementData;)V
 	public final fun click ()V

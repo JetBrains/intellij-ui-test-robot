@@ -26,14 +26,73 @@ internal class LocatorGenerator {
     fun generateXpath(targetComponent: Component): String {
         val hierarchy = hierarchyGenerator.create(null, targetComponent)
         val targetElement = hierarchy.findNodes("//div[@robot_target_element='true']").first()
-        val locator = findLocator(hierarchy, targetElement)
-        return locator ?: throw IllegalStateException("can't create locator:\n${targetElement.getNodeString()}")
+
+        // has it unique straight locator?
+        var locator = findLocator(hierarchy, targetElement)
+        if (locator != null) return locator
+
+        // trying to find unique parent
+        val multipleLocator = findLocator(hierarchy, targetElement, false)
+        if (multipleLocator != null) {
+            var parentLocator: String? = null
+            var parentElement = targetElement.parentNode
+            while (parentLocator == null && parentElement != null) {
+                parentLocator = findLocator(hierarchy, parentElement)
+                if (parentLocator == null) {
+                    parentElement = parentElement.parentNode
+                }
+            }
+            if (parentLocator != null) {
+                val combinedLocator = "$parentLocator$multipleLocator"
+                if (isValidLocator(combinedLocator, hierarchy, targetElement, true)) {
+                    locator = combinedLocator
+                }
+            }
+            if (locator != null) return locator
+        }
+        // then build the whole path from the first unique parent
+        val paths = mutableListOf<String>()
+        val chainOfNodes = ArrayDeque<Node>()
+        var element = targetElement
+        while (element != null) {
+            val currentLocator = findLocator(hierarchy, element, isSingle = true)
+            chainOfNodes.addFirst(element)
+            if (currentLocator == null) {
+                element = element.parentNode
+            } else {
+                break
+            }
+        }
+        fun wholePathLocator() = "/" + paths.map { it.replace("//", "/") }.joinToString("") { it }
+        fun testNewPathElement(locatorToTest: String, node: Node): Boolean {
+            val locator = wholePathLocator() + locatorToTest.replace("//", "/")
+            return isValidLocator(locator, hierarchy, node, isSingle = true)
+        }
+        chainOfNodes.forEach { node ->
+            val currentLocator = findLocator(hierarchy, node, isSingle = true)
+            if (currentLocator != null) {
+                paths.add(currentLocator)
+            } else {
+                val multipleLocator =
+                    findLocator(hierarchy, node, isSingle = false) ?: throw CantCreateLocatorException(targetElement)
+                if (testNewPathElement(multipleLocator, node)) {
+                    paths.add(multipleLocator)
+                } else {
+                    (1..countElements(multipleLocator, hierarchy)).forEach {
+                        val indexedLocator = "$multipleLocator[$it]"
+                        if (testNewPathElement(indexedLocator, node)) {
+                            paths.add(indexedLocator)
+                        }
+                    }
+                }
+            }
+        }
+        val uniqueLocator = wholePathLocator()
+        if (isValidLocator(uniqueLocator, hierarchy, targetElement, true)) return uniqueLocator
+
+        throw CantCreateLocatorException(targetElement)
     }
 
-    private fun Document.findComponents(xpathExpression: String): List<Component> {
-        val result = xPath.compile(xpathExpression).evaluate(this, XPathConstants.NODESET) as NodeList
-        return (0 until result.length).mapNotNull { result.item(it).getUserData("component") as? Component }
-    }
 
     private fun Document.findNodes(xpathExpression: String): List<Node> {
         val result = xPath.compile(xpathExpression).evaluate(this, XPathConstants.NODESET) as NodeList
@@ -45,7 +104,7 @@ internal class LocatorGenerator {
     private val nonLocalizedAttributes = listOf("accessiblename", "text")
     private val visibleTextKeysAttribute = "visible_text_keys"
 
-    private fun findLocator(hierarchy: Document, element: Node): String? {
+    private fun findLocator(hierarchy: Document, element: Node, isSingle: Boolean = true): String? {
         val foundPairs = mutableMapOf<String, String>()
         var locator: String
 
@@ -53,7 +112,7 @@ internal class LocatorGenerator {
             element.attributes.getNamedItem(attribute)?.nodeValue?.takeIf { it.isNotEmpty() && it.contains("@").not() }
                 ?.let { foundPairs[attribute] = it }
             locator = buildLocator(foundPairs)
-            return if (isValidLocator(buildLocator(foundPairs), hierarchy, element)) {
+            return if (isValidLocator(buildLocator(foundPairs), hierarchy, element, isSingle)) {
                 locator
             } else {
                 if (removeIfNotFinal) {
@@ -81,14 +140,26 @@ internal class LocatorGenerator {
         return null
     }
 
-    private fun isValidLocator(locator: String, hierarchy: Document, targetElement: Node): Boolean {
+    private fun isValidLocator(locator: String, hierarchy: Document, targetElement: Node, isSingle: Boolean): Boolean {
         val nodes = try {
             hierarchy.findNodes(locator)
         } catch (e: XPathExpressionException) {
             emptyList()
         }
-        println("$locator = ${nodes.size}")
-        return nodes.size == 1 && nodes.firstOrNull() == targetElement
+        return if (isSingle) {
+            nodes.size == 1 && nodes.firstOrNull() == targetElement
+        } else {
+            nodes.isNotEmpty() && nodes.any { it == targetElement }
+        }
+    }
+
+    private fun countElements(locator: String, hierarchy: Document): Int {
+        val nodes = try {
+            hierarchy.findNodes(locator)
+        } catch (e: XPathExpressionException) {
+            emptyList()
+        }
+        return nodes.size
     }
 
     private fun buildLocator(strictAttributes: Map<String, String>): String {
@@ -107,18 +178,22 @@ internal class LocatorGenerator {
             append("]")
         }
     }
-
-    private fun Node.getNodeString(): String {
-        try {
-            val writer = StringWriter()
-            val transformer: Transformer = TransformerFactory.newInstance().newTransformer()
-            transformer.transform(DOMSource(this), StreamResult(writer))
-            val output = writer.toString()
-            return output.substring(output.indexOf("?>") + 2) //remove <?xml version="1.0" encoding="UTF-8"?>
-        } catch (e: TransformerException) {
-            e.printStackTrace()
-        }
-        return this.textContent
-    }
 }
 
+internal class CantCreateLocatorException(node: Node) :
+    IllegalStateException("can't create locator for:\n${node.getNodeString()}") {
+    companion object {
+        private fun Node.getNodeString(): String {
+            try {
+                val writer = StringWriter()
+                val transformer: Transformer = TransformerFactory.newInstance().newTransformer()
+                transformer.transform(DOMSource(this), StreamResult(writer))
+                val output = writer.toString()
+                return output.substring(output.indexOf("?>") + 2) //remove <?xml version="1.0" encoding="UTF-8"?>
+            } catch (e: TransformerException) {
+                e.printStackTrace()
+            }
+            return this.textContent
+        }
+    }
+}

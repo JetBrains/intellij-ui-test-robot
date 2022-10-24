@@ -1,12 +1,12 @@
 // Copyright 2000-2022 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
-package com.intellij.remoterobot.recorder.ui
+package com.intellij.remoterobot.recorder.ui.dialogs
 
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.remoterobot.data.TextData
-import com.intellij.remoterobot.recorder.steps.*
-import com.intellij.remoterobot.recorder.steps.MouseClickAction
-import com.intellij.remoterobot.recorder.steps.MoveMouseAction
-import com.intellij.remoterobot.recorder.steps.StepActionType
+import com.intellij.remoterobot.recorder.steps.mouse.MouseClickOperation
+import com.intellij.remoterobot.recorder.steps.mouse.MouseMoveOperation
+import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepActionType
+import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
 import com.intellij.ui.components.JBLabel
 import com.intellij.remoterobot.recorder.ui.RecordUITestFrame.Companion.UI_TEST_RECORDER_TITLE
 import com.intellij.util.ui.FormBuilder
@@ -15,7 +15,7 @@ import org.assertj.swing.core.MouseButton
 import java.util.*
 import javax.swing.*
 
-internal class CreateNewStepDialogWrapper(private val stepModel: StepModel) : DialogWrapper(true) {
+internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: MouseEventStepModel) : DialogWrapper(true) {
     init {
         init()
         title = UI_TEST_RECORDER_TITLE
@@ -28,18 +28,22 @@ internal class CreateNewStepDialogWrapper(private val stepModel: StepModel) : Di
             addToTop(
                 FormBuilder.createFormBuilder()
                     .addLabeledComponent("Name", JTextField(stepModel.name).apply {
-                        addPropertyChangeListener { stepModel.name = text }
+                        addPropertyChangeListener { stepModel.observableStepName.value = text }
+                        stepModel.observableStepName.onChanged {
+                            println(it)
+                            this.text = it
+                        }
                     })
                     .addLabeledComponent("Locator", JTextField(stepModel.xpath).apply {
                         addPropertyChangeListener { stepModel.xpath = text }
                     })
-                    .addLabeledComponent("Action", JComboBox<StepActionType>().apply {
-                        StepActionType.values().forEach { addItem(it) }
-                        selectedItem = StepActionType.MouseClick
+                    .addLabeledComponent("Action", JComboBox<MouseEventStepActionType>().apply {
+                        MouseEventStepActionType.values().forEach { addItem(it) }
+                        selectedItem = MouseEventStepActionType.MouseClick
                         addItemListener {
                             when (it.item) {
-                                StepActionType.MouseClick -> actionPanel.showMouseClickSetting(stepModel)
-                                StepActionType.MouseMove -> actionPanel.showMouseMoveSetting(stepModel)
+                                MouseEventStepActionType.MouseClick -> actionPanel.showMouseClickSetting(stepModel)
+                                MouseEventStepActionType.MouseMove -> actionPanel.showMouseMoveSetting(stepModel)
                             }
                             revalidate()
                             repaint()
@@ -53,35 +57,34 @@ internal class CreateNewStepDialogWrapper(private val stepModel: StepModel) : Di
     }
 
 
-    internal class ActionPanel() : BorderLayoutPanel() {
-        fun showMouseClickSetting(stepModel: StepModel) {
-            val action = MouseClickAction(MouseButton.LEFT_BUTTON, 1, null, null, null)
-            stepModel.action = action
+    internal class ActionPanel : BorderLayoutPanel() {
+        fun showMouseClickSetting(stepModel: MouseEventStepModel) {
+            val action = MouseClickOperation(stepModel)
+            stepModel.operation.value = action
             removeAll()
-            val mouseActions = mutableListOf<StepAction>()
             addToCenter(
                 FormBuilder.createFormBuilder()
                     .addLabeledComponent("Mouse Action", JComboBox<MouseButton>().apply {
                         addItem(MouseButton.LEFT_BUTTON)
                         addItem(MouseButton.RIGHT_BUTTON)
                         selectedItem = action.button
-                        addPropertyChangeListener { action.button = selectedItem as MouseButton }
+                        addActionListener { action.button.value = selectedItem as MouseButton }
                         setRenderer { _, button, _, _, _ -> JBLabel(button.name.lowercase(Locale.getDefault())) }
                     })
                     .addLabeledComponent("Click counts", JComboBox<Int>().apply {
                         addItem(1)
                         addItem(2)
                         selectedItem = action.count
-                        addPropertyChangeListener { action.count = selectedItem as Int }
+                        addActionListener { action.count.value = selectedItem as Int }
                         setRenderer { _, count, _, _, _ -> JBLabel("$count") }
                     })
                     .addComponent(JCheckBox("Click at exact point(${stepModel.point.x}, ${stepModel.point.y})").apply {
-                        isSelected = action.where != null
-                        addPropertyChangeListener {
+                        isSelected = action.where.value != null
+                        addChangeListener {
                             if (isSelected) {
-                                action.where = stepModel.point
+                                action.where.value = stepModel.point
                             } else {
-                                action.where = null
+                                action.where.value = null
                             }
                         }
                     })
@@ -89,9 +92,9 @@ internal class CreateNewStepDialogWrapper(private val stepModel: StepModel) : Di
                         addItem(null)
                         stepModel.texts.forEach { addItem(it) }
                         selectedItem = action.atText
-                        addPropertyChangeListener {
-                            action.atText = (selectedItem as TextData?)?.text
-                            action.textKey = (selectedItem as TextData?)?.bundleKey
+                        addActionListener {
+                            action.atText.value = (selectedItem as TextData?)?.text
+                            action.textKey.value = (selectedItem as TextData?)?.bundleKey
                         }
                         setRenderer { _, text, _, _, _ -> JBLabel("${text?.text ?: "---"}") }
                     })
@@ -99,19 +102,19 @@ internal class CreateNewStepDialogWrapper(private val stepModel: StepModel) : Di
             )
         }
 
-        fun showMouseMoveSetting(stepModel: StepModel) {
-            val action = MoveMouseAction(null, null, null)
-            stepModel.action = action
+        fun showMouseMoveSetting(stepModel: MouseEventStepModel) {
+            val action = MouseMoveOperation(stepModel)
+            stepModel.operation.value = action
             removeAll()
             addToCenter(
                 FormBuilder.createFormBuilder()
                     .addComponent(JCheckBox("Move to exact point(${stepModel.point.x}, ${stepModel.point.y})").apply {
-                        isSelected = action.where != null
-                        addPropertyChangeListener {
+                        isSelected = action.where.value != null
+                        addActionListener {
                             if (isSelected) {
-                                action.where = stepModel.point
+                                action.where.value = stepModel.point
                             } else {
-                                action.where = null
+                                action.where.value = null
                             }
                         }
                     })
@@ -119,9 +122,8 @@ internal class CreateNewStepDialogWrapper(private val stepModel: StepModel) : Di
                         addItem(null)
                         stepModel.texts.forEach { addItem(it) }
                         selectedItem = action.atText
-                        addPropertyChangeListener {
-                            action.atText = (selectedItem as TextData?)?.text
-                            action.textKey = (selectedItem as TextData?)?.bundleKey
+                        addActionListener {
+                            action.atText.value = selectedItem as TextData?
                         }
                         setRenderer { _, text, _, _, _ -> JBLabel("${text?.text ?: "---"}") }
                     })

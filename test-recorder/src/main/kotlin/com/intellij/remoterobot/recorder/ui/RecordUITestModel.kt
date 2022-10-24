@@ -2,21 +2,22 @@
 package com.intellij.remoterobot.recorder.ui
 
 import com.intellij.openapi.Disposable
-import com.intellij.remoterobot.recorder.RobotEventService
-import com.intellij.remoterobot.recorder.steps.StepModel
+import com.intellij.remoterobot.recorder.RobotMouseEventService
+import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
 import com.intellij.remoterobot.recorder.ui.RecordUITestFrame.Companion.isThisFromRecordTestFrame
+import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewMouseEventStepDialogWrapper
 import javax.swing.DefaultListModel
 
-class RecordUITestModel(val disposable: Disposable) : DefaultListModel<StepModel>() {
-    private val service = RobotEventService { addNewStep(it) }
+internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<MouseEventStepModel>() {
+    private val service = RobotMouseEventService { addNewStep(it) }
 
     init {
         service.activate()
     }
 
-    private var selectedStep: StepModel? = null
+    private var selectedStep: MouseEventStepModel? = null
 
-    fun select(step: StepModel?) {
+    fun select(step: MouseEventStepModel?) {
         selectedStep = step
     }
 
@@ -29,7 +30,7 @@ class RecordUITestModel(val disposable: Disposable) : DefaultListModel<StepModel
             append("}")
         }
 
-    fun codeIsUpdated() {
+    fun updateCode() {
         codeUpdatedListeners.forEach { listener -> listener.invoke() }
     }
 
@@ -40,13 +41,11 @@ class RecordUITestModel(val disposable: Disposable) : DefaultListModel<StepModel
 
     fun stop() = service.deactivate()
 
-    private fun addNewStep(stepModel: StepModel) {
+    private fun addNewStep(stepModel: MouseEventStepModel) {
         if (isThisFromRecordTestFrame(stepModel.component)) return
-        if (CreateNewStepDialogWrapper(stepModel).showAndGet()) {
+        if (CreateNewMouseEventStepDialogWrapper(stepModel).showAndGet()) {
             addElement(stepModel)
-            println(stepModel.generateStep())
-
-            codeIsUpdated()
+            updateCode()
         }
     }
 }
@@ -61,3 +60,4 @@ internal class ObservableField<T>(initValue: T) {
             listeners.forEach { it.invoke(value) }
         }
 }
+

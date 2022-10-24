@@ -11,7 +11,7 @@ import com.intellij.openapi.actionSystem.ex.AnActionListener
 import com.intellij.openapi.util.Disposer
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
-import com.intellij.remoterobot.recorder.steps.StepModel
+import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
 import java.awt.Component
 import java.awt.Container
 import java.awt.KeyboardFocusManager
@@ -19,12 +19,10 @@ import java.awt.Point
 import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import java.awt.event.MouseEvent.MOUSE_PRESSED
-import javax.swing.AbstractButton
 import javax.swing.RootPaneContainer
 import javax.swing.SwingUtilities
-import javax.swing.text.JTextComponent
 
-internal class RobotEventService(private val newStepHandler: (StepModel) -> Unit) {
+internal class RobotMouseEventService(private val newStepHandler: (MouseEventStepModel) -> Unit) {
     private val locatorGenerator = LocatorGenerator()
     private var disposable: Disposable? = null
 
@@ -57,7 +55,7 @@ internal class RobotEventService(private val newStepHandler: (StepModel) -> Unit
                     is KeyEvent -> processKeyEvent(awtEvent)
                 }
             } catch (e: Exception) {
-                println(e)
+                e.printStackTrace()
             }
             false
         }
@@ -103,29 +101,9 @@ internal class RobotEventService(private val newStepHandler: (StepModel) -> Unit
             )
             val xpath = locatorGenerator.generateXpath(actualComponent)
             val texts = TextParser.parseComponent(actualComponent, true, TextToKeyCache)
-            val name = "Click at ${generateComponentName(actualComponent, texts.map { it.text })}"
-            val newStepModel = StepModel(name, actualComponent, convertedPoint, null, xpath, texts)
+            val newStepModel = MouseEventStepModel(actualComponent, convertedPoint, xpath, texts)
             newStepHandler(newStepModel)
         }
-    }
-
-    private fun generateComponentName(component: Component, texts: List<String>): String {
-        if (texts.size in 1..3) {
-            return texts.joinToString(" ") { it }
-        }
-        val name: String? = when (component) {
-            is AbstractButton -> component.text
-            is JTextComponent -> component.text?.let {
-                if (it.length > 20) {
-                    it.substring(0, 20)
-                } else {
-                    it
-                }
-            }
-
-            else -> component.name
-        }
-        return name?.takeIf { it.isNotEmpty() } ?: component::class.java.name.substringAfterLast(".").replace("$", " ")
     }
 
     private fun findComponent(event: MouseEvent): Component? {

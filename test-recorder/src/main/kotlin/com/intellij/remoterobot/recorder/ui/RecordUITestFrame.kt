@@ -26,7 +26,7 @@ import java.awt.event.WindowEvent
 import javax.swing.*
 
 
-class RecordUITestFrame(private val model: RecordUITestModel, onClose: () -> Unit) : JFrame(), Disposable {
+internal class RecordUITestFrame(private val model: RecordUITestModel, onClose: () -> Unit) : JFrame(), Disposable {
     companion object {
         const val UI_TEST_RECORDER_TITLE = "UI Test Recorder"
 
@@ -78,6 +78,7 @@ private fun stepsList(model: RecordUITestModel): JComponent {
         selectionMode = ListSelectionModel.SINGLE_SELECTION
         addListSelectionListener {
             model.select(selectedValue)
+            model.updateCode()
         }
         model.select(model.elements().toList().firstOrNull())
     }

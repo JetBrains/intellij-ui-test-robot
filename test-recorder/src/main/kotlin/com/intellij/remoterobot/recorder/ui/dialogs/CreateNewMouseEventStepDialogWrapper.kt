@@ -64,12 +64,17 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
             removeAll()
             addToCenter(
                 FormBuilder.createFormBuilder()
-                    .addLabeledComponent("Mouse Action", JComboBox<MouseButton>().apply {
+                    .addLabeledComponent("Mouse Button", JComboBox<MouseButton>().apply {
                         addItem(MouseButton.LEFT_BUTTON)
                         addItem(MouseButton.RIGHT_BUTTON)
                         selectedItem = action.button
                         addActionListener { action.button.value = selectedItem as MouseButton }
-                        setRenderer { _, button, _, _, _ -> JBLabel(button.name.lowercase(Locale.getDefault())) }
+                        setRenderer { _, button, _, _, _ ->
+                            JBLabel(
+                                button.name.lowercase(Locale.getDefault()).replace("_", " ")
+                                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                            )
+                        }
                     })
                     .addLabeledComponent("Click counts", JComboBox<Int>().apply {
                         addItem(1)

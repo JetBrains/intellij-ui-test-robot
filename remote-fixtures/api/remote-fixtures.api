@@ -565,6 +565,25 @@ public final class com/intellij/remoterobot/fixtures/TextEditorFixture$Companion
 	public final fun getLocator ()Lcom/intellij/remoterobot/search/locators/Locator;
 }
 
+public final class com/intellij/remoterobot/steps/CommonSteps {
+	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;)V
+	public final fun invokeAction (Ljava/lang/String;)V
+	public final fun isDumbMode ()Z
+	public final fun wait (I)V
+	public final fun waitForSmartMode (I)V
+	public final fun waitMs (J)V
+}
+
+public abstract interface annotation class com/intellij/remoterobot/steps/Step : java/lang/annotation/Annotation {
+	public abstract fun stepNameTemplate ()Ljava/lang/String;
+	public abstract fun title ()Ljava/lang/String;
+}
+
+public abstract interface annotation class com/intellij/remoterobot/steps/StepParameter : java/lang/annotation/Annotation {
+	public abstract fun defaultValue ()Ljava/lang/String;
+	public abstract fun name ()Ljava/lang/String;
+}
+
 public final class com/intellij/remoterobot/utils/Direction : java/lang/Enum {
 	public static final field RIGHT Lcom/intellij/remoterobot/utils/Direction;
 	public static final field UNDER Lcom/intellij/remoterobot/utils/Direction;

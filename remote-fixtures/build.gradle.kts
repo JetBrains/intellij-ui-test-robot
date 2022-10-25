@@ -10,7 +10,6 @@ intellij {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 idea {

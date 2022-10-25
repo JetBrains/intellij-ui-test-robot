@@ -3,26 +3,32 @@ package com.intellij.remoterobot.recorder.ui
 
 import com.intellij.openapi.Disposable
 import com.intellij.remoterobot.recorder.RobotMouseEventService
-import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
-import com.intellij.remoterobot.recorder.ui.RecordUITestFrame.Companion.isThisFromRecordTestFrame
-import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewMouseEventStepDialogWrapper
+import com.intellij.remoterobot.recorder.steps.StepModel
+import com.intellij.remoterobot.recorder.steps.common.CommonStepModel
 import javax.swing.DefaultListModel
 
-internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<MouseEventStepModel>() {
-    private val service = RobotMouseEventService { addNewStep(it) }
-
-    init {
-        service.activate()
+internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<StepModel>() {
+    private val recordMouseEventService = RobotMouseEventService {
+        addElement(it)
+        updateCode()
     }
 
-    private var selectedStep: MouseEventStepModel? = null
+    init {
+        recordMouseEventService.activate()
+    }
 
-    fun select(step: MouseEventStepModel?) {
+    private var selectedStep: StepModel? = null
+
+    fun select(step: StepModel?) {
         selectedStep = step
     }
 
+    // todo: support java
     val code: String
         get() = buildString {
+            if (elements().toList().any { it is CommonStepModel }) {
+                append("val steps = CommonSteps(remoteRobot)\n")
+            }
             append("with(remoteRobot) {\n")
             elements().toList().forEach {
                 append(it.generateStep() + "\n")
@@ -39,15 +45,7 @@ internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<
         codeUpdatedListeners.add(function)
     }
 
-    fun stop() = service.deactivate()
-
-    private fun addNewStep(stepModel: MouseEventStepModel) {
-        if (isThisFromRecordTestFrame(stepModel.component)) return
-        if (CreateNewMouseEventStepDialogWrapper(stepModel).showAndGet()) {
-            addElement(stepModel)
-            updateCode()
-        }
-    }
+    fun stop() = recordMouseEventService.deactivate()
 }
 
 internal class ObservableField<T>(initValue: T) {

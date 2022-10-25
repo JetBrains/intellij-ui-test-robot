@@ -25,11 +25,44 @@ open class ComponentFixture(
         runJs("robot.rightClick(component);")
     }
 
+    // click(c: Component, where: Point, button: MouseButton, times: Int)
+    open fun rightDoubleClick(): Unit = step("right double click") {
+        runJs("robot.click(component, null, MouseButton.RIGHT_BUTTON, 2)")
+    }
+
+
     open fun click(where: Point): Unit = step("..click at ${where.x}:${where.y}") {
         runJs(
             """
             const point = new java.awt.Point(${where.x}, ${where.y});
             robot.click(component, point);
+        """
+        )
+    }
+
+    open fun doubleClick(where: Point): Unit = step("double click at ${where.x}:${where.y}") {
+        runJs(
+            """
+           const point = new java.awt.Point(${where.x}, ${where.y}); 
+           robot.click(component, point, MouseButton.LEFT_BUTTON, 2)
+        """
+        )
+    }
+
+    open fun rightClick(where: Point): Unit = step("right click at ${where.x}:${where.y}") {
+        runJs(
+            """
+           const point = new java.awt.Point(${where.x}, ${where.y}); 
+           robot.click(component, point, MouseButton.RIGHT_BUTTON, 1)
+        """
+        )
+    }
+
+    open fun rightDoubleClick(where: Point): Unit = step("right double click at ${where.x}:${where.y}") {
+        runJs(
+            """
+           const point = new java.awt.Point(${where.x}, ${where.y}); 
+           robot.click(component, point, MouseButton.RIGHT_BUTTON, 2)
         """
         )
     }

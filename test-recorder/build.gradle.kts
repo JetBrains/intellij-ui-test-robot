@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     api(project(":robot-server-core"))
-
+    api(project(":remote-fixtures"))
 }
 
 // Create sources Jar from main kotlin sources

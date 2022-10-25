@@ -12,6 +12,8 @@ import com.intellij.openapi.util.Disposer
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
 import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
+import com.intellij.remoterobot.recorder.ui.RecordUITestFrame
+import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewMouseEventStepDialogWrapper
 import java.awt.Component
 import java.awt.Container
 import java.awt.KeyboardFocusManager
@@ -22,7 +24,7 @@ import java.awt.event.MouseEvent.MOUSE_PRESSED
 import javax.swing.RootPaneContainer
 import javax.swing.SwingUtilities
 
-internal class RobotMouseEventService(private val newStepHandler: (MouseEventStepModel) -> Unit) {
+internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEventStepModel) -> Unit) {
     private val locatorGenerator = LocatorGenerator()
     private var disposable: Disposable? = null
 
@@ -102,7 +104,7 @@ internal class RobotMouseEventService(private val newStepHandler: (MouseEventSte
             val xpath = locatorGenerator.generateXpath(actualComponent)
             val texts = TextParser.parseComponent(actualComponent, true, TextToKeyCache)
             val newStepModel = MouseEventStepModel(actualComponent, convertedPoint, xpath, texts)
-            newStepHandler(newStepModel)
+            addNewMouseEvenStep(newStepModel)
         }
     }
 
@@ -121,5 +123,12 @@ internal class RobotMouseEventService(private val newStepHandler: (MouseEventSte
         }
         if (actualComponent == null) actualComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().focusOwner
         return actualComponent
+    }
+
+    private fun addNewMouseEvenStep(stepModel: MouseEventStepModel) {
+        if (RecordUITestFrame.isThisFromRecordTestFrame(stepModel.component)) return
+        if (CreateNewMouseEventStepDialogWrapper(stepModel).showAndGet()) {
+            addMouseStepHandler(stepModel)
+        }
     }
 }

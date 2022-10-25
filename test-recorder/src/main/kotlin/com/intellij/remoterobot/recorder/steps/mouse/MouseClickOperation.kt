@@ -47,7 +47,7 @@ internal class MouseClickOperation(
         } else if (button.value == MouseButton.RIGHT_BUTTON && count.value == 1) {
             append("rightClick")
         } else {
-            throw NotImplementedError("Method for(${button.value} x ${count.value}) is not implemented in the RemoteRobot")
+            append("doubleRightClick")
         }
         if (where.value != null) {
             append("(Point(${where.value?.x}, ${where.value?.y}))")

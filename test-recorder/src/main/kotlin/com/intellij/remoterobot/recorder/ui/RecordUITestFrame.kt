@@ -10,8 +10,15 @@ import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.openapi.editor.ex.EditorEx
 import com.intellij.openapi.editor.highlighter.EditorHighlighterFactory
 import com.intellij.openapi.project.ProjectManager
+import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.impl.IdeGlassPaneImpl
+import com.intellij.remoterobot.recorder.steps.common.CommonStepModel
+import com.intellij.remoterobot.recorder.steps.keyboard.TextHotKeyStepModel
+import com.intellij.remoterobot.recorder.steps.keyboard.TextTypingStepModel
+import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewCommonStepDialogWrapper
+import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewHotKeyDialogWrapper
+import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewTypingDialogWrapper
 import com.intellij.testFramework.LightVirtualFile
 import com.intellij.ui.EditorTextField
 import com.intellij.ui.OnePixelSplitter
@@ -57,7 +64,6 @@ internal class RecordUITestFrame(private val model: RecordUITestModel, onClose: 
         Disposer.register(model.disposable, this)
         addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent?) {
-                println("Stop recording")
                 model.stop()
                 onClose()
             }
@@ -65,6 +71,7 @@ internal class RecordUITestFrame(private val model: RecordUITestModel, onClose: 
     }
 }
 
+data class AddNewStepAction(val title: String, val action: () -> Unit)
 
 private fun stepsList(model: RecordUITestModel): JComponent {
     val generatorsList = JBList(model).apply {
@@ -86,9 +93,36 @@ private fun stepsList(model: RecordUITestModel): JComponent {
         setPanelBorder(BorderFactory.createEmptyBorder())
         setScrollPaneBorder(BorderFactory.createEmptyBorder())
         setAddAction {
-            //
-            //val list = JBList<>()
-            //JBPopupFactory.getInstance().createPopupChooserBuilder()
+            model.code
+            JBPopupFactory.getInstance().createPopupChooserBuilder(
+                listOf(
+                    AddNewStepAction("Add hotkey") {
+                        val stepModel = TextHotKeyStepModel("", "")
+                        if (CreateNewHotKeyDialogWrapper(stepModel).showAndGet()) {
+                            model.addElement(stepModel)
+                            model.updateCode()
+                        }
+                    },
+                    AddNewStepAction("Add keyboard typing") {
+                        val stepModel = TextTypingStepModel(text = "")
+                        if (CreateNewTypingDialogWrapper(stepModel).showAndGet()) {
+                            model.addElement(stepModel)
+                            model.updateCode()
+                        }
+                    },
+                    AddNewStepAction("Common step") {
+                        val stepModel = CommonStepModel(model.disposable)
+                        if (CreateNewCommonStepDialogWrapper(stepModel).showAndGet()) {
+                            model.addElement(stepModel)
+                            model.updateCode()
+                        }
+                    }
+                )
+            )
+                .setRenderer { _, value, _, _, _ -> JBLabel(value.title) }
+                .setItemChosenCallback { action -> action.action() }
+                .createPopup()
+                .show(it.preferredPopupPoint)
         }
     }.createPanel()
 }

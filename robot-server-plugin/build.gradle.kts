@@ -20,7 +20,7 @@ dependencies {
     api(project(":robot-server-core"))
     api(project(":test-recorder"))
 
-    implementation(platform("io.ktor:ktor-bom:2.1.2"))
+    implementation(platform("io.ktor:ktor-bom:2.1.3"))
     implementation("io.ktor:ktor-server-core")
     implementation("io.ktor:ktor-server-netty")
     implementation("io.ktor:ktor-server-content-negotiation")

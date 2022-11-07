@@ -88,12 +88,12 @@ fun getValueWithCellRenderer(cellRendererComponent: Component, isExtended: Boole
 }
 
 @Deprecated("Will be replaced with external fixture lib")
-fun SimpleColoredComponent.getFullText(): String? {
+fun SimpleColoredComponent.getFullText(): String {
     return this.getCharSequence(false).toString()
 }
 
 @Deprecated("Will be replaced with external fixture lib")
-fun SimpleColoredComponent.getFirstText(): String? {
+fun SimpleColoredComponent.getFirstText(): String {
     return this.getCharSequence(true).toString()
 }
 
@@ -112,13 +112,8 @@ fun Component.findText(): String? {
         )
         resultList.addAll(
                 findAllWithBFS<SimpleColoredComponent>(container)
-                        .asSequence()
-                        .filter {
-                            !it.getFullText().isNullOrEmpty()
-                        }
-                        .map {
-                            it.getFullText()!!
-                        }
+                        .map { it.getFullText() }
+                        .filter { it.isNotEmpty() }
                         .toList()
         )
         return resultList.firstOrNull { it.isNotEmpty() }
@@ -132,7 +127,6 @@ inline fun <reified ComponentType : Component> findAllWithBFS(container: Contain
     val result = LinkedList<ComponentType>()
     val queue: Queue<Component> = LinkedList()
 
-    @Suppress("UNCHECKED_CAST")
     val check: (container: Component)-> Unit = {
         if (ComponentType::class.java.isInstance(it)) result.add(it as ComponentType)
     }

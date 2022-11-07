@@ -25,11 +25,11 @@ internal class LocatorGenerator {
 
     fun generateXpath(targetComponent: Component): String {
         val hierarchy = hierarchyGenerator.create(null, targetComponent)
-        val targetElement = hierarchy.findNodes("//div[@robot_target_element='true']").first()
+        val targetElement = hierarchy.findNodes("//div[@robot_target_element='true']").single()
 
         // has it unique straight locator?
-        var locator = findLocator(hierarchy, targetElement)
-        if (locator != null) return locator
+        val straightLocator = findLocator(hierarchy, targetElement)
+        if (straightLocator != null) return straightLocator
 
         // trying to find unique parent
         val multipleLocator = findLocator(hierarchy, targetElement, false)
@@ -45,15 +45,14 @@ internal class LocatorGenerator {
             if (parentLocator != null) {
                 val combinedLocator = "$parentLocator$multipleLocator"
                 if (isValidLocator(combinedLocator, hierarchy, targetElement, true)) {
-                    locator = combinedLocator
+                    return combinedLocator
                 }
             }
-            if (locator != null) return locator
         }
         // then build the whole path from the first unique parent
         val paths = mutableListOf<String>()
         val chainOfNodes = ArrayDeque<Node>()
-        var element = targetElement
+        var element: Node? = targetElement
         while (element != null) {
             val currentLocator = findLocator(hierarchy, element, isSingle = true)
             chainOfNodes.addFirst(element)
@@ -73,13 +72,13 @@ internal class LocatorGenerator {
             if (currentLocator != null) {
                 paths.add(currentLocator)
             } else {
-                val multipleLocator =
+                val locator =
                     findLocator(hierarchy, node, isSingle = false) ?: throw CantCreateLocatorException(targetElement)
-                if (testNewPathElement(multipleLocator, node)) {
-                    paths.add(multipleLocator)
+                if (testNewPathElement(locator, node)) {
+                    paths.add(locator)
                 } else {
-                    (1..countElements(multipleLocator, hierarchy)).forEach {
-                        val indexedLocator = "$multipleLocator[$it]"
+                    (1..countElements(locator, hierarchy)).forEach {
+                        val indexedLocator = "$locator[$it]"
                         if (testNewPathElement(indexedLocator, node)) {
                             paths.add(indexedLocator)
                         }
@@ -99,11 +98,6 @@ internal class LocatorGenerator {
         return (0 until result.length).mapNotNull { result.item(it) }
     }
 
-    private val bestAttributes = listOf("accessiblename.key", "class", "text.key")
-
-    private val nonLocalizedAttributes = listOf("accessiblename", "text")
-    private val visibleTextKeysAttribute = "visible_text_keys"
-
     private fun findLocator(hierarchy: Document, element: Node, isSingle: Boolean = true): String? {
         val foundPairs = mutableMapOf<String, String>()
         var locator: String
@@ -121,6 +115,7 @@ internal class LocatorGenerator {
                 null
             }
         }
+        val bestAttributes = listOf("accessiblename.key", "class", "text.key")
         bestAttributes.forEach {
             tryToAddAttribute(it, false)?.let { locator ->
                 println("found best locator: $locator")
@@ -128,6 +123,7 @@ internal class LocatorGenerator {
             }
         }
 
+        val visibleTextKeysAttribute = "visible_text_keys"
         tryToAddAttribute(visibleTextKeysAttribute)?.let { return it }
 
         (0 until element.attributes.length)
@@ -136,6 +132,7 @@ internal class LocatorGenerator {
             .filter { it.endsWith(".key") || it.endsWith("icon") }
             .forEach { tryToAddAttribute(it)?.let { locator -> return locator } }
 
+        val nonLocalizedAttributes = listOf("accessiblename", "text")
         nonLocalizedAttributes.forEach { tryToAddAttribute(it)?.let { locator -> return locator } }
         return null
     }
@@ -147,7 +144,7 @@ internal class LocatorGenerator {
             emptyList()
         }
         return if (isSingle) {
-            nodes.size == 1 && nodes.firstOrNull() == targetElement
+            nodes.size == 1 && nodes.single() == targetElement
         } else {
             nodes.isNotEmpty() && nodes.any { it == targetElement }
         }

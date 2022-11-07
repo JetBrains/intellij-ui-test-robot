@@ -6,7 +6,7 @@ import java.awt.Point
 
 internal class MouseMoveOperation(
     model: MouseEventStepModel
-) : MouseEventOperation() {
+) : MouseEventOperation {
     val where: ObservableField<Point?> = ObservableField<Point?>(null).apply { onChanged { model.updateName() } }
     val atText: ObservableField<TextData?> = ObservableField<TextData?>(null).apply { onChanged { model.updateName() } }
 

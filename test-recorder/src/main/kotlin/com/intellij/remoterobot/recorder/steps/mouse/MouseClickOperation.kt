@@ -6,7 +6,7 @@ import java.awt.Point
 
 internal class MouseClickOperation(
     private val model: MouseEventStepModel
-) : MouseEventOperation() {
+) : MouseEventOperation {
     val button: ObservableField<MouseButton> =
         ObservableField(MouseButton.LEFT_BUTTON).apply { onChanged { model.updateName() } }
     val count: ObservableField<Int> = ObservableField(1).apply { onChanged { model.updateName() } }

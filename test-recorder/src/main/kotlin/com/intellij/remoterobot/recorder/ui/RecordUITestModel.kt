@@ -5,6 +5,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.remoterobot.recorder.RobotMouseEventService
 import com.intellij.remoterobot.recorder.steps.StepModel
 import com.intellij.remoterobot.recorder.steps.common.CommonStepModel
+import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
 import javax.swing.DefaultListModel
 
 internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<StepModel>() {
@@ -26,9 +27,21 @@ internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<
     // todo: support java
     val code: String
         get() = buildString {
+            // imports
+            if (elements().toList().any { it is MouseEventStepModel }) {
+                append("import com.intellij.remoterobot.utils.component\n")
+            }
+            if (elements().toList().any { it is CommonStepModel }) {
+                append("import com.intellij.remoterobot.steps.CommonSteps\n")
+            }
+
+            // variables
+            append("\n")
             if (elements().toList().any { it is CommonStepModel }) {
                 append("val steps = CommonSteps(remoteRobot)\n")
             }
+
+            // steps
             append("with(remoteRobot) {\n")
             elements().toList().forEach {
                 append(it.generateStep() + "\n")

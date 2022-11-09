@@ -11,7 +11,7 @@ internal class TextHotKeyStepModel(
         return """
       |     step("$name") {
       |        keyboard {
-      |          hotkey("$text")
+      |          hotKey($text)
       |        }
       |     }
     """.trimMargin()

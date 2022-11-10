@@ -93,7 +93,6 @@ private fun stepsList(model: RecordUITestModel): JComponent {
         setPanelBorder(BorderFactory.createEmptyBorder())
         setScrollPaneBorder(BorderFactory.createEmptyBorder())
         setAddAction {
-            model.code
             JBPopupFactory.getInstance().createPopupChooserBuilder(
                 listOf(
                     AddNewStepAction("Add hotkey") {

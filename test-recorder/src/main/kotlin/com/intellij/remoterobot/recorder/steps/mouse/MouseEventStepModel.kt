@@ -5,6 +5,7 @@ import com.intellij.remoterobot.recorder.steps.StepModel
 import com.intellij.remoterobot.recorder.ui.ObservableField
 import java.awt.Component
 import java.awt.Point
+import java.time.Duration
 import javax.swing.AbstractButton
 import javax.swing.text.JTextComponent
 
@@ -13,7 +14,8 @@ internal class MouseEventStepModel(
     val component: Component,
     val point: Point,
     var xpath: String,
-    val texts: List<TextData>
+    val texts: List<TextData>,
+    var searchTimeout: Duration? = null
 ) : StepModel {
     val operation: ObservableField<MouseEventOperation> =
         ObservableField<MouseEventOperation>(MouseClickOperation(this)).apply {
@@ -27,7 +29,7 @@ internal class MouseEventStepModel(
     override fun generateStep(): String {
         return """
       |     step("$name") {
-      |        component("$xpath")
+      |        component("$xpath"${searchTimeout?.let { ", Duration.ofSeconds(${it.seconds})" } ?: ""})
       |          .${operation.value.getActionCode()}
       |     }
     """.trimMargin()

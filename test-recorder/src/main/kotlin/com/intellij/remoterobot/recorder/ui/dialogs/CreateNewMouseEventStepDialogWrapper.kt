@@ -4,16 +4,21 @@ package com.intellij.remoterobot.recorder.ui.dialogs
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.remoterobot.data.TextData
 import com.intellij.remoterobot.recorder.steps.mouse.MouseClickOperation
-import com.intellij.remoterobot.recorder.steps.mouse.MouseMoveOperation
 import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepActionType
 import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
-import com.intellij.ui.components.JBLabel
+import com.intellij.remoterobot.recorder.steps.mouse.MouseMoveOperation
 import com.intellij.remoterobot.recorder.ui.RecordUITestFrame.Companion.UI_TEST_RECORDER_TITLE
+import com.intellij.ui.components.JBLabel
+import com.intellij.ui.components.fields.IntegerField
 import com.intellij.util.ui.FormBuilder
 import com.intellij.util.ui.components.BorderLayoutPanel
 import org.assertj.swing.core.MouseButton
+import java.time.Duration
 import java.util.*
-import javax.swing.*
+import javax.swing.JCheckBox
+import javax.swing.JComboBox
+import javax.swing.JComponent
+import javax.swing.JTextField
 
 internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: MouseEventStepModel) : DialogWrapper(true) {
     init {
@@ -21,23 +26,27 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
         title = UI_TEST_RECORDER_TITLE
     }
 
-    override fun createCenterPanel(): JComponent? {
+    override fun createCenterPanel(): JComponent {
         val actionPanel = ActionPanel()
-
         return BorderLayoutPanel().apply {
             addToTop(
                 FormBuilder.createFormBuilder()
-                    .addLabeledComponent("Name", JTextField(stepModel.name).apply {
+                    .addLabeledComponent("Name:", JTextField(stepModel.name).apply {
                         addPropertyChangeListener { stepModel.observableStepName.value = text }
                         stepModel.observableStepName.onChanged {
                             println(it)
                             this.text = it
                         }
                     })
-                    .addLabeledComponent("Locator", JTextField(stepModel.xpath).apply {
+                    .addLabeledComponent("Locator:", JTextField(stepModel.xpath).apply {
                         addPropertyChangeListener { stepModel.xpath = text }
                     })
-                    .addLabeledComponent("Action", JComboBox<MouseEventStepActionType>().apply {
+                    .addLabeledComponent("Timeout (sec):", IntegerField().apply {
+                        columns = 4
+                        minValue = 0
+                        valueEditor.addListener { stepModel.searchTimeout = Duration.ofSeconds(it.toLong()) }
+                    })
+                    .addLabeledComponent("Action:", JComboBox<MouseEventStepActionType>().apply {
                         MouseEventStepActionType.values().forEach { addItem(it) }
                         selectedItem = MouseEventStepActionType.MouseClick
                         addItemListener {
@@ -64,7 +73,7 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
             removeAll()
             addToCenter(
                 FormBuilder.createFormBuilder()
-                    .addLabeledComponent("Mouse Button", JComboBox<MouseButton>().apply {
+                    .addLabeledComponent("Mouse Button:", JComboBox<MouseButton>().apply {
                         addItem(MouseButton.LEFT_BUTTON)
                         addItem(MouseButton.RIGHT_BUTTON)
                         selectedItem = action.button
@@ -76,7 +85,7 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
                             )
                         }
                     })
-                    .addLabeledComponent("Click counts", JComboBox<Int>().apply {
+                    .addLabeledComponent("Click counts:", JComboBox<Int>().apply {
                         addItem(1)
                         addItem(2)
                         selectedItem = action.count
@@ -93,7 +102,7 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
                             }
                         }
                     })
-                    .addLabeledComponent("Click at text", JComboBox<TextData>().apply {
+                    .addLabeledComponent("Click at text:", JComboBox<TextData>().apply {
                         addItem(null)
                         stepModel.texts.forEach { addItem(it) }
                         selectedItem = action.atText
@@ -101,7 +110,7 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
                             action.atText.value = (selectedItem as TextData?)?.text
                             action.textKey.value = (selectedItem as TextData?)?.bundleKey
                         }
-                        setRenderer { _, text, _, _, _ -> JBLabel("${text?.text ?: "---"}") }
+                        setRenderer { _, text, _, _, _ -> JBLabel(text?.text ?: "---") }
                     })
                     .panel
             )
@@ -130,7 +139,7 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
                         addActionListener {
                             action.atText.value = selectedItem as TextData?
                         }
-                        setRenderer { _, text, _, _, _ -> JBLabel("${text?.text ?: "---"}") }
+                        setRenderer { _, text, _, _, _ -> JBLabel(text?.text ?: "---") }
                     })
                     .panel
             )

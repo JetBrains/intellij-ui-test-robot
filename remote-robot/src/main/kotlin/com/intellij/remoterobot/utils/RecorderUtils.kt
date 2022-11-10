@@ -7,6 +7,10 @@ import org.intellij.lang.annotations.Language
 import java.time.Duration
 
 
-fun SearchContext.component(@Language("xpath") xpath: String): ComponentFixture {
-    return find(ComponentFixture::class.java, byXpath( xpath), Duration.ofSeconds(15))
+@JvmOverloads
+fun SearchContext.component(
+    @Language("xpath") xpath: String,
+    timeout: Duration = Duration.ofSeconds(15)
+): ComponentFixture {
+    return find(ComponentFixture::class.java, byXpath(xpath), timeout)
 }

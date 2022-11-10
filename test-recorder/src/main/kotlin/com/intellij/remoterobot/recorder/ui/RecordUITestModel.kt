@@ -34,6 +34,7 @@ internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<
             if (elements().toList().any { it is CommonStepModel }) {
                 append("import com.intellij.remoterobot.steps.CommonSteps\n")
             }
+            append("import java.util.Duration\n")
 
             // variables
             append("\n")

@@ -8,6 +8,7 @@ import com.intellij.util.ui.components.BorderLayoutPanel
 import java.awt.AWTEvent
 import java.awt.event.KeyEvent
 import javax.swing.JComponent
+import javax.swing.JLabel
 import javax.swing.JTextField
 import javax.swing.KeyStroke
 
@@ -30,6 +31,7 @@ internal class CreateNewHotKeyDialogWrapper(private val stepModel: TextHotKeySte
         fun showHotkeySetting() {
             addToCenter(
                 FormBuilder.createFormBuilder()
+                    .addComponent(JLabel("Please, press hotkey"))
                     .addLabeledComponent("Hotkey:", HotKeyField(model))
                     .panel
             )

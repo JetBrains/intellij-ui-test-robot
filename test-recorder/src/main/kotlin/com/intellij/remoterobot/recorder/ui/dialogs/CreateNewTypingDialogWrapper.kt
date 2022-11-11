@@ -41,6 +41,7 @@ internal class CreateNewTypingDialogWrapper(private val stepModel: TextTypingSte
             )
         }
 
-        private fun asMultiline(text: String) = "\"\"\n$text\n\"\""
+        private fun asMultiline(text: String) =
+            "\"\"\n${text.lines().joinToString("") { "             $it\n" }}          \"\""
     }
 }

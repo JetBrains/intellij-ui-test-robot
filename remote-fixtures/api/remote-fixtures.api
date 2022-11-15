@@ -580,8 +580,16 @@ public abstract interface annotation class com/intellij/remoterobot/steps/Step :
 }
 
 public abstract interface annotation class com/intellij/remoterobot/steps/StepParameter : java/lang/annotation/Annotation {
+	public abstract fun componentUiType ()Lcom/intellij/remoterobot/steps/StepParameter$UiType;
 	public abstract fun defaultValue ()Ljava/lang/String;
 	public abstract fun name ()Ljava/lang/String;
+}
+
+public final class com/intellij/remoterobot/steps/StepParameter$UiType : java/lang/Enum {
+	public static final field ACTION_ID Lcom/intellij/remoterobot/steps/StepParameter$UiType;
+	public static final field DEFAULT Lcom/intellij/remoterobot/steps/StepParameter$UiType;
+	public static fun valueOf (Ljava/lang/String;)Lcom/intellij/remoterobot/steps/StepParameter$UiType;
+	public static fun values ()[Lcom/intellij/remoterobot/steps/StepParameter$UiType;
 }
 
 public final class com/intellij/remoterobot/utils/Direction : java/lang/Enum {

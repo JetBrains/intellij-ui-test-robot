@@ -34,6 +34,8 @@ internal class StepParameterMeta(private val parameter: Parameter) {
 
     val type: Class<*> = parameter.type
 
+    val uiType: StepParameter.UiType = annotation?.componentUiType ?: StepParameter.UiType.DEFAULT
+
     val typedValue: String
         get() = when (type) {
             Int::class.java, Double::class.java, Float::class.java, Long::class.java -> value
@@ -48,6 +50,7 @@ internal class CommonStepModel(val disposable: Disposable) : StepModel {
         }.map { CommonStepMeta(it) }
     }
 
+    val observableStepName = ObservableField("")
     var step: CommonStepMeta = getSteps().first()
 
     override fun generateStep(): String {
@@ -66,6 +69,4 @@ internal class CommonStepModel(val disposable: Disposable) : StepModel {
 
     override val name: String
         get() = observableStepName.value
-
-    val observableStepName = ObservableField("")
 }

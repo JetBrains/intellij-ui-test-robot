@@ -5,12 +5,14 @@ import com.intellij.remoterobot.utils.waitFor
 import java.time.Duration
 
 annotation class Step(val title: String, val stepNameTemplate: String)
-annotation class StepParameter(val name: String, val defaultValue: String)
+annotation class StepParameter(val name: String, val defaultValue: String, val componentUiType: UiType = UiType.DEFAULT) {
+    enum class UiType { DEFAULT, ACTION_ID }
+}
 
 class CommonSteps(private val remoteRobot: RemoteRobot) {
 
-    @Step("Invoke Action ID", "Invoke action {1}")
-    fun invokeAction(@StepParameter("Action ID", "CloseProject") actionId: String) {
+    @Step("Invoke Action ID", "Invoke actionId '{1}'")
+    fun invokeAction(@StepParameter("Action", "Close Project", StepParameter.UiType.ACTION_ID) actionId: String) {
         remoteRobot.runJs(
             """
             const actionId = "$actionId";

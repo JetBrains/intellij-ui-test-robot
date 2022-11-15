@@ -95,21 +95,21 @@ private fun stepsList(model: RecordUITestModel): JComponent {
         setAddAction {
             JBPopupFactory.getInstance().createPopupChooserBuilder(
                 listOf(
-                    AddNewStepAction("Add hotkey") {
+                    AddNewStepAction("Hotkey") {
                         val stepModel = TextHotKeyStepModel("", "")
                         if (CreateNewHotKeyDialogWrapper(stepModel).showAndGet()) {
                             model.addElement(stepModel)
                             model.updateCode()
                         }
                     },
-                    AddNewStepAction("Add keyboard typing") {
+                    AddNewStepAction("Keyboard typing") {
                         val stepModel = TextTypingStepModel(text = "")
                         if (CreateNewTypingDialogWrapper(stepModel).showAndGet()) {
                             model.addElement(stepModel)
                             model.updateCode()
                         }
                     },
-                    AddNewStepAction("Common step") {
+                    AddNewStepAction("Step") {
                         val stepModel = CommonStepModel(model.disposable)
                         if (CreateNewCommonStepDialogWrapper(stepModel).showAndGet()) {
                             model.addElement(stepModel)

@@ -1,12 +1,20 @@
 package com.intellij.remoterobot.recorder.ui.dialogs
 
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.editor.event.DocumentEvent
+import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.observable.util.whenTextChanged
+import com.intellij.openapi.project.DefaultProjectFactory
 import com.intellij.openapi.ui.ComponentValidator
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.remoterobot.recorder.steps.common.CommonStepMeta
 import com.intellij.remoterobot.recorder.steps.common.CommonStepModel
+import com.intellij.remoterobot.recorder.steps.common.StepParameterMeta
 import com.intellij.remoterobot.recorder.ui.RecordUITestFrame
+import com.intellij.remoterobot.steps.StepParameter.UiType.ACTION_ID
+import com.intellij.remoterobot.steps.StepParameter.UiType.DEFAULT
+import com.intellij.ui.TextFieldWithAutoCompletion
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
@@ -71,7 +79,44 @@ internal class CreateNewCommonStepDialogWrapper(private val stepModel: CommonSte
             val form = FormBuilder.createFormBuilder()
 
             stepModel.step.parameters.forEach { parameter ->
-                form.addLabeledComponent(parameter.name, JBTextField(parameter.value).apply {
+                form.addLabeledComponent(parameter.name, parameterValueComponent(stepModel, parameter))
+            }
+            addToCenter(form.panel)
+            stepModel.updateName()
+        }
+
+        private fun parameterValueComponent(stepModel: CommonStepModel, parameter: StepParameterMeta): JComponent {
+            return when (parameter.uiType) {
+                ACTION_ID -> TextFieldWithAutoCompletion.create(
+                    DefaultProjectFactory.getInstance().defaultProject,
+                    emptyList(),
+                    true,
+                    parameter.value
+                ).apply {
+                    val actionMap = ActionManager.getInstance().getActionIdList("")
+                        .associateBy { ActionManager.getInstance().getAction(it)?.templatePresentation?.text }
+                    setVariants(actionMap.keys)
+                    addDocumentListener(object : DocumentListener {
+                        override fun documentChanged(event: DocumentEvent) {
+                            if (actionMap[text] != null) {
+                                parameter.value = actionMap[text]!!
+                            }
+                            stepModel.updateName()
+                        }
+                    })
+                    ComponentValidator(stepModel.disposable).withValidator(
+                        Supplier {
+                            if (actionMap[text] == null) ValidationInfo(
+                                "Unknown Action",
+                                this
+                            ) else null
+                        })
+                        .andRegisterOnDocumentListener(this)
+                        .installOn(this)
+                        .apply { revalidate() }
+                }
+
+                DEFAULT -> JBTextField(parameter.value).apply {
                     document.whenTextChanged {
                         if (isUserInputValid(text, parameter.type)) {
                             parameter.value = text
@@ -80,15 +125,17 @@ internal class CreateNewCommonStepDialogWrapper(private val stepModel: CommonSte
                     }
                     ComponentValidator(stepModel.disposable).withValidator(
                         Supplier {
-                            if (isUserInputValid(text, parameter.type).not()) ValidationInfo("Expected ${parameter.type.simpleName}", this) else null
+                            if (isUserInputValid(
+                                    text,
+                                    parameter.type
+                                ).not()
+                            ) ValidationInfo("Expected ${parameter.type.simpleName}", this) else null
                         })
                         .andRegisterOnDocumentListener(this)
                         .installOn(this)
                         .apply { revalidate() }
-                })
+                }
             }
-            addToCenter(form.panel)
-            stepModel.updateName()
         }
     }
 }

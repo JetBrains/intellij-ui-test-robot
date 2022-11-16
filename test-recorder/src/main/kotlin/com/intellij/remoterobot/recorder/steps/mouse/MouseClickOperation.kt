@@ -34,7 +34,7 @@ internal class MouseClickOperation(
 
     override fun getActionCode(): String = buildString {
         if (atText.value != null) {
-            if (textKey.value != null) {
+            if (model.useBundleKeys && textKey.value != null) {
                 append("findText(byKey(\"${textKey.value}\")).")
             } else {
                 append("findText(\"${atText.value}\").")

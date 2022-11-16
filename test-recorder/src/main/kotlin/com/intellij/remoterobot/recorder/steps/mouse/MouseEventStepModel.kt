@@ -15,6 +15,7 @@ internal class MouseEventStepModel(
     val point: Point,
     var xpath: String,
     val texts: List<TextData>,
+    val useBundleKeys: Boolean,
     var searchTimeout: Duration? = null
 ) : StepModel {
     val operation: ObservableField<MouseEventOperation> =

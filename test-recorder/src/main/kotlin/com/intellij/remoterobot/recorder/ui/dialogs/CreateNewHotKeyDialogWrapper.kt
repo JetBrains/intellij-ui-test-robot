@@ -57,7 +57,7 @@ internal class CreateNewHotKeyDialogWrapper(private val stepModel: TextHotKeySte
                 ) {
                     val result = "${KeyEvent.getModifiersExText(e.modifiersEx)}+${KeyEvent.getKeyText(e.keyCode)}"
                     this.text = result
-                    model.name = "Enter hotkey '$result'"
+                    model.name = "Press hotkey '$result'"
                     model.text = "${getModifierCodes(KeyStroke.getKeyStroke(e.keyCode, e.modifiersEx))}, ${e.keyCode}"
                 }
             }

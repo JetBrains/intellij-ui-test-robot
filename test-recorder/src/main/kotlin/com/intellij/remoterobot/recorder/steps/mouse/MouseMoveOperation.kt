@@ -5,7 +5,7 @@ import com.intellij.remoterobot.recorder.ui.ObservableField
 import java.awt.Point
 
 internal class MouseMoveOperation(
-    model: MouseEventStepModel
+    private val model: MouseEventStepModel
 ) : MouseEventOperation {
     val where: ObservableField<Point?> = ObservableField<Point?>(null).apply { onChanged { model.updateName() } }
     val atText: ObservableField<TextData?> = ObservableField<TextData?>(null).apply { onChanged { model.updateName() } }
@@ -23,7 +23,7 @@ internal class MouseMoveOperation(
 
     override fun getActionCode(): String = buildString {
         if (atText.value != null) {
-            if (atText.value?.bundleKey != null) {
+            if (model.useBundleKeys && atText.value?.bundleKey != null) {
                 append("findText(byKey(\"${atText.value?.bundleKey}\")).")
             } else {
                 append("findText(\"${atText.value?.text}\").")

@@ -29,21 +29,10 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
     private var disposable: Disposable? = null
 
     private var isActive: Boolean = false
+    var useBundleKeys: Boolean = true
 
-    // https://gitcode.net/mirrors/JetBrains/intellij-community/-/tree/193/platform/testGuiFramework/src/com/intellij/testGuiFramework/recorder
     fun activate() {
         disposable = Disposer.newDisposable()
-
-        //val eventLogListener = object : StatisticsEventLogListener {
-        //  override fun onLogEvent(validatedEvent: LogEvent, rawEventId: String?, rawData: Map<String, Any>?) {
-        //    //println("$rawEventId $rawData")
-        //  }
-        //
-        //}
-        //
-        //service<EventLogListenersManager>().subscribe(eventLogListener, "FUS")
-        //
-
         val globalActionListener = object : AnActionListener {
             override fun beforeActionPerformed(action: AnAction, dataContext: DataContext, event: AnActionEvent) {
 
@@ -54,7 +43,6 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
             try {
                 when (awtEvent) {
                     is MouseEvent -> processMouseEvent(awtEvent)
-                    is KeyEvent -> processKeyEvent(awtEvent)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -65,10 +53,6 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
         AnActionListener.TOPIC.subscribe(disposable, globalActionListener)
         IdeEventQueue.getInstance().addDispatcher(globalAwtProcessor, disposable)
         isActive = true
-    }
-
-    private fun processKeyEvent(awtEvent: KeyEvent) {
-
     }
 
     fun deactivate() {
@@ -101,9 +85,9 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
                 event.locationOnScreen.x - actualComponent.locationOnScreen.x,
                 event.locationOnScreen.y - actualComponent.locationOnScreen.y
             )
-            val xpath = locatorGenerator.generateXpath(actualComponent)
+            val xpath = locatorGenerator.generateXpath(actualComponent, useBundleKeys)
             val texts = TextParser.parseComponent(actualComponent, true, TextToKeyCache)
-            val newStepModel = MouseEventStepModel(actualComponent, convertedPoint, xpath, texts)
+            val newStepModel = MouseEventStepModel(actualComponent, convertedPoint, xpath, texts, useBundleKeys)
             addNewMouseEvenStep(newStepModel)
         }
     }

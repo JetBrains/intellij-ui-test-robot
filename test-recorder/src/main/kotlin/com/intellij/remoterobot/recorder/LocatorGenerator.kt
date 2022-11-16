@@ -23,12 +23,12 @@ internal class LocatorGenerator {
     private val hierarchyGenerator = XpathDataModelCreator(TextToKeyCache)
 
 
-    fun generateXpath(targetComponent: Component): String {
+    fun generateXpath(targetComponent: Component, useBundleKeys: Boolean = true): String {
         val hierarchy = hierarchyGenerator.create(null, targetComponent)
         val targetElement = hierarchy.findNodes("//div[@robot_target_element='true']").single()
 
         // has it unique straight locator?
-        val straightLocator = findLocator(hierarchy, targetElement)
+        val straightLocator = findLocator(hierarchy, targetElement, useBundleKeys)
         if (straightLocator != null) return straightLocator
 
         // trying to find unique parent
@@ -37,7 +37,7 @@ internal class LocatorGenerator {
             var parentLocator: String? = null
             var parentElement = targetElement.parentNode
             while (parentLocator == null && parentElement != null) {
-                parentLocator = findLocator(hierarchy, parentElement)
+                parentLocator = findLocator(hierarchy, parentElement, useBundleKeys)
                 if (parentLocator == null) {
                     parentElement = parentElement.parentNode
                 }
@@ -54,7 +54,7 @@ internal class LocatorGenerator {
         val chainOfNodes = ArrayDeque<Node>()
         var element: Node? = targetElement
         while (element != null) {
-            val currentLocator = findLocator(hierarchy, element, isSingle = true)
+            val currentLocator = findLocator(hierarchy, element, useBundleKeys, isSingle = true)
             chainOfNodes.addFirst(element)
             if (currentLocator == null) {
                 element = element.parentNode
@@ -68,12 +68,12 @@ internal class LocatorGenerator {
             return isValidLocator(locator, hierarchy, node, isSingle = true)
         }
         chainOfNodes.forEach { node ->
-            val currentLocator = findLocator(hierarchy, node, isSingle = true)
+            val currentLocator = findLocator(hierarchy, node, useBundleKeys, isSingle = true)
             if (currentLocator != null) {
                 paths.add(currentLocator)
             } else {
                 val locator =
-                    findLocator(hierarchy, node, isSingle = false) ?: throw CantCreateLocatorException(targetElement)
+                    findLocator(hierarchy, node, useBundleKeys, isSingle = false) ?: throw CantCreateLocatorException(targetElement)
                 if (testNewPathElement(locator, node)) {
                     paths.add(locator)
                 } else {
@@ -98,7 +98,12 @@ internal class LocatorGenerator {
         return (0 until result.length).mapNotNull { result.item(it) }
     }
 
-    private fun findLocator(hierarchy: Document, element: Node, isSingle: Boolean = true): String? {
+    private fun findLocator(
+        hierarchy: Document,
+        element: Node,
+        useBundleKeys: Boolean,
+        isSingle: Boolean = true
+    ): String? {
         val foundPairs = mutableMapOf<String, String>()
         var locator: String
 
@@ -115,25 +120,31 @@ internal class LocatorGenerator {
                 null
             }
         }
-        val bestAttributes = listOf("accessiblename.key", "class", "text.key")
+
+        val bestAttributes = if (useBundleKeys) {
+            listOf("accessiblename.key", "class", "text.key")
+        } else {
+            listOf("accessiblename", "class", "text")
+        }
         bestAttributes.forEach {
             tryToAddAttribute(it, false)?.let { locator ->
-                println("found best locator: $locator")
                 return locator
             }
         }
 
-        val visibleTextKeysAttribute = "visible_text_keys"
-        tryToAddAttribute(visibleTextKeysAttribute)?.let { return it }
+        val visibleTextAttribute = if (useBundleKeys) "visible_text_keys" else "visible_text"
+        tryToAddAttribute(visibleTextAttribute)?.let { return it }
 
         (0 until element.attributes.length)
             .mapNotNull { element.attributes.item(it)?.nodeName }
             .filter { bestAttributes.contains(it).not() }
-            .filter { it.endsWith(".key") || it.endsWith("icon") }
+            .filter { (useBundleKeys && it.endsWith(".key")) || it.endsWith("icon") }
             .forEach { tryToAddAttribute(it)?.let { locator -> return locator } }
 
-        val nonLocalizedAttributes = listOf("accessiblename", "text")
-        nonLocalizedAttributes.forEach { tryToAddAttribute(it)?.let { locator -> return locator } }
+        if (useBundleKeys) {
+            val nonLocalizedAttributes = listOf("accessiblename", "text")
+            nonLocalizedAttributes.forEach { tryToAddAttribute(it)?.let { locator -> return locator } }
+        }
         return null
     }
 

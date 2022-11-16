@@ -34,7 +34,6 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
                     .addLabeledComponent("Name:", JTextField(stepModel.name).apply {
                         addPropertyChangeListener { stepModel.observableStepName.value = text }
                         stepModel.observableStepName.onChanged {
-                            println(it)
                             this.text = it
                         }
                     })

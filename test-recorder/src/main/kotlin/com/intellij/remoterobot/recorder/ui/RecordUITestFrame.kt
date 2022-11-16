@@ -23,8 +23,10 @@ import com.intellij.testFramework.LightVirtualFile
 import com.intellij.ui.EditorTextField
 import com.intellij.ui.OnePixelSplitter
 import com.intellij.ui.ToolbarDecorator
+import com.intellij.ui.components.CheckBox
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBList
+import com.intellij.util.ui.FormBuilder
 import com.intellij.util.ui.components.BorderLayoutPanel
 import org.jetbrains.annotations.NonNls
 import java.awt.Component
@@ -58,6 +60,7 @@ internal class RecordUITestFrame(private val model: RecordUITestModel, onClose: 
                 firstComponent = stepsList(model)
                 secondComponent = testEditor(model)
             })
+            addToBottom(settingsPanel(model))
 
         })
         isVisible = true
@@ -163,4 +166,18 @@ private fun testEditor(model: RecordUITestModel): JComponent {
         }
     }
     return panel
+}
+
+private fun settingsPanel(model: RecordUITestModel): Component {
+    return FormBuilder.createFormBuilder()
+        .addComponent(
+            CheckBox(
+                "Use bundle keys in locators",
+                model.useBundleKeys.value,
+                "Turn it off if you don't want to run tests with different languages. Locators with bundle keys are less stable."
+            ).apply {
+                addChangeListener { model.useBundleKeys.value = isSelected }
+            })
+        .addComponent(JBLabel("Press 'Shift + click' on any Ide component to add mouse step"))
+        .panel
 }

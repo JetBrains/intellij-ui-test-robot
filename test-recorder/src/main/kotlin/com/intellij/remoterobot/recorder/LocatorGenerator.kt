@@ -105,13 +105,12 @@ internal class LocatorGenerator {
         isSingle: Boolean = true
     ): String? {
         val foundPairs = mutableMapOf<String, String>()
-        var locator: String
 
         fun tryToAddAttribute(attribute: String, removeIfNotFinal: Boolean = true): String? {
             element.attributes.getNamedItem(attribute)?.nodeValue?.takeIf { it.isNotEmpty() && it.contains("@").not() }
                 ?.let { foundPairs[attribute] = it }
-            locator = buildLocator(foundPairs)
-            return if (isValidLocator(buildLocator(foundPairs), hierarchy, element, isSingle)) {
+            val locator = buildLocator(foundPairs)
+            return if (isValidLocator(locator, hierarchy, element, isSingle)) {
                 locator
             } else {
                 if (removeIfNotFinal) {
@@ -171,13 +170,12 @@ internal class LocatorGenerator {
     }
 
     private fun buildLocator(strictAttributes: Map<String, String>): String {
-        val conditions = mutableListOf<String>()
-        strictAttributes.forEach { (attribute, value) ->
+        val conditions = strictAttributes.map { (attribute, value) ->
             if (attribute.endsWith(".key") || attribute.endsWith("_keys")) {
                 val shortValue = value.split(" ").firstOrNull() ?: value
-                conditions.add("contains(@$attribute, '$shortValue')")
+                "contains(@$attribute, '$shortValue')"
             } else {
-                conditions.add("@$attribute='$value'")
+                "@$attribute='$value'"
             }
         }
         return buildString {

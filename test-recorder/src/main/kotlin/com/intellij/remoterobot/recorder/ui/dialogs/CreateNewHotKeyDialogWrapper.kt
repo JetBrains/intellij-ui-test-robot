@@ -55,10 +55,14 @@ internal class CreateNewHotKeyDialogWrapper(private val stepModel: TextHotKeySte
                     keyCode != KeyEvent.VK_ALT_GRAPH &&
                     keyCode != KeyEvent.VK_META
                 ) {
-                    val result = "${KeyEvent.getModifiersExText(e.modifiersEx)}+${KeyEvent.getKeyText(e.keyCode)}"
+                    val result = if (e.modifiersEx != 0)
+                        "${KeyEvent.getModifiersExText(e.modifiersEx)}+${KeyEvent.getKeyText(e.keyCode)}"
+                    else KeyEvent.getKeyText(e.keyCode)
                     this.text = result
                     model.name = "Press hotkey '$result'"
-                    model.text = "${getModifierCodes(KeyStroke.getKeyStroke(e.keyCode, e.modifiersEx))}, ${e.keyCode}"
+                    model.text = if (e.modifiersEx != 0)
+                        "${getModifierCodes(KeyStroke.getKeyStroke(e.keyCode, e.modifiersEx))}, ${e.keyCode}"
+                    else "${e.keyCode}"
                 }
             }
         }

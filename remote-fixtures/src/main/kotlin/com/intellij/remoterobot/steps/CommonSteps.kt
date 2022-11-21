@@ -1,6 +1,7 @@
 package com.intellij.remoterobot.steps
 
 import com.intellij.remoterobot.RemoteRobot
+import com.intellij.remoterobot.utils.component
 import com.intellij.remoterobot.utils.waitFor
 import java.time.Duration
 
@@ -39,7 +40,7 @@ class CommonSteps(private val remoteRobot: RemoteRobot) {
     }
 
     fun isDumbMode(): Boolean {
-        return remoteRobot.callJs(
+        return remoteRobot.component("//div[@class='IdeFrameImpl']").callJs(
             """
             const frameHelper = com.intellij.openapi.wm.impl.ProjectFrameHelper.getFrameHelper(component)
             if (frameHelper) {

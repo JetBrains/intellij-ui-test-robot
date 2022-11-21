@@ -131,8 +131,9 @@ internal class LocatorGenerator {
             }
         }
 
-        val visibleTextAttribute = if (useBundleKeys) "visible_text_keys" else "visible_text"
-        tryToAddAttribute(visibleTextAttribute)?.let { return it }
+        if (useBundleKeys) {
+            tryToAddAttribute("visible_text_keys")?.let { return it }
+        }
 
         (0 until element.attributes.length)
             .mapNotNull { element.attributes.item(it)?.nodeName }

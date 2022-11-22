@@ -7,11 +7,12 @@ import com.intellij.remoterobot.recorder.steps.StepModel
 import com.intellij.remoterobot.recorder.steps.common.CommonStepModel
 import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
 import javax.swing.DefaultListModel
+import javax.swing.event.ListDataEvent
+import javax.swing.event.ListDataListener
 
 internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<StepModel>() {
     private val recordMouseEventService = RobotMouseEventService {
         addElement(it)
-        updateCode()
     }
 
     init {
@@ -50,18 +51,25 @@ internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<
             // steps
             append("with(remoteRobot) {\n")
             elements().toList().forEach {
-                append(it.generateStep() + "\n")
+                append(it.generateStepCode() + "\n")
             }
             append("}")
         }
 
-    fun updateCode() {
-        codeUpdatedListeners.forEach { listener -> listener.invoke() }
-    }
+    fun onCodeUpdated(listener: (String) -> Unit) {
+        addListDataListener(object : ListDataListener {
+            override fun intervalAdded(e: ListDataEvent?) {
+                listener(code)
+            }
 
-    private val codeUpdatedListeners = mutableListOf<() -> Unit>()
-    fun onCodeUpdated(function: () -> Unit) {
-        codeUpdatedListeners.add(function)
+            override fun intervalRemoved(e: ListDataEvent?) {
+                listener(code)
+            }
+
+            override fun contentsChanged(e: ListDataEvent?) {
+                listener(code)
+            }
+        })
     }
 
     fun stop() = recordMouseEventService.deactivate()

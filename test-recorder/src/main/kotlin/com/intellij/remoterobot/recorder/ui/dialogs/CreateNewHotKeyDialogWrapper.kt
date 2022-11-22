@@ -41,6 +41,7 @@ internal class CreateNewHotKeyDialogWrapper(private val stepModel: TextHotKeySte
     private class HotKeyField(private val model: TextHotKeyStepModel) : JTextField() {
 
         init {
+            text = model.shortcut
             enableEvents(AWTEvent.KEY_EVENT_MASK)
             focusTraversalKeysEnabled = false
             isVisible = true
@@ -59,6 +60,7 @@ internal class CreateNewHotKeyDialogWrapper(private val stepModel: TextHotKeySte
                         "${KeyEvent.getModifiersExText(e.modifiersEx)}+${KeyEvent.getKeyText(e.keyCode)}"
                     else KeyEvent.getKeyText(e.keyCode)
                     this.text = result
+                    model.shortcut = result
                     model.name = "Press hotkey '$result'"
                     model.text = if (e.modifiersEx != 0)
                         "${getModifierCodes(KeyStroke.getKeyStroke(e.keyCode, e.modifiersEx))}, ${e.keyCode}"

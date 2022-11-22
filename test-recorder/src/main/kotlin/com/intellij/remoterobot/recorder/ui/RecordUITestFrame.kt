@@ -16,8 +16,10 @@ import com.intellij.openapi.wm.impl.IdeGlassPaneImpl
 import com.intellij.remoterobot.recorder.steps.common.CommonStepModel
 import com.intellij.remoterobot.recorder.steps.keyboard.TextHotKeyStepModel
 import com.intellij.remoterobot.recorder.steps.keyboard.TextTypingStepModel
+import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
 import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewCommonStepDialogWrapper
 import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewHotKeyDialogWrapper
+import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewMouseEventStepDialogWrapper
 import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewTypingDialogWrapper
 import com.intellij.testFramework.LightVirtualFile
 import com.intellij.ui.EditorTextField
@@ -88,7 +90,6 @@ private fun stepsList(model: RecordUITestModel): JComponent {
         selectionMode = ListSelectionModel.SINGLE_SELECTION
         addListSelectionListener {
             model.select(selectedValue)
-            model.updateCode()
         }
         model.select(model.elements().toList().firstOrNull())
     }
@@ -102,21 +103,18 @@ private fun stepsList(model: RecordUITestModel): JComponent {
                         val stepModel = TextHotKeyStepModel("", "")
                         if (CreateNewHotKeyDialogWrapper(stepModel).showAndGet()) {
                             model.addElement(stepModel)
-                            model.updateCode()
                         }
                     },
                     AddNewStepAction("Keyboard typing") {
                         val stepModel = TextTypingStepModel(text = "")
                         if (CreateNewTypingDialogWrapper(stepModel).showAndGet()) {
                             model.addElement(stepModel)
-                            model.updateCode()
                         }
                     },
                     AddNewStepAction("Step") {
-                        val stepModel = CommonStepModel(model.disposable)
+                        val stepModel = CommonStepModel()
                         if (CreateNewCommonStepDialogWrapper(stepModel).showAndGet()) {
                             model.addElement(stepModel)
-                            model.updateCode()
                         }
                     }
                 )
@@ -125,6 +123,35 @@ private fun stepsList(model: RecordUITestModel): JComponent {
                 .setItemChosenCallback { action -> action.action() }
                 .createPopup()
                 .show(it.preferredPopupPoint)
+        }
+        setEditAction {
+            val selectedIdx = generatorsList.selectedIndex
+            when (val step = model[selectedIdx]) {
+                is MouseEventStepModel -> {
+                    val editedStep = step.copy()
+                    if (CreateNewMouseEventStepDialogWrapper(editedStep).showAndGet()) {
+                        model[selectedIdx] = editedStep
+                    }
+                }
+                is TextHotKeyStepModel -> {
+                    val editedStep = step.copy()
+                    if (CreateNewHotKeyDialogWrapper(editedStep).showAndGet()) {
+                        model[selectedIdx] = editedStep
+                    }
+                }
+                is TextTypingStepModel -> {
+                    val editedStep = step.copy()
+                    if (CreateNewTypingDialogWrapper(editedStep).showAndGet()) {
+                        model[selectedIdx] = editedStep
+                    }
+                }
+                is CommonStepModel -> {
+                    val editedStep = step.copy()
+                    if (CreateNewCommonStepDialogWrapper(editedStep).showAndGet()) {
+                        model[selectedIdx] = editedStep
+                    }
+                }
+            }
         }
     }.createPanel()
 }
@@ -160,9 +187,9 @@ private fun testEditor(model: RecordUITestModel): JComponent {
     ApplicationManager.getApplication().runWriteAction {
         myEditor.document.setText(model.code)
     }
-    model.onCodeUpdated {
+    model.onCodeUpdated { code ->
         ApplicationManager.getApplication().runWriteAction {
-            myEditor.document.setText(model.code)
+            myEditor.document.setText(code)
         }
     }
     return panel

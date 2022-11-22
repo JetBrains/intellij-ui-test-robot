@@ -18,7 +18,6 @@ import java.awt.Component
 import java.awt.Container
 import java.awt.KeyboardFocusManager
 import java.awt.Point
-import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import java.awt.event.MouseEvent.MOUSE_PRESSED
 import javax.swing.RootPaneContainer
@@ -87,8 +86,8 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
             )
             val xpath = locatorGenerator.generateXpath(actualComponent, useBundleKeys)
             val texts = TextParser.parseComponent(actualComponent, true, TextToKeyCache)
-            val newStepModel = MouseEventStepModel(actualComponent, convertedPoint, xpath, texts, useBundleKeys)
-            addNewMouseEvenStep(newStepModel)
+            val newStepModel = MouseEventStepModel(convertedPoint, xpath, texts, actualComponent.generateName(texts), useBundleKeys)
+            addNewMouseEvenStep(newStepModel, actualComponent)
         }
     }
 
@@ -109,8 +108,8 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
         return actualComponent
     }
 
-    private fun addNewMouseEvenStep(stepModel: MouseEventStepModel) {
-        if (RecordUITestFrame.isThisFromRecordTestFrame(stepModel.component)) return
+    private fun addNewMouseEvenStep(stepModel: MouseEventStepModel, component: Component) {
+        if (RecordUITestFrame.isThisFromRecordTestFrame(component)) return
         if (CreateNewMouseEventStepDialogWrapper(stepModel).showAndGet()) {
             addMouseStepHandler(stepModel)
         }

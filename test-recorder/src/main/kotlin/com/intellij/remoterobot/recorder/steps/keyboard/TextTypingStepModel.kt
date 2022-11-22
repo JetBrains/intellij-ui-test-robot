@@ -2,12 +2,12 @@ package com.intellij.remoterobot.recorder.steps.keyboard
 
 import com.intellij.remoterobot.recorder.steps.StepModel
 
-internal class TextTypingStepModel(
+internal data class TextTypingStepModel(
     override val name: String = "Type text",
     var text: String
 ) : StepModel {
 
-    override fun generateStep(): String {
+    override fun generateStepCode(): String {
         return """
       |     step("$name") {
       |        keyboard {

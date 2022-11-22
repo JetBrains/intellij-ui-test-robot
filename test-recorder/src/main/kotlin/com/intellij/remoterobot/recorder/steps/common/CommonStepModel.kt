@@ -1,6 +1,5 @@
 package com.intellij.remoterobot.recorder.steps.common
 
-import com.intellij.openapi.Disposable
 import com.intellij.remoterobot.recorder.steps.StepModel
 import com.intellij.remoterobot.recorder.ui.ObservableField
 import com.intellij.remoterobot.steps.CommonSteps
@@ -8,6 +7,7 @@ import com.intellij.remoterobot.steps.Step
 import com.intellij.remoterobot.steps.StepParameter
 import java.lang.reflect.Method
 import java.lang.reflect.Parameter
+import kotlin.properties.Delegates
 
 internal class CommonStepMeta(
     private val method: Method
@@ -43,17 +43,19 @@ internal class StepParameterMeta(private val parameter: Parameter) {
         }
 }
 
-internal class CommonStepModel(val disposable: Disposable) : StepModel {
+internal class CommonStepModel(stepName: String = "", initialStepMeta: CommonStepMeta? = null) : StepModel {
     companion object {
         fun getSteps() = CommonSteps::class.java.methods.filter {
             it.annotations.filterIsInstance<Step>().isNotEmpty()
         }.map { CommonStepMeta(it) }
     }
 
-    val observableStepName = ObservableField("")
-    var step: CommonStepMeta = getSteps().first()
+    val observableStepName = ObservableField(stepName)
+    var step: CommonStepMeta by Delegates.observable(initialStepMeta ?: getSteps().first()) { _, _, _ ->
+        updateName()
+    }
 
-    override fun generateStep(): String {
+    override fun generateStepCode(): String {
         return """
       |     step("$name") {
       |        steps.${step.methodName}(${step.parameters.joinToString(", ") { it.typedValue }})
@@ -69,4 +71,6 @@ internal class CommonStepModel(val disposable: Disposable) : StepModel {
 
     override val name: String
         get() = observableStepName.value
+
+    fun copy() = CommonStepModel(observableStepName.value, step)
 }

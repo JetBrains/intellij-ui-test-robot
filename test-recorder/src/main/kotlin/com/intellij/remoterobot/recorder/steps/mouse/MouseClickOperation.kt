@@ -1,56 +1,53 @@
 package com.intellij.remoterobot.recorder.steps.mouse
 
-import com.intellij.remoterobot.recorder.ui.ObservableField
 import org.assertj.swing.core.MouseButton
 import java.awt.Point
 
-internal class MouseClickOperation(
-    private val model: MouseEventStepModel
+internal data class MouseClickOperation(
+    val button: MouseButton = MouseButton.LEFT_BUTTON,
+    val count: Int = 1,
+    val where: Point? = null,
+    val atText: String? = null,
+    val textKey: String? = null
 ) : MouseEventOperation {
-    val button: ObservableField<MouseButton> =
-        ObservableField(MouseButton.LEFT_BUTTON).apply { onChanged { model.updateName() } }
-    val count: ObservableField<Int> = ObservableField(1).apply { onChanged { model.updateName() } }
-    val where: ObservableField<Point?> = ObservableField<Point?>(null).apply { onChanged { model.updateName() } }
-    val atText: ObservableField<String?> = ObservableField<String?>(null).apply { onChanged { model.updateName() } }
-    val textKey: ObservableField<String?> = ObservableField<String?>(null).apply { onChanged { model.updateName() } }
 
     override val name: String
         get() = buildString {
-            when (button.value) {
+            when (button) {
                 MouseButton.RIGHT_BUTTON -> append("Right")
                 MouseButton.LEFT_BUTTON -> append("Left")
-                else -> {}
+                else -> error("Unknown button button")
             }
             append(" ")
-            when (count.value) {
+            when (count) {
                 1 -> append("click")
                 2 -> append("double click")
             }
             when {
-                atText.value != null -> append(" at text '${atText.value}'")
-                where.value != null -> append(" at point ${where.value?.x};${where.value?.y}")
+                atText != null -> append(" at text '${atText}'")
+                where != null -> append(" at point ${where.x};${where.y}")
             }
         }
 
-    override fun getActionCode(): String = buildString {
-        if (atText.value != null) {
-            if (model.useBundleKeys && textKey.value != null) {
-                append("findText(byKey(\"${textKey.value}\")).")
+    override fun generateActionCode(useBundleKeys: Boolean): String = buildString {
+        if (atText != null) {
+            if (useBundleKeys && textKey != null) {
+                append("findText(byKey(\"${textKey}\")).")
             } else {
-                append("findText(\"${atText.value}\").")
+                append("findText(\"${atText}\").")
             }
         }
-        if (button.value == MouseButton.LEFT_BUTTON && count.value == 1) {
+        if (button == MouseButton.LEFT_BUTTON && count == 1) {
             append("click")
-        } else if (button.value == MouseButton.LEFT_BUTTON && count.value == 2) {
+        } else if (button == MouseButton.LEFT_BUTTON && count == 2) {
             append("doubleClick")
-        } else if (button.value == MouseButton.RIGHT_BUTTON && count.value == 1) {
+        } else if (button == MouseButton.RIGHT_BUTTON && count == 1) {
             append("rightClick")
         } else {
             append("doubleRightClick")
         }
-        if (where.value != null) {
-            append("(Point(${where.value?.x}, ${where.value?.y}))")
+        if (where != null) {
+            append("(Point(${where.x}, ${where.y}))")
         } else {
             append("()")
         }

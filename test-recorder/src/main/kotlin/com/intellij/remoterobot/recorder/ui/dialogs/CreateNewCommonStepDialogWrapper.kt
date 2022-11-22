@@ -1,5 +1,6 @@
 package com.intellij.remoterobot.recorder.ui.dialogs
 
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
@@ -30,14 +31,16 @@ internal class CreateNewCommonStepDialogWrapper(private val stepModel: CommonSte
         title = RecordUITestFrame.UI_TEST_RECORDER_TITLE
     }
 
-    override fun createCenterPanel(): JComponent? {
-        val actionPanel = ActionPanel()
+    override fun createCenterPanel(): JComponent {
+        val actionPanel = ActionPanel(disposable)
 
         return BorderLayoutPanel().apply {
             addToTop(
                 FormBuilder.createFormBuilder()
                     .addLabeledComponent("Name", JTextField(stepModel.name).apply {
-                        addPropertyChangeListener { stepModel.observableStepName.value = text }
+                        addPropertyChangeListener {
+                            stepModel.observableStepName.value = text
+                        }
                         stepModel.observableStepName.onChanged {
                             this.text = it
                         }
@@ -61,7 +64,7 @@ internal class CreateNewCommonStepDialogWrapper(private val stepModel: CommonSte
     }
 
 
-    internal class ActionPanel : BorderLayoutPanel() {
+    internal class ActionPanel(private val disposable: Disposable) : BorderLayoutPanel() {
         private fun isUserInputValid(data: String, type: Class<*>): Boolean {
             var isValid = false
             when (type) {
@@ -104,7 +107,7 @@ internal class CreateNewCommonStepDialogWrapper(private val stepModel: CommonSte
                             stepModel.updateName()
                         }
                     })
-                    ComponentValidator(stepModel.disposable).withValidator(
+                    ComponentValidator(disposable).withValidator(
                         Supplier {
                             if (actionMap[text] == null) ValidationInfo(
                                 "Unknown Action",
@@ -123,7 +126,7 @@ internal class CreateNewCommonStepDialogWrapper(private val stepModel: CommonSte
                             stepModel.updateName()
                         }
                     }
-                    ComponentValidator(stepModel.disposable).withValidator(
+                    ComponentValidator(disposable).withValidator(
                         Supplier {
                             if (isUserInputValid(
                                     text,

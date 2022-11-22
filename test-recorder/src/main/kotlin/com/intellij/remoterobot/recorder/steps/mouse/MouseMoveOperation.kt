@@ -1,37 +1,32 @@
 package com.intellij.remoterobot.recorder.steps.mouse
 
 import com.intellij.remoterobot.data.TextData
-import com.intellij.remoterobot.recorder.ui.ObservableField
 import java.awt.Point
 
-internal class MouseMoveOperation(
-    private val model: MouseEventStepModel
-) : MouseEventOperation {
-    val where: ObservableField<Point?> = ObservableField<Point?>(null).apply { onChanged { model.updateName() } }
-    val atText: ObservableField<TextData?> = ObservableField<TextData?>(null).apply { onChanged { model.updateName() } }
+internal data class MouseMoveOperation(val where: Point? = null, val atText: TextData? = null) : MouseEventOperation {
 
     override val name: String
         get() = buildString {
             append("Move mouse")
-            if (where.value != null) {
-                append("(${where.value})")
+            if (where != null) {
+                append("(${where})")
             }
-            if (atText.value != null) {
-                append(" to '${atText.value?.text}'")
+            if (atText != null) {
+                append(" to '${atText.text}'")
             }
         }
 
-    override fun getActionCode(): String = buildString {
-        if (atText.value != null) {
-            if (model.useBundleKeys && atText.value?.bundleKey != null) {
-                append("findText(byKey(\"${atText.value?.bundleKey}\")).")
+    override fun generateActionCode(useBundleKeys: Boolean): String = buildString {
+        if (atText!= null) {
+            if (useBundleKeys && atText.bundleKey != null) {
+                append("findText(byKey(\"${atText.bundleKey}\")).")
             } else {
-                append("findText(\"${atText.value?.text}\").")
+                append("findText(\"${atText.text}\").")
             }
         }
         append("moveMouse(")
-        if (where.value != null) {
-            append("Point(${where.value?.x}, ${where.value?.y})")
+        if (where != null) {
+            append("Point(${where.x}, ${where.y})")
         }
         append(")")
     }

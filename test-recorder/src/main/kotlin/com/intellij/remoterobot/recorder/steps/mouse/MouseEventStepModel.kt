@@ -3,64 +3,46 @@ package com.intellij.remoterobot.recorder.steps.mouse
 import com.intellij.remoterobot.data.TextData
 import com.intellij.remoterobot.recorder.steps.StepModel
 import com.intellij.remoterobot.recorder.ui.ObservableField
-import java.awt.Component
 import java.awt.Point
 import java.time.Duration
-import javax.swing.AbstractButton
-import javax.swing.text.JTextComponent
+import kotlin.properties.Delegates
 
 
 internal class MouseEventStepModel(
-    val component: Component,
     val point: Point,
     var xpath: String,
     val texts: List<TextData>,
-    val useBundleKeys: Boolean,
+    private val componentName: String,
+    private val useBundleKeys: Boolean,
+    operation: MouseEventOperation = MouseClickOperation(),
+    stepName: String? = null,
     var searchTimeout: Duration? = null
 ) : StepModel {
-    val operation: ObservableField<MouseEventOperation> =
-        ObservableField<MouseEventOperation>(MouseClickOperation(this)).apply {
-            onChanged { updateName() }
-        }
+    var operation by Delegates.observable(operation) { _, o, _ ->
+        updateName()
+    }
+
+    val observableStepName = ObservableField(stepName ?: generateStepName())
+
     override val name: String
         get() = observableStepName.value
 
-    val observableStepName = ObservableField("")
-
-    override fun generateStep(): String {
+    override fun generateStepCode(): String {
         return """
       |     step("$name") {
       |        component("$xpath"${searchTimeout?.let { ", Duration.ofSeconds(${it.seconds})" } ?: ""})
-      |          .${operation.value.getActionCode()}
+      |          .${operation.generateActionCode(useBundleKeys)}
       |     }
     """.trimMargin()
     }
 
-    fun updateName() {
+    fun copy() = MouseEventStepModel(point, xpath, texts, componentName, useBundleKeys, operation, observableStepName.value, searchTimeout)
+
+    private fun updateName() {
         observableStepName.value = generateStepName()
     }
 
     private fun generateStepName(): String {
-        return "${operation.value.name} on ${generateComponentName()}"
-    }
-
-    private fun generateComponentName(): String {
-        if (texts.size in 1..3) {
-            return texts.joinToString(" ") { it.text }
-        }
-        val name: String? = when (component) {
-            is AbstractButton -> component.text + " Button"
-            is JTextComponent -> component.text?.let {
-                if (it.length > 20) {
-                    it.substring(0, 20)
-                } else {
-                    it
-                }
-            }
-
-            else -> component.name
-        }
-        return name?.takeIf { it.isNotEmpty() } ?: component::class.java.name.substringAfterLast(".")
-            .substringBefore("$")
+        return "${operation.name} on $componentName"
     }
 }

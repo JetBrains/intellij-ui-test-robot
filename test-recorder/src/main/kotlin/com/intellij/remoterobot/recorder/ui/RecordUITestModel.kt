@@ -19,15 +19,9 @@ internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<
         recordMouseEventService.activate()
     }
 
-    private var selectedStep: StepModel? = null
-
     val useBundleKeys = ObservableField(false).apply {
         recordMouseEventService.useBundleKeys = value
         onChanged { recordMouseEventService.useBundleKeys = value }
-    }
-
-    fun select(step: StepModel?) {
-        selectedStep = step
     }
 
     // todo: support java

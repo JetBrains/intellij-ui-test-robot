@@ -88,10 +88,6 @@ private fun stepsList(model: RecordUITestModel): JComponent {
             JBLabel(text)
         }
         selectionMode = ListSelectionModel.SINGLE_SELECTION
-        addListSelectionListener {
-            model.select(selectedValue)
-        }
-        model.select(model.elements().toList().firstOrNull())
     }
     return ToolbarDecorator.createDecorator(generatorsList).apply {
         setPanelBorder(BorderFactory.createEmptyBorder())

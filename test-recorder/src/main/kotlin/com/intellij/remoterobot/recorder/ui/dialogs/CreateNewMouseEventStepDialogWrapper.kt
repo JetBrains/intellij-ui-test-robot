@@ -119,7 +119,6 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
                         }
                     })
                     .addLabeledComponent("Click at text:", JComboBox(arrayOf(null, *stepModel.texts.toTypedArray())).apply {
-                        stepModel.texts.forEach { addItem(it) }
                         selectedItem = operation.atText
                         addActionListener {
                             val selectedItem = selectedItem as TextData?

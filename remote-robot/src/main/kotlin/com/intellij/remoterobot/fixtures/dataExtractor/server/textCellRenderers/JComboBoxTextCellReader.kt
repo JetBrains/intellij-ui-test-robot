@@ -13,7 +13,7 @@ class JComboBoxTextCellReader : JComboBoxCellReader {
             @Suppress("UNCHECKED_CAST") val renderer = comboBox.renderer as ListCellRenderer<Any>
             val c = renderer.getListCellRendererComponent(JList(), comboBox.getItemAt(index), index, true, true)
             c.size = Dimension(comboBox.width, 100)
-            TextParser.parseCellRenderer(c, true).joinToString(" ") { it.trim() }
+            TextParser.parseCellRenderer(c).joinToString(" ") { it.trim() }
         }
     }
 }

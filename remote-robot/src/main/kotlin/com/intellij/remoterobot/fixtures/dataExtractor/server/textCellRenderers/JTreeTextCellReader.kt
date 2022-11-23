@@ -14,7 +14,7 @@ class JTreeTextCellReader : JTreeCellReader {
             val cellRendererComponent =
                 tree.cellRenderer.getTreeCellRendererComponent(tree, modelValue, false, false, isLeaf, 0, false)
             cellRendererComponent.size = Dimension(tree.width, 100)
-            TextParser.parseCellRenderer(cellRendererComponent, true).joinToString(" ") { it.trim() }
+            TextParser.parseCellRenderer(cellRendererComponent).joinToString(" ") { it.trim() }
         }
     }
 }

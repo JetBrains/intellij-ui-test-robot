@@ -198,7 +198,7 @@ class IdeRobot(
         val componentContext = componentContextCache[componentId]
             ?: throw IllegalStateException("Unknown component id $componentId")
         return getResult(componentContext) {
-            val data = TextParser.parseComponent(it.component, false, textToKeyCache)
+            val data = TextParser.parseComponent(it.component, textToKeyCache)
             return@getResult ComponentData(data.toList())
         }
     }

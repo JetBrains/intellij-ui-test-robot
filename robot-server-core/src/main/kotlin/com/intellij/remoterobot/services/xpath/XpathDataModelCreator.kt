@@ -148,7 +148,7 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) {
                 && bounds.width > 0 && bounds.height > 0
             ) {
                 try {
-                    val foundText = TextParser.parseComponent(this, true, textToKeyCache)
+                    val foundText = TextParser.parseComponent(this, textToKeyCache)
                     val text = foundText.joinToString(" || ") { it.text }
                     element.setAttribute("visible_text", text)
                     if (text.trim().isNotEmpty()) {

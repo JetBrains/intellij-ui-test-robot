@@ -13,7 +13,7 @@ class JListTextCellReader : JListCellReader {
             @Suppress("UNCHECKED_CAST") val renderer = list.cellRenderer as ListCellRenderer<Any>
             val c = renderer.getListCellRendererComponent(JList(), list.model.getElementAt(index), index, true, true)
             c.size = Dimension(list.width, 100)
-            TextParser.parseCellRenderer(c, true).joinToString(" ") { it.trim() }
+            TextParser.parseCellRenderer(c).joinToString(" ") { it.trim() }
         }
     }
 }

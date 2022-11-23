@@ -85,7 +85,7 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
                 event.locationOnScreen.y - actualComponent.locationOnScreen.y
             )
             val xpath = locatorGenerator.generateXpath(actualComponent, useBundleKeys)
-            val texts = TextParser.parseComponent(actualComponent, true, TextToKeyCache)
+            val texts = TextParser.parseComponent(actualComponent, TextToKeyCache)
             val newStepModel = MouseEventStepModel(convertedPoint, xpath, texts, actualComponent.generateName(texts), useBundleKeys)
             addNewMouseEvenStep(newStepModel, actualComponent)
         }

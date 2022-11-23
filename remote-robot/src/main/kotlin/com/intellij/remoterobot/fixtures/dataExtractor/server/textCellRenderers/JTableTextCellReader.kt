@@ -14,7 +14,7 @@ class JTableTextCellReader : JTableCellReader {
                 .getCellRenderer(row, column)
                 .getTableCellRendererComponent(JTable(), table.getValueAt(row, column), true, true, row, column)
             component.size = Dimension(table.width, 100)
-            TextParser.parseCellRenderer(component, true).joinToString(" ") { it.trim() }
+            TextParser.parseCellRenderer(component).joinToString(" ") { it.trim() }
         }
     }
 

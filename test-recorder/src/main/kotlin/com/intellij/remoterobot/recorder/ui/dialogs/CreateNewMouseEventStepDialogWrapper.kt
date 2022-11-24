@@ -1,7 +1,7 @@
 // Copyright 2000-2022 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.intellij.remoterobot.recorder.ui.dialogs
 
-import com.intellij.openapi.application.invokeLater
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.observable.util.whenTextChanged
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.remoterobot.data.TextData
@@ -41,7 +41,7 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
                 FormBuilder.createFormBuilder()
                     .addLabeledComponent("Name:", JTextField(stepModel.name).apply {
                         document.whenTextChanged(disposable) {
-                            invokeLater {
+                            ApplicationManager.getApplication().invokeLater {
                                 stepModel.observableStepName.value = text
                             }
                         }

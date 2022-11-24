@@ -2,7 +2,7 @@ package com.intellij.remoterobot.recorder.ui.dialogs
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.application.invokeLater
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.observable.util.whenTextChanged
@@ -41,7 +41,7 @@ internal class CreateNewCommonStepDialogWrapper(private val stepModel: CommonSte
                 FormBuilder.createFormBuilder()
                     .addLabeledComponent("Name", JTextField(stepModel.name).apply {
                         document.whenTextChanged(disposable) {
-                            invokeLater {
+                            ApplicationManager.getApplication().invokeLater {
                                 stepModel.observableStepName.value = text
                             }
                         }

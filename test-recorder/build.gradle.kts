@@ -14,6 +14,10 @@ dependencies {
     api(project(":remote-fixtures"))
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "11"
+}
+
 // Create sources Jar from main kotlin sources
 val sourcesJar by tasks.creating(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP

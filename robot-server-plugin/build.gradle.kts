@@ -16,6 +16,10 @@ configurations.runtimeClasspath {
     exclude("org.slf4j", "slf4j-api")
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "11"
+}
+
 dependencies {
     api(project(":robot-server-core"))
     api(project(":test-recorder"))
@@ -42,7 +46,7 @@ val sourcesJar by tasks.creating(Jar::class) {
 
 intellij {
     updateSinceUntilBuild.set(false)
-    version.set("LATEST-EAP-SNAPSHOT")
+    version.set("2022.1.1")
 }
 
 tasks {

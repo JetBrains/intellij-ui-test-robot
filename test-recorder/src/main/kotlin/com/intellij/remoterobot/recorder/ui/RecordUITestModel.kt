@@ -73,8 +73,12 @@ internal class ObservableField<T>(initValue: T) {
     private val listeners: MutableList<(T) -> Unit> = mutableListOf()
 
     fun onChanged(action: (T) -> Unit) = listeners.add(action)
+
+    fun removeListener(action: (T) -> Unit) = listeners.removeIf { it == action }
+
     var value: T = initValue
         set(value) {
+            if (field == value) return
             field = value
             listeners.forEach { it.invoke(value) }
         }

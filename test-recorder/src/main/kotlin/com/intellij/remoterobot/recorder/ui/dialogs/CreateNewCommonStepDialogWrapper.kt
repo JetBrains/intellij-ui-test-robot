@@ -2,6 +2,7 @@ package com.intellij.remoterobot.recorder.ui.dialogs
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.observable.util.whenTextChanged
@@ -13,6 +14,7 @@ import com.intellij.remoterobot.recorder.steps.common.CommonStepMeta
 import com.intellij.remoterobot.recorder.steps.common.CommonStepModel
 import com.intellij.remoterobot.recorder.steps.common.StepParameterMeta
 import com.intellij.remoterobot.recorder.ui.RecordUITestFrame
+import com.intellij.remoterobot.recorder.whenDisposed
 import com.intellij.remoterobot.steps.StepParameter.UiType.ACTION_ID
 import com.intellij.remoterobot.steps.StepParameter.UiType.DEFAULT
 import com.intellij.ui.TextFieldWithAutoCompletion
@@ -38,12 +40,14 @@ internal class CreateNewCommonStepDialogWrapper(private val stepModel: CommonSte
             addToTop(
                 FormBuilder.createFormBuilder()
                     .addLabeledComponent("Name", JTextField(stepModel.name).apply {
-                        addPropertyChangeListener {
-                            stepModel.observableStepName.value = text
+                        document.whenTextChanged(disposable) {
+                            invokeLater {
+                                stepModel.observableStepName.value = text
+                            }
                         }
-                        stepModel.observableStepName.onChanged {
-                            this.text = it
-                        }
+                        val listener: (String) -> Unit = { this.text = it }
+                        stepModel.observableStepName.onChanged(listener)
+                        disposable.whenDisposed { stepModel.observableStepName.removeListener(listener) }
                     })
                     .addLabeledComponent("Step", JComboBox<CommonStepMeta>().apply {
                         val steps = CommonStepModel.getSteps()

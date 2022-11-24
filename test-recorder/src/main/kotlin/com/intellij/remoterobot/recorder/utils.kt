@@ -1,5 +1,7 @@
 package com.intellij.remoterobot.recorder
 
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.util.Disposer
 import com.intellij.remoterobot.data.TextData
 import java.awt.Component
 import javax.swing.AbstractButton
@@ -22,4 +24,8 @@ fun Component.generateName(textsOnComponent: List<TextData>): String {
         else -> name
     }
     return name ?: javaClass.name.substringAfterLast(".").substringBefore("$")
+}
+
+fun Disposable.whenDisposed(action: () -> Unit) {
+    Disposer.register(this, Disposable(action))
 }

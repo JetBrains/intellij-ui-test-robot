@@ -1,14 +1,13 @@
 // Copyright 2000-2022 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.intellij.remoterobot.recorder.ui.dialogs
 
+import com.intellij.openapi.application.invokeLater
+import com.intellij.openapi.observable.util.whenTextChanged
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.remoterobot.data.TextData
 import com.intellij.remoterobot.recorder.steps.mouse.*
-import com.intellij.remoterobot.recorder.steps.mouse.MouseClickOperation
-import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepActionType
-import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
-import com.intellij.remoterobot.recorder.steps.mouse.MouseMoveOperation
 import com.intellij.remoterobot.recorder.ui.RecordUITestFrame.Companion.UI_TEST_RECORDER_TITLE
+import com.intellij.remoterobot.recorder.whenDisposed
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.fields.IntegerField
 import com.intellij.util.ui.FormBuilder
@@ -41,15 +40,17 @@ internal class CreateNewMouseEventStepDialogWrapper(private val stepModel: Mouse
             addToTop(
                 FormBuilder.createFormBuilder()
                     .addLabeledComponent("Name:", JTextField(stepModel.name).apply {
-                        addPropertyChangeListener {
-                            stepModel.observableStepName.value = text
+                        document.whenTextChanged(disposable) {
+                            invokeLater {
+                                stepModel.observableStepName.value = text
+                            }
                         }
-                        stepModel.observableStepName.onChanged {
-                            this.text = it
-                        }
+                        val listener: (String) -> Unit = { this.text = it }
+                        stepModel.observableStepName.onChanged(listener)
+                        disposable.whenDisposed { stepModel.observableStepName.removeListener(listener) }
                     })
                     .addLabeledComponent("Locator:", JTextField(stepModel.xpath).apply {
-                        addPropertyChangeListener { stepModel.xpath = text }
+                        document.whenTextChanged(disposable) { stepModel.xpath = text }
                     })
                     .addLabeledComponent("Timeout (sec):", IntegerField().apply {
                         stepModel.searchTimeout?.let {

@@ -8,6 +8,7 @@ import org.intellij.examples.simple.plugin.pages.WelcomeFrame;
 import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension;
 import org.intellij.examples.simple.plugin.utils.StepsLogger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -23,6 +24,7 @@ public class SayHelloJavaTest {
     }
 
     @Test
+    @Disabled
     @Video
     void checkSayHello(final RemoteRobot remoteRobot) {
         final WelcomeFrame welcomeFrame = remoteRobot.find(WelcomeFrame.class, Duration.ofSeconds(10));

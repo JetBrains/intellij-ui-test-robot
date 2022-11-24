@@ -27,7 +27,8 @@ fun extractTar(tarFile: Path, to: Path): List<Path> {
 
 fun extractZip(zip: Path, to: Path): List<Path> {
     return getCreatedFilesAfter(to) {
-        FileSystems.newFileSystem(zip, null).use { fs ->
+        val classLoader: ClassLoader? = null
+        FileSystems.newFileSystem(zip, classLoader).use { fs ->
             val root = fs.getPath("/")
             Files.walkFileTree(root, object : SimpleFileVisitor<Path>() {
                 override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes?): FileVisitResult {

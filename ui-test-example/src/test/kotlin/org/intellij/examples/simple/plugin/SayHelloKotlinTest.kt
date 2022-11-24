@@ -12,6 +12,7 @@ import com.intellij.remoterobot.search.locators.byXpath
 import org.intellij.examples.simple.plugin.pages.WelcomeFrame
 import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension
 import org.intellij.examples.simple.plugin.utils.StepsLogger
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.time.Duration
@@ -23,6 +24,7 @@ class SayHelloKotlinTest {
     }
 
     @Test
+    @Disabled
     @Video
     fun checkHelloMessage(remoteRobot: RemoteRobot) = with(remoteRobot) {
         find(WelcomeFrame::class.java, timeout = Duration.ofSeconds(10)).apply {

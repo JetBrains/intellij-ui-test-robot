@@ -14,6 +14,7 @@ import org.intellij.examples.simple.plugin.utils.RemoteRobotExtension;
 import org.intellij.examples.simple.plugin.utils.StepsLogger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -22,6 +23,7 @@ import java.time.Duration;
 import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.stepsProcessing.StepWorkerKt.step;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitFor;
+import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 import static java.awt.event.KeyEvent.*;
 import static java.time.Duration.ofMinutes;
 import static java.time.Duration.ofSeconds;
@@ -39,6 +41,11 @@ public class CreateCommandLineJavaTest {
     @BeforeAll
     public static void initLogging() {
         StepsLogger.init();
+    }
+
+    @BeforeEach
+    public void waitForIde() {
+        waitForIgnoringError(Duration.ofMinutes(3), Duration.ofSeconds(5), "Wait for Ide started", "Ide is not started", () -> remoteRobot.callJs("true"));
     }
 
     @AfterEach

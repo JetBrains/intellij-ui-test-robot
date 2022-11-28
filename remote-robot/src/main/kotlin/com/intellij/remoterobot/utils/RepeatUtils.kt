@@ -5,6 +5,7 @@ package com.intellij.remoterobot.utils
 import com.intellij.remoterobot.stepsProcessing.step
 import java.time.Duration
 
+@JvmOverloads
 fun waitForIgnoringError(
     duration: Duration = Duration.ofSeconds(5),
     interval: Duration = Duration.ofSeconds(2),

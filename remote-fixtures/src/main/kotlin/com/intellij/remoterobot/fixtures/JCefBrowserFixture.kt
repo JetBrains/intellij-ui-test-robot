@@ -29,7 +29,8 @@ class JCefBrowserFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompon
     ComponentFixture(remoteRobot, remoteComponent) {
     companion object {
         @JvmStatic
-        val canvasLocator = byXpath("//div[contains(@class, 'Canvas')]")
+        val canvasLocator = byXpath("//div[contains(@class, 'Canvas') or contains(@class, 'JBCef')]")
+
         @JvmStatic
         val macLocator = byXpath("//div[@class='JPanel' and contains(@javaclass, 'CefBrowserWr')]")
 

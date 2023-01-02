@@ -105,7 +105,7 @@ open class Keyboard(private val remoteRobot: RemoteRobot) {
                     "  key up {$keyName}\n" +
                     "end tell\n" +
                     "delay 1\n"
-            Runtime.getRuntime().exec(arrayOf("osascript", "-e", command))
+            Runtime.getRuntime().exec(["osascript", "-e", command])
         """
         )
     }

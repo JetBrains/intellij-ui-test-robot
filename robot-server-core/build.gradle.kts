@@ -16,7 +16,7 @@ dependencies {
     implementation("org.assertj:assertj-swing-junit:3.17.1")
     implementation("net.bytebuddy:byte-buddy-dep:1.12.22")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.1")
 }

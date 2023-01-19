@@ -286,6 +286,7 @@ public final class com/intellij/remoterobot/fixtures/JButtonFixture$Companion {
 public final class com/intellij/remoterobot/fixtures/JCefBrowserFixture : com/intellij/remoterobot/fixtures/ComponentFixture {
 	public static final field Companion Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture$Companion;
 	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;Lcom/intellij/remoterobot/data/RemoteComponent;)V
+	public final fun executeJsInBrowser (Ljava/lang/String;)Ljava/lang/String;
 	public final fun exist (Ljava/lang/String;)Z
 	public final fun findElement (Ljava/lang/String;Ljava/time/Duration;)Lcom/intellij/remoterobot/fixtures/DomElement;
 	public static synthetic fun findElement$default (Lcom/intellij/remoterobot/fixtures/JCefBrowserFixture;Ljava/lang/String;Ljava/time/Duration;ILjava/lang/Object;)Lcom/intellij/remoterobot/fixtures/DomElement;

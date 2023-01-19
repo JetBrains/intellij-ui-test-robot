@@ -177,7 +177,7 @@ class JCefBrowserFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompon
         return executeJsInBrowser("""document.documentElement.innerHTML""")
     }
 
-    private fun executeJsInBrowser(@Language("JavaScript") js: String): String = synchronized(this) {
+    fun executeJsInBrowser(@Language("JavaScript") js: String): String = synchronized(this) {
         val script = """
             const cefBrowser = local.get("$CEF_BROWSER_KEY");
             if (!cefBrowser) {

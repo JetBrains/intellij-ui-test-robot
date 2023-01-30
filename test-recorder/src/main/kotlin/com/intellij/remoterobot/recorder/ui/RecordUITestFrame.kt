@@ -1,6 +1,7 @@
 // Copyright 2000-2022 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.intellij.remoterobot.recorder.ui
 
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.DisposableEditorPanel
@@ -32,8 +33,7 @@ import com.intellij.util.ui.FormBuilder
 import com.intellij.util.ui.components.BorderLayoutPanel
 import org.jetbrains.annotations.NonNls
 import java.awt.Component
-import java.awt.event.WindowAdapter
-import java.awt.event.WindowEvent
+import java.awt.event.*
 import javax.swing.*
 
 
@@ -129,18 +129,21 @@ private fun stepsList(model: RecordUITestModel): JComponent {
                         model[selectedIdx] = editedStep
                     }
                 }
+
                 is TextHotKeyStepModel -> {
                     val editedStep = step.copy()
                     if (CreateNewHotKeyDialogWrapper(editedStep).showAndGet()) {
                         model[selectedIdx] = editedStep
                     }
                 }
+
                 is TextTypingStepModel -> {
                     val editedStep = step.copy()
                     if (CreateNewTypingDialogWrapper(editedStep).showAndGet()) {
                         model[selectedIdx] = editedStep
                     }
                 }
+
                 is CommonStepModel -> {
                     val editedStep = step.copy()
                     if (CreateNewCommonStepDialogWrapper(editedStep).showAndGet()) {
@@ -201,6 +204,25 @@ private fun settingsPanel(model: RecordUITestModel): Component {
             ).apply {
                 addChangeListener { model.useBundleKeys.value = isSelected }
             })
-        .addComponent(JBLabel("Press 'Shift + click' on any Ide component to add mouse step"))
+        .addComponent(
+            CheckBox(
+                "Record Mode",
+                model.recordAllMode.value,
+                "Record all mouse clicks"
+            ).apply {
+                addChangeListener { model.recordAllMode.value = isSelected }
+            })
+        .addComponent(JBLabel("Press 'Shift + click' on any Ide component to add mouse step").apply {
+            model.recordAllMode.onChanged {
+                text = when (it) {
+                    true -> "Recording..."
+                    false -> "Press 'Shift + click' on any Ide component to add mouse step"
+                }
+                icon = when (it) {
+                    true -> AllIcons.Debugger.Db_set_breakpoint
+                    false -> AllIcons.Debugger.Db_muted_breakpoint
+                }
+            }
+        })
         .panel
 }

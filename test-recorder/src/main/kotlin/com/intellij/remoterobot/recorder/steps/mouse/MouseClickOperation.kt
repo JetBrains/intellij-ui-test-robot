@@ -16,7 +16,7 @@ internal data class MouseClickOperation(
             when (button) {
                 MouseButton.RIGHT_BUTTON -> append("Right")
                 MouseButton.LEFT_BUTTON -> append("Left")
-                else -> error("Unknown button button")
+                else -> error("Unknown button")
             }
             append(" ")
             when (count) {
@@ -25,7 +25,6 @@ internal data class MouseClickOperation(
             }
             when {
                 atText != null -> append(" at text '${atText}'")
-                where != null -> append(" at point ${where.x};${where.y}")
             }
         }
 

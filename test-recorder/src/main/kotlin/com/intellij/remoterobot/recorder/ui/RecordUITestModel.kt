@@ -24,6 +24,11 @@ internal class RecordUITestModel(val disposable: Disposable) : DefaultListModel<
         onChanged { recordMouseEventService.useBundleKeys = value }
     }
 
+    val recordAllMode = ObservableField(false).apply {
+        recordMouseEventService.isRecordAllMode = value
+        onChanged { recordMouseEventService.isRecordAllMode = value }
+    }
+
     // todo: support java
     val code: String
         get() = buildString {

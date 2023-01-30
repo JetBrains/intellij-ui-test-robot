@@ -3,9 +3,10 @@ package com.intellij.remoterobot.recorder.action
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.project.DumbAware
 import com.intellij.remoterobot.recorder.RecorderService
 
-internal class OpenRecorderAction : AnAction() {
+internal class OpenRecorderAction : AnAction(), DumbAware {
     override fun actionPerformed(e: AnActionEvent) {
         RecorderService.getInstance().openUI()
     }

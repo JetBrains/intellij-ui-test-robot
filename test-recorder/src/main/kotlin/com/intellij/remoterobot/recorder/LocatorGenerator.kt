@@ -73,7 +73,9 @@ internal class LocatorGenerator {
                 paths.add(currentLocator)
             } else {
                 val locator =
-                    findLocator(hierarchy, node, useBundleKeys, isSingle = false) ?: throw CantCreateLocatorException(targetElement)
+                    findLocator(hierarchy, node, useBundleKeys, isSingle = false) ?: throw CantCreateLocatorException(
+                        targetElement
+                    )
                 if (testNewPathElement(locator, node)) {
                     paths.add(locator)
                 } else {
@@ -138,7 +140,7 @@ internal class LocatorGenerator {
         (0 until element.attributes.length)
             .mapNotNull { element.attributes.item(it)?.nodeName }
             .filter { bestAttributes.contains(it).not() }
-            .filter { (useBundleKeys && it.endsWith(".key")) || it.endsWith("icon") }
+            .filter { (useBundleKeys && it.endsWith(".key")) || it.endsWith("icon") || it.endsWith("text") }
             .forEach { tryToAddAttribute(it)?.let { locator -> return locator } }
 
         if (useBundleKeys) {

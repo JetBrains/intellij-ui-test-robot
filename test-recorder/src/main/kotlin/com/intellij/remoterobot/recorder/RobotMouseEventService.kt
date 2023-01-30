@@ -11,9 +11,11 @@ import com.intellij.openapi.actionSystem.ex.AnActionListener
 import com.intellij.openapi.util.Disposer
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
+import com.intellij.remoterobot.recorder.steps.mouse.MouseClickOperation
 import com.intellij.remoterobot.recorder.steps.mouse.MouseEventStepModel
 import com.intellij.remoterobot.recorder.ui.RecordUITestFrame
 import com.intellij.remoterobot.recorder.ui.dialogs.CreateNewMouseEventStepDialogWrapper
+import org.assertj.swing.core.MouseButton
 import java.awt.Component
 import java.awt.Container
 import java.awt.KeyboardFocusManager
@@ -29,6 +31,7 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
 
     private var isActive: Boolean = false
     var useBundleKeys: Boolean = true
+    var isRecordAllMode: Boolean = false
 
     fun activate() {
         disposable = Disposer.newDisposable()
@@ -66,7 +69,7 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
 
 
     private fun processMouseEvent(event: MouseEvent) {
-        if (event.isShiftDown || event.isControlDown || event.isMetaDown) {
+        if (event.isShiftDown || event.isControlDown || event.isMetaDown || isRecordAllMode) {
             when (event.id) {
                 MOUSE_PRESSED -> {
                     processClick(event)
@@ -84,9 +87,29 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
                 event.locationOnScreen.x - actualComponent.locationOnScreen.x,
                 event.locationOnScreen.y - actualComponent.locationOnScreen.y
             )
+
             val xpath = locatorGenerator.generateXpath(actualComponent, useBundleKeys)
             val texts = TextParser.parseComponent(actualComponent, TextToKeyCache)
-            val newStepModel = MouseEventStepModel(convertedPoint, xpath, texts, actualComponent.generateName(texts), useBundleKeys)
+
+            val mouseEventOperation = if (isRecordAllMode) {
+                val mouseButton = when (event.button) {
+                    1 -> MouseButton.LEFT_BUTTON
+                    3 -> MouseButton.RIGHT_BUTTON
+                    else -> MouseButton.LEFT_BUTTON
+                }
+                MouseClickOperation(mouseButton, where = convertedPoint)
+            } else {
+                MouseClickOperation()
+            }
+            val newStepModel =
+                MouseEventStepModel(
+                    convertedPoint,
+                    xpath,
+                    texts,
+                    actualComponent.generateName(texts),
+                    useBundleKeys,
+                    mouseEventOperation
+                )
             addNewMouseEvenStep(newStepModel, actualComponent)
         }
     }
@@ -110,6 +133,10 @@ internal class RobotMouseEventService(private val addMouseStepHandler: (MouseEve
 
     private fun addNewMouseEvenStep(stepModel: MouseEventStepModel, component: Component) {
         if (RecordUITestFrame.isThisFromRecordTestFrame(component)) return
+        if (isRecordAllMode) {
+            addMouseStepHandler(stepModel)
+            return
+        }
         if (CreateNewMouseEventStepDialogWrapper(stepModel).showAndGet()) {
             addMouseStepHandler(stepModel)
         }

@@ -45,7 +45,7 @@ internal data class MouseClickOperation(
         } else {
             append("doubleRightClick")
         }
-        if (where != null) {
+        if (where != null && textKey == null) {
             append("(Point(${where.x}, ${where.y}))")
         } else {
             append("()")

@@ -63,10 +63,12 @@ internal class LocatorGenerator {
             }
         }
         fun wholePathLocator() = "/" + paths.map { it.replace("//", "/") }.joinToString("") { it }
+
         fun testNewPathElement(locatorToTest: String, node: Node): Boolean {
             val locator = wholePathLocator() + locatorToTest.replace("//", "/")
             return isValidLocator(locator, hierarchy, node, isSingle = true)
         }
+
         chainOfNodes.forEach { node ->
             val currentLocator = findLocator(hierarchy, node, useBundleKeys, isSingle = true)
             if (currentLocator != null) {
@@ -109,7 +111,9 @@ internal class LocatorGenerator {
         val foundPairs = mutableMapOf<String, String>()
 
         fun tryToAddAttribute(attribute: String, removeIfNotFinal: Boolean = true): String? {
-            element.attributes.getNamedItem(attribute)?.nodeValue?.takeIf { it.isNotEmpty() && it.contains("@").not() }
+            element.attributes.getNamedItem(attribute)?.nodeValue?.takeIf {
+                it.isNotEmpty() && it.contains("@").not() && it.contains("'").not()
+            }
                 ?.let { foundPairs[attribute] = it }
             val locator = buildLocator(foundPairs)
             return if (isValidLocator(locator, hierarchy, element, isSingle)) {

@@ -102,7 +102,7 @@ private fun stepsList(model: RecordUITestModel): JComponent {
                         }
                     },
                     AddNewStepAction("Keyboard typing") {
-                        val stepModel = TextTypingStepModel(text = "")
+                        val stepModel = TextTypingStepModel()
                         if (CreateNewTypingDialogWrapper(stepModel).showAndGet()) {
                             model.addElement(stepModel)
                         }

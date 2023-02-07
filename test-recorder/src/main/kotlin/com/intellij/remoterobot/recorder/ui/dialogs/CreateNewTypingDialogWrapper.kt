@@ -3,16 +3,17 @@ package com.intellij.remoterobot.recorder.ui.dialogs
 import com.intellij.openapi.observable.util.whenTextChanged
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.remoterobot.recorder.steps.keyboard.TextTypingStepModel
+import com.intellij.remoterobot.recorder.ui.RecordUITestFrame
+import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
 import com.intellij.util.ui.components.BorderLayoutPanel
 import javax.swing.JComponent
-import javax.swing.JTextArea
 
 internal class CreateNewTypingDialogWrapper(private val stepModel: TextTypingStepModel) : DialogWrapper(true) {
 
     init {
         init()
-        title = "Create text typing step"
+        title = RecordUITestFrame.UI_TEST_RECORDER_TITLE
     }
 
     override fun createCenterPanel(): JComponent {
@@ -30,18 +31,15 @@ internal class CreateNewTypingDialogWrapper(private val stepModel: TextTypingSte
         fun showTextArea() {
             addToCenter(
                 FormBuilder.createFormBuilder()
-                    .addLabeledComponent("Text to type", JTextArea(5, 50).apply {
+                    .addLabeledComponent("Text to type", JBTextField(model.text).apply {
                         isVisible = true
                         requestFocus()
                         this.document.whenTextChanged {
-                            model.text = if (this.text.contains("\n")) asMultiline(this.text) else this.text
+                            model.text = text
                         }
                     })
                     .panel
             )
         }
-
-        private fun asMultiline(text: String) =
-            "\"\"\n${text.lines().joinToString("") { "             $it\n" }}          \"\""
     }
 }

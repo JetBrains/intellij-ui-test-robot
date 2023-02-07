@@ -18,12 +18,12 @@ fun Component.generateName(textsOnComponent: List<TextData>): String {
                 it.substring(0, 20)
             } else {
                 it
-            }
+            }.replace("\n", " ")
         }
 
         else -> name
     }
-    return name ?: javaClass.name.substringAfterLast(".").substringBefore("$")
+    return name?.takeIf { it.trim().isNotEmpty() } ?: javaClass.name.substringAfterLast(".").substringBefore("$")
 }
 
 fun Disposable.whenDisposed(action: () -> Unit) {

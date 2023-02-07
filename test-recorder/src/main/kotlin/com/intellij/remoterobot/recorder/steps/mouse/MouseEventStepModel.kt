@@ -29,10 +29,10 @@ internal class MouseEventStepModel(
 
     override fun generateStepCode(): String {
         return """
-      |     step("$name") {
-      |        component("$xpath"${searchTimeout?.let { ", Duration.ofSeconds(${it.seconds})" } ?: ""})
-      |          .${operation.generateActionCode(useBundleKeys)}
-      |     }
+      |step("$name") {
+      |     component("$xpath"${searchTimeout?.let { ", Duration.ofSeconds(${it.seconds})" } ?: ""})
+      |         .${operation.generateActionCode(useBundleKeys)}
+      |}
     """.trimMargin()
     }
 

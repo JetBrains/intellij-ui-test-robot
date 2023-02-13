@@ -121,7 +121,7 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
         path.filterNotNull().filter { it.isNotEmpty() }
     }
 
-    fun collectRows(): List<String> = collectExpandedPaths().map { it.path.last() }
+    fun collectRows(): List<String> = collectExpandedPaths().map { it.path.lastOrNull() ?: "" }
 
     fun isPathExists(vararg path: String, fullMatch: Boolean = true) = findExpandedPath(*path, fullMatch = fullMatch) != null
 

@@ -9,11 +9,11 @@ import java.awt.event.KeyEvent
 import java.time.Duration
 
 
-inline fun Fixture.keyboard(function: Keyboard.() -> Unit) {
+fun Fixture.keyboard(function: Keyboard.() -> Unit) {
     Keyboard(remoteRobot).function()
 }
 
-inline fun RemoteRobot.keyboard(function: Keyboard.() -> Unit) {
+fun RemoteRobot.keyboard(function: Keyboard.() -> Unit) {
     Keyboard(this).function()
 }
 

@@ -1,5 +1,6 @@
 package com.intellij.remoterobot.recorder.steps.mouse
 
+import com.intellij.remoterobot.data.TextData
 import org.assertj.swing.core.MouseButton
 import java.awt.Point
 
@@ -7,8 +8,7 @@ internal data class MouseClickOperation(
     val button: MouseButton = MouseButton.LEFT_BUTTON,
     val count: Int = 1,
     val where: Point? = null,
-    val atText: String? = null,
-    val textKey: String? = null
+    val atText: TextData? = null
 ) : MouseEventOperation {
 
     override val name: String
@@ -24,16 +24,16 @@ internal data class MouseClickOperation(
                 2 -> append("double click")
             }
             when {
-                atText != null -> append(" at text '${atText}'")
+                atText != null -> append(" at text '${atText.text}'")
             }
         }
 
     override fun generateActionCode(useBundleKeys: Boolean): String = buildString {
         if (atText != null) {
-            if (useBundleKeys && textKey != null) {
-                append("findText(byKey(\"${textKey}\")).")
+            if (useBundleKeys && atText.bundleKey != null) {
+                append("findText(byKey(\"${atText.bundleKey}\")).")
             } else {
-                append("findText(\"${atText}\").")
+                append("findText(\"${atText.text}\").")
             }
         }
         if (button == MouseButton.LEFT_BUTTON && count == 1) {
@@ -45,7 +45,7 @@ internal data class MouseClickOperation(
         } else {
             append("doubleRightClick")
         }
-        if (where != null && textKey == null) {
+        if (where != null && atText == null) {
             append("(Point(${where.x}, ${where.y}))")
         } else {
             append("()")

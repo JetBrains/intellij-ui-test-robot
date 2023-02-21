@@ -28,3 +28,11 @@ updates:
     directory: "/ui-test-example/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/robot-server-core/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/test-recorder/"
+    schedule:
+      interval: "daily"

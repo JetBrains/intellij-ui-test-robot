@@ -15,44 +15,44 @@ jobs:
           distribution: zulu
           java-version: 17
       - name: Build the lib
-        run: gradle :remote-robot:build
+        run: ./gradlew :remote-robot:build
       - name: Build the plugin
-        run: gradle :robot-server-plugin:buildPlugin
+        run: ./gradlew :robot-server-plugin:buildPlugin
       - name: Publish the plugin
         env:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
-        run: gradle :robot-server-plugin:publishRobotServerPluginPublicationToSpacePublicRepository
+        run: ./gradlew :robot-server-plugin:publishRobotServerPluginPublicationToSpacePublicRepository
       - name: Publish the plugin jars
         env:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
-        run: gradle :robot-server-plugin:publishRobotServerJarPublicationToSpacePublicRepository
+        run: ./gradlew :robot-server-plugin:publishRobotServerJarPublicationToSpacePublicRepository
       - name: Publish robot-server-core
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_TOKEN }}
-        run: gradle :robot-server-core:publishRobotServerCoreJarPublicationToSpacePublicRepository
+        run: ./gradlew :robot-server-core:publishRobotServerCoreJarPublicationToSpacePublicRepository
       - name: Publish test-recorder
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_TOKEN }}
-        run: gradle :robot-server-core:publishTestRecorderJarPublicationToSpacePublicRepository
+        run: ./gradlew :robot-server-core:publishTestRecorderJarPublicationToSpacePublicRepository
       - name: Publish the remote-robot lib
         env:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
-        run: gradle :remote-robot:publishRemoteRobotPublicationToSpacePublicRepository
+        run: ./gradlew :remote-robot:publishRemoteRobotPublicationToSpacePublicRepository
       - name: Publish the remote-fixtures lib
         env:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
-        run: gradle :remote-fixtures:publishRemoteFixturesPublicationToSpacePublicRepository
+        run: ./gradlew :remote-fixtures:publishRemoteFixturesPublicationToSpacePublicRepository
       - name: Publish the ide-launcher lib
         env:
           SPACE_ACTOR: ${{ secrets.SPACE_ACTOR }}
           SPACE_TOKEN: ${{ secrets.SPACE_TOKEN }}
-        run: gradle :ide-launcher:publishIdeLauncherPublicationToSpacePublicRepository
+        run: ./gradlew :ide-launcher:publishIdeLauncherPublicationToSpacePublicRepository
       - name: Upload the plugin to the release page
         uses: skx/github-action-publish-binaries@master
         env:

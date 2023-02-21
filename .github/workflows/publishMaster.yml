@@ -16,53 +16,53 @@ jobs:
           distribution: zulu
           java-version: 17
       - name: Build the lib
-        run: gradle :remote-robot:build
+        run: ./gradlew :remote-robot:build
       - name: Build robot-server-core
-        run: gradle :robot-server-core:build
+        run: ./gradlew :robot-server-core:build
       - name: Build the plugin
         env:
           SNAPSHOT: "true"
-        run: gradle :robot-server-plugin:buildPlugin
+        run: ./gradlew :robot-server-plugin:buildPlugin
       - name: Publish the plugin
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           SNAPSHOT: "true"
-        run: gradle :robot-server-plugin:publishRobotServerPluginPublicationToSpaceInternalRepository
+        run: ./gradlew :robot-server-plugin:publishRobotServerPluginPublicationToSpaceInternalRepository
       - name: Publish the plugin jars
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
           SNAPSHOT: "true"
-        run: gradle :robot-server-plugin:publishRobotServerJarPublicationToSpaceInternalRepository
+        run: ./gradlew :robot-server-plugin:publishRobotServerJarPublicationToSpaceInternalRepository
       - name: Publish robot-server-core
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
-        run: gradle :robot-server-core:publishRobotServerCoreJarPublicationToSpaceInternalRepository
+        run: ./gradlew :robot-server-core:publishRobotServerCoreJarPublicationToSpaceInternalRepository
       - name: Publish test-recorder
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
-        run: gradle :test-recorder:publishTestRecorderJarPublicationToSpaceInternalRepository
+        run: ./gradlew :test-recorder:publishTestRecorderJarPublicationToSpaceInternalRepository
       - name: Publish the remote-robot lib
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
-        run: gradle :remote-robot:publishRemoteRobotPublicationToSpaceInternalRepository
+        run: ./gradlew :remote-robot:publishRemoteRobotPublicationToSpaceInternalRepository
       - name: Publish the remote-fixtures lib
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
-        run: gradle :remote-fixtures:apiCheck :remote-fixtures:publishRemoteFixturesPublicationToSpaceInternalRepository
+        run: ./gradlew :remote-fixtures:apiCheck :remote-fixtures:publishRemoteFixturesPublicationToSpaceInternalRepository
       - name: Publish the ide-launcher lib
         env:
           SPACE_INTERNAL_ACTOR: ${{ secrets.SPACE_INTERNAL_ACTOR }}
           SPACE_INTERNAL_TOKEN: ${{ secrets.SPACE_INTERNAL_TOKEN }}
           RUN_NUMBER: ${{ github.run_number }}
-        run: gradle :ide-launcher:publishIdeLauncherPublicationToSpaceInternalRepository
+        run: ./gradlew :ide-launcher:publishIdeLauncherPublicationToSpaceInternalRepository

@@ -16,10 +16,6 @@ configurations.runtimeClasspath {
     exclude("org.slf4j", "slf4j-api")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
-}
-
 dependencies {
     api(project(":robot-server-core"))
     api(project(":test-recorder"))
@@ -46,12 +42,11 @@ val sourcesJar by tasks.creating(Jar::class) {
 
 intellij {
     updateSinceUntilBuild.set(false)
-    version.set("2022.1.1")
+    version.set("2022.3.1")
 }
 
 tasks {
     runIde {
-        jbrVersion.set("11_0_2b159")
         systemProperty("robot-server.port", 8080)
         systemProperty("robot.encryption.enabled", "true")
         systemProperty("robot.encryption.password", "my super secret")

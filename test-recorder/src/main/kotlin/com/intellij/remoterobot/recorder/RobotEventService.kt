@@ -165,24 +165,25 @@ internal class RobotEventService(private val recordTestModel: RecordUITestModel)
 
     private var currentEnterTextStep: TextTypingStepModel? = null
     private fun processKeyEvent(keyEvent: KeyEvent, component: Component) {
-        println(keyEvent)
-        when (keyEvent.id) {
-            KeyEvent.KEY_PRESSED -> {
-                if (isRecordAllMode && keyEvent.isTextTyping()) {
-                    if (currentEnterTextStep == null) {
-                        currentEnterTextStep = TextTypingStepModel("Type text", "")
-                        recordTestModel.addElement(currentEnterTextStep!!)
-                    }
-                    currentEnterTextStep?.addChar(keyEvent.keyChar)
-                    recordTestModel.forceUpdateCode()
-                } else if (keyEvent.keyCode != VK_SHIFT) {
-                    currentEnterTextStep = null
+        if (isRecordAllMode) {
+            when (keyEvent.id) {
+                KeyEvent.KEY_PRESSED -> {
+                    if (keyEvent.isTextTyping()) {
+                        if (currentEnterTextStep == null) {
+                            currentEnterTextStep = TextTypingStepModel("Type text", "")
+                            recordTestModel.addElement(currentEnterTextStep!!)
+                        }
+                        currentEnterTextStep?.addChar(keyEvent.keyChar)
+                        recordTestModel.forceUpdateCode()
+                    } else if (keyEvent.keyCode != VK_SHIFT) {
+                        currentEnterTextStep = null
 
-                    val singleKeyStepModel = TextHotKeyStepModel("Press Key", "", "")
-                    singleKeyStepModel.processKeyEvent(keyEvent)
+                        val singleKeyStepModel = TextHotKeyStepModel("Press Key", "", "")
+                        singleKeyStepModel.processKeyEvent(keyEvent)
 
-                    if (singleKeyStepModel.shortcutCode.isNotEmpty()) {
-                        recordTestModel.addElement(singleKeyStepModel)
+                        if (singleKeyStepModel.shortcutCode.isNotEmpty()) {
+                            recordTestModel.addElement(singleKeyStepModel)
+                        }
                     }
                 }
             }

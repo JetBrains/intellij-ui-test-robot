@@ -220,18 +220,26 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) {
                 && it.bounds.height > 0) || it::class.java.simpleName in listOf("IdeMenuBar", "ActionMenu"))
     }
 
-    private fun getTooltipText(component: Component): String? = if (component is JComponent) {
-        try {
-            component.toolTipText ?: component.getClientProperty("JComponent.helpTooltip")?.let {
-                it.javaClass.getDeclaredField("title").apply {
-                    isAccessible = true
-                }.get(it) as String?
+    private val componentsWithBlockingModalTextSupplier = listOf(
+        "com.intellij.openapi.wm.impl.status.TextPanel\$WithIconAndArrows",
+        "com.intellij.openapi.wm.impl.status.TextPanel"
+    )
+    private fun getTooltipText(component: Component): String? {
+        if (component is JComponent) {
+            if (component::class.java.name in componentsWithBlockingModalTextSupplier) return null
+            return try {
+                component.toolTipText
+                    ?: component.getClientProperty("JComponent.helpTooltip")?.let {
+                        it.javaClass.getDeclaredField("title").apply {
+                            isAccessible = true
+                        }.get(it) as String?
+                    }
+            } catch (e: Throwable) {
+                null
             }
-        } catch (e: Throwable) {
-            null
+        } else {
+            return null
         }
-    } else {
-        null
     }
 
     private fun getClassHierarchy(clazz: Class<*>) = buildString {

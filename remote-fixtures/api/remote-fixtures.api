@@ -527,6 +527,7 @@ public class com/intellij/remoterobot/fixtures/JTreeFixture : com/intellij/remot
 	public final fun rightClickRow (I)V
 	public final fun rightClickRowWithText (Ljava/lang/String;Z)V
 	public static synthetic fun rightClickRowWithText$default (Lcom/intellij/remoterobot/fixtures/JTreeFixture;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun setExpandTimeout (J)V
 }
 
 public final class com/intellij/remoterobot/fixtures/JTreeFixture$Companion {

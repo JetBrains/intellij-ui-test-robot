@@ -20,7 +20,8 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
             const cellReader = new com.intellij.remoterobot.fixtures.dataExtractor.server.textCellRenderers.JTreeTextCellReader();
             fixture.replaceCellReader(cellReader);
             ctx.put("fixture", fixture);
-            ctx.put("reader", cellReader)
+            ctx.put("reader", cellReader);
+            ctx.put("expandTimeout", 5000)
         """
         )
     }
@@ -142,9 +143,13 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
         return this
     }
 
+    fun setExpandTimeout(timeout: Long) {
+        runJs("ctx.put('expandTimeout', $timeout)")
+    }
+
     fun expandAll(): JTreeFixture {
         step("Expand all") {
-            runJs("com.intellij.util.ui.tree.TreeUtil.promiseExpandAll(component).blockingGet(5000)")
+            runJs("com.intellij.util.ui.tree.TreeUtil.promiseExpandAll(component).blockingGet(ctx.get('expandTimeout'))")
         }
         return this
     }
@@ -162,7 +167,7 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
             }
             const visitor = { visit: visit }
             
-            com.intellij.util.ui.tree.TreeUtil.promiseExpand(component, new com.intellij.ui.tree.TreeVisitor(visitor)).blockingGet(5000)
+            com.intellij.util.ui.tree.TreeUtil.promiseExpand(component, new com.intellij.ui.tree.TreeVisitor(visitor)).blockingGet(ctx.get('expandTimeout'))
         """)
         return this
     }

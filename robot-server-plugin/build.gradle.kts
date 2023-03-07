@@ -42,14 +42,14 @@ val sourcesJar by tasks.creating(Jar::class) {
 
 intellij {
     updateSinceUntilBuild.set(false)
-    version.set("2022.3.1")
+    version.set("LATEST-EAP-SNAPSHOT")
 }
 
 tasks {
     runIde {
         systemProperty("robot-server.port", 8080)
-        systemProperty("robot.encryption.enabled", "true")
-        systemProperty("robot.encryption.password", "my super secret")
+//        systemProperty("robot.encryption.enabled", "true")
+//        systemProperty("robot.encryption.password", "my super secret")
     }
 
     patchPluginXml {

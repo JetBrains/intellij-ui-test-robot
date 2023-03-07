@@ -15,7 +15,7 @@ repositories {
 }
 
 
-def remoteRobotVersion = "0.11.16"
+def remoteRobotVersion = "0.11.17"
 
 dependencies {
     testImplementation 'com.intellij.remoterobot:remote-robot:' + remoteRobotVersion

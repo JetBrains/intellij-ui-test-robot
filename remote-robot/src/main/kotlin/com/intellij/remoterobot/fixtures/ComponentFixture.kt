@@ -67,6 +67,15 @@ open class ComponentFixture(
         )
     }
 
+    open fun moveMouse(where: Point): Unit = step("move mouse at ${where.x}:${where.y}") {
+        runJs(
+            """
+        const point = new java.awt.Point(${where.x}, ${where.y});
+        robot.moveMouse(component, point)
+    """
+        )
+    }
+
     open fun getBackgroundColor(): Color {
         return Color(this.callJs("component.background.getRGB()"))
     }

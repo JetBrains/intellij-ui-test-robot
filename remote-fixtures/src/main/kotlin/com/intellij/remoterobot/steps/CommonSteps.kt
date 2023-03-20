@@ -39,6 +39,33 @@ class CommonSteps(private val remoteRobot: RemoteRobot) {
         waitFor(Duration.ofMinutes(minutes.toLong())) { isDumbMode().not() }
     }
 
+    @Step("Open project", "Open project '{1}'")
+    fun openProject(@StepParameter("Project absolute path", "") absolutePath: String) {
+        remoteRobot.runJs(
+            """
+            importClass(com.intellij.openapi.application.ApplicationManager)
+            importClass(com.intellij.ide.impl.OpenProjectTask)
+           
+            const projectManager = com.intellij.openapi.project.ex.ProjectManagerEx.getInstanceEx()
+            let task 
+            try { 
+                task = OpenProjectTask.build()
+            } catch(e) {
+                task = OpenProjectTask.newProject()
+            }
+            const path = new java.io.File("$absolutePath").toPath()
+           
+            const openProjectFunction = new Runnable({
+                run: function() {
+                    projectManager.openProject(path, task)
+                }
+            })
+           
+            ApplicationManager.getApplication().invokeLater(openProjectFunction)
+        """
+        )
+    }
+
     fun isDumbMode(): Boolean {
         return remoteRobot.component("//div[@class='IdeFrameImpl']").callJs(
             """

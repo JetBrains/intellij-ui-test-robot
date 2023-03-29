@@ -24,7 +24,7 @@ val sourcesJar by tasks.creating(Jar::class) {
 
 intellij {
     updateSinceUntilBuild.set(false)
-    version.set("LATEST-EAP-SNAPSHOT")
+    version.set("2022.3")
 }
 
 publishing {

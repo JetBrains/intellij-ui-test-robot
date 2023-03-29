@@ -571,6 +571,7 @@ public final class com/intellij/remoterobot/steps/CommonSteps {
 	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;)V
 	public final fun invokeAction (Ljava/lang/String;)V
 	public final fun isDumbMode ()Z
+	public final fun openProject (Ljava/lang/String;)V
 	public final fun wait (I)V
 	public final fun waitForSmartMode (I)V
 	public final fun waitMs (J)V

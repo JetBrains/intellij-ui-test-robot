@@ -1,7 +1,7 @@
 plugins {
     id("org.jetbrains.intellij")
     id("idea")
-    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.13.0"
+    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.13.1"
 }
 
 intellij {

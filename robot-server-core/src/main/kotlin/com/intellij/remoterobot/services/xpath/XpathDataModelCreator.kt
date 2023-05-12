@@ -198,18 +198,18 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) {
     }
 
     private val fieldsFilter: (Field) -> Boolean = {
-        (it.name.toLowerCase().contains("text")
-                || it.name.toLowerCase() == "id"
-                || it.name.toLowerCase().endsWith("name")
-                || it.name.toLowerCase().contains("action")
-                || it.name.toLowerCase().contains("icon")
-                || it.name.toLowerCase().contains("title")
-                || it.name.toLowerCase() == "visible"
-                || it.name.toLowerCase() == "enabled"
-                || it.name.toLowerCase().contains("caption")
+        (it.name.lowercase(Locale.getDefault()).contains("text")
+                || it.name.lowercase(Locale.getDefault()) == "id"
+                || it.name.lowercase(Locale.getDefault()).endsWith("name")
+                || it.name.lowercase(Locale.getDefault()).contains("action")
+                || it.name.lowercase(Locale.getDefault()).contains("icon")
+                || it.name.lowercase(Locale.getDefault()).contains("title")
+                || it.name.lowercase(Locale.getDefault()) == "visible"
+                || it.name.lowercase(Locale.getDefault()) == "enabled"
+                || it.name.lowercase(Locale.getDefault()).contains("caption")
                 )
-                && it.name.toLowerCase().contains("listener").not()
-                && it.name.toLowerCase().endsWith("context").not()
+                && it.name.lowercase(Locale.getDefault()).contains("listener").not()
+                && it.name.lowercase(Locale.getDefault()).endsWith("context").not()
 
     }
 
@@ -287,7 +287,7 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) {
     }
 }
 
-fun Element.addIcon(iconName: String, size: Int, @Language("JavaScript") onClickFunction: String) {
+fun Element.addIcon(iconName: String, size: Int, onClickFunction: String) {
     val doc = this.ownerDocument
     val icon = doc.createElement("img")
     icon.setAttribute("src", "img/$iconName.png")

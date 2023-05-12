@@ -147,7 +147,10 @@ class IdeRobot(
     fun findAllByXpath(containerId: String, xpath: String): Result<List<RemoteComponent>> {
         val component = componentContextCache[containerId]?.component
             ?: throw IllegalStateException("Unknown component id $containerId")
+        return findAllByXpath(component, xpath)
+    }
 
+    fun findAllByXpath(component: Component, xpath: String): Result<List<RemoteComponent>> {
         if (component is Container) {
             return getResult(RobotContext(robot)) {
                 xpathSearcher.findComponents(xpath, component)
@@ -400,4 +403,8 @@ class IdeRobot(
     }
 
     data class Result<T>(val logs: String, val time: Long, val data: T? = null, val exception: Throwable? = null)
+
+    // RemoteDev
+
+
 }

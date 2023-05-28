@@ -83,6 +83,8 @@ class CommonSteps(private val remoteRobot: RemoteRobot) {
     @Step("Execute cmd", "Execute cmd '{1}'")
     fun executeCmd(@StepParameter("cmd", "ls -la")cmd: String): String = remoteRobot.callJs("""
             importClass(java.lang.StringBuilder)
+            importPackage(java.io)
+            
             let result = null;
             const builder = new StringBuilder();
             const pBuilder = new ProcessBuilder(${cmd.split(" ").joinToString(separator = "\", \"", prefix = "\"", postfix = "\"")})

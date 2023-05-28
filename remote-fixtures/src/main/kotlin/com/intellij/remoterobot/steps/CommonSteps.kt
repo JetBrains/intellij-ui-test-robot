@@ -79,4 +79,29 @@ class CommonSteps(private val remoteRobot: RemoteRobot) {
         """, true
         )
     }
+
+    @Step("Execute cmd", "Execute cmd '{1}'")
+    fun executeCmd(@StepParameter("cmd", "ls -la")cmd: String): String = remoteRobot.callJs("""
+            importClass(java.lang.StringBuilder)
+            let result = null;
+            const builder = new StringBuilder();
+            const pBuilder = new ProcessBuilder(${cmd.split(" ").joinToString(separator = "\", \"", prefix = "\"", postfix = "\"")})
+                .redirectErrorStream(true);
+            let p;
+            try {
+                let s;
+                p = pBuilder.start();
+                const br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                while ((s = br.readLine()) != null) {
+                    builder.append(s + "\n")
+                }
+                p.waitFor();
+                result =  builder.toString();
+            } catch (e) {
+                result = e.getMessage().toString()
+            } finally {
+                if (p) { p.destroy(); }
+            }
+            result;
+        """)
 }

@@ -67,6 +67,10 @@ open class ComponentFixture(
         )
     }
 
+    open fun moveMouse(): Unit = step("move mouse") {
+        runJs("robot.moveMouse(component)")
+    }
+
     open fun moveMouse(where: Point): Unit = step("move mouse at ${where.x}:${where.y}") {
         runJs(
             """

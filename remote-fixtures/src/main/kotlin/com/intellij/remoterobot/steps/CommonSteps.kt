@@ -16,10 +16,18 @@ class CommonSteps(private val remoteRobot: RemoteRobot) {
     fun invokeAction(@StepParameter("Action", "Close Project", StepParameter.UiType.ACTION_ID) actionId: String) {
         remoteRobot.runJs(
             """
+            importClass(com.intellij.openapi.application.ApplicationManager)
+            
             const actionId = "$actionId";
             const actionManager = com.intellij.openapi.actionSystem.ActionManager.getInstance();
             const action = actionManager.getAction(actionId);
-            actionManager.tryToExecute(action, com.intellij.openapi.ui.playback.commands.ActionCommand.getInputEvent(actionId), null, null, true);
+            
+            const runAction = new Runnable({
+                run: function() {
+                    actionManager.tryToExecute(action, com.intellij.openapi.ui.playback.commands.ActionCommand.getInputEvent(actionId), null, null, true);
+                }
+            })
+            ApplicationManager.getApplication().invokeLater(runAction)
         """, true
         )
     }

@@ -32,11 +32,12 @@ annotation class RemoteCommand
 class RemoteRobot @JvmOverloads constructor(
     robotServerUrl: String,
     okHttpClient: OkHttpClient = DefaultHttpClient.client,
-    secret: String? = null
+    secret: String? = null,
+    gsonConverterFactory: GsonConverterFactory = GsonConverterFactory.create()
 ) : SearchContext, JavaScriptApi, LambdaApi {
     override val ideRobotClient = IdeRobotClient(
         Retrofit.Builder().baseUrl(robotServerUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(gsonConverterFactory)
             .client(okHttpClient)
             .build()
             .create(IdeRobotApi::class.java)

@@ -47,19 +47,19 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
     fun clickRowWithText(text: String, fullMatch: Boolean = true) {
         findExpandedRowWithText(text, fullMatch)?.let {
             clickRow(it.row)
-        } ?: throw PathNotFoundException()
+        } ?: throw PathNotFoundException("row '$text' not found")
     }
 
     fun doubleClickRowWithText(text: String, fullMatch: Boolean = true) {
         findExpandedRowWithText(text, fullMatch)?.let {
             doubleClickRow(it.row)
-        } ?: throw PathNotFoundException()
+        } ?: throw PathNotFoundException("row '$text' not found")
     }
 
     fun rightClickRowWithText(text: String, fullMatch: Boolean = true) {
         findExpandedRowWithText(text, fullMatch)?.let {
             rightClickRow(it.row)
-        } ?: throw PathNotFoundException()
+        } ?: throw PathNotFoundException("row '$text' not found")
     }
 
     fun clickRow(rowNumber: Int) {

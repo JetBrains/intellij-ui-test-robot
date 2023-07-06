@@ -125,7 +125,7 @@ object IdeLauncher {
             Ide.CLION -> "clion"
             Ide.WEBSTORM -> "webstorm"
             Ide.RUBY_MINE -> "rubymine"
-            Ide.PYCHARM -> "pycharm"
+            Ide.PYCHARM, Ide.PYCHARM_COMMUNITY -> "pycharm"
         }
         val startupScriptPath = when (Os.hostOS()) {
             Os.LINUX -> "bin/${startupScriptName}.sh"

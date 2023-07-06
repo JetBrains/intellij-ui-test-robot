@@ -6,14 +6,15 @@ enum class Ide(val code: String, val feedsCode: String) {
     CLION("CL", "CL"),
     WEBSTORM("WS", "WS"),
     RUBY_MINE("RM", "RM"),
-    PYCHARM("PY", "PCP");
+    PYCHARM("PY", "PCP"),
+    PYCHARM_COMMUNITY("PC", "PCC");
 
     fun getIdePropertiesEnvVarName() = when (this) {
         IDEA_COMMUNITY, IDEA_ULTIMATE -> "IDEA_PROPERTIES"
         CLION -> "CLION_PROPERTIES"
         WEBSTORM -> if (Os.hostOS() == Os.MAC) "WEBSTORM_PROPERTIES" else "WEBIDE_PROPERTIES"
         RUBY_MINE -> "RUBYMINE_PROPERTIES"
-        PYCHARM -> "PYCHARM_PROPERTIES"
+        PYCHARM, PYCHARM_COMMUNITY -> "PYCHARM_PROPERTIES"
     }
 
     fun getVmOptionsEnvVarName() = when (this) {
@@ -21,7 +22,7 @@ enum class Ide(val code: String, val feedsCode: String) {
         CLION -> "CLION_VM_OPTIONS"
         WEBSTORM -> if (Os.hostOS() == Os.MAC) "WEBSTORM_VM_OPTIONS" else "WEBIDE_VM_OPTIONS"
         RUBY_MINE -> "RUBYMINE_VM_OPTIONS"
-        PYCHARM -> "PYCHARM_VM_OPTIONS"
+        PYCHARM, PYCHARM_COMMUNITY -> "PYCHARM_VM_OPTIONS"
     }.let {
         if (Os.hostOS() == Os.WINDOWS) {
             val productPrefix = it.substringBefore("_")

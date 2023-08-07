@@ -74,6 +74,11 @@ class CommonSteps(private val remoteRobot: RemoteRobot) {
         )
     }
 
+    @Step("Close project", "Close project")
+    fun closeProject() {
+        invokeAction("CloseProject")
+    }
+
     fun isDumbMode(): Boolean {
         return remoteRobot.component("//div[@class='IdeFrameImpl']").callJs(
             """

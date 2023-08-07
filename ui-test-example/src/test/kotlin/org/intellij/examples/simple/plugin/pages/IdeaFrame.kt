@@ -7,6 +7,7 @@ import com.intellij.remoterobot.data.RemoteComponent
 import com.intellij.remoterobot.fixtures.*
 import com.intellij.remoterobot.search.locators.byXpath
 import com.intellij.remoterobot.stepsProcessing.step
+import com.intellij.remoterobot.utils.component
 import com.intellij.remoterobot.utils.waitFor
 import java.time.Duration
 
@@ -16,7 +17,8 @@ fun RemoteRobot.idea(function: IdeaFrame.() -> Unit) {
 
 @FixtureName("Idea frame")
 @DefaultXpath("IdeFrameImpl type", "//div[@class='IdeFrameImpl']")
-class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : CommonContainerFixture(remoteRobot, remoteComponent) {
+class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
+    CommonContainerFixture(remoteRobot, remoteComponent) {
 
     val projectViewTree
         get() = find<ContainerFixture>(byXpath("ProjectViewTree", "//div[@class='ProjectViewTree']"))
@@ -45,7 +47,8 @@ class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : Co
     }
 
     fun isDumbMode(): Boolean {
-        return callJs("""
+        return callJs(
+            """
             const frameHelper = com.intellij.openapi.wm.impl.ProjectFrameHelper.getFrameHelper(component)
             if (frameHelper) {
                 const project = frameHelper.getProject()
@@ -53,6 +56,32 @@ class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : Co
             } else { 
                 true 
             }
-        """, true)
+        """, true
+        )
+    }
+
+    fun openFile(path: String) {
+        val ideaFrame = component("//div[@class='IdeFrameImpl']")
+        ideaFrame.runJs(
+            """
+            importPackage(com.intellij.openapi.fileEditor)
+            importPackage(com.intellij.openapi.vfs)
+            importPackage(com.intellij.openapi.wm.impl)
+            
+            const path = '$path'
+            const frameHelper = ProjectFrameHelper.getFrameHelper(component)
+            if (frameHelper) {
+                const project = frameHelper.getProject()
+                const projectPath = project.getBasePath()
+                const file = LocalFileSystem.getInstance().findFileByPath(projectPath + '/' + path)
+                FileEditorManager.getInstance(project).openTextEditor(
+                    new OpenFileDescriptor(
+                        project,
+                        file
+                    ), true
+                )
+            }
+        """, true
+        )
     }
 }

@@ -569,6 +569,7 @@ public final class com/intellij/remoterobot/fixtures/TextEditorFixture$Companion
 
 public final class com/intellij/remoterobot/steps/CommonSteps {
 	public fun <init> (Lcom/intellij/remoterobot/RemoteRobot;)V
+	public final fun closeProject ()V
 	public final fun executeCmd (Ljava/lang/String;)Ljava/lang/String;
 	public final fun invokeAction (Ljava/lang/String;)V
 	public final fun isDumbMode ()Z

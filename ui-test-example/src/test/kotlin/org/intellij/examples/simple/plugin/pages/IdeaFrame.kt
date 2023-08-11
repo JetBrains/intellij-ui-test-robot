@@ -61,8 +61,7 @@ class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
     }
 
     fun openFile(path: String) {
-        val ideaFrame = component("//div[@class='IdeFrameImpl']")
-        ideaFrame.runJs(
+        runJs(
             """
             importPackage(com.intellij.openapi.fileEditor)
             importPackage(com.intellij.openapi.vfs)

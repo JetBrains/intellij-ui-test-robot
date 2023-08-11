@@ -82,15 +82,15 @@ class SmartXpathLocatorsGenerator {
                 }
             },
             // title.key
-            (element) => {
-                if (element.getAttribute("title.key")) {
-                    const keys = element.getAttribute("title.key")
-                    if (keys.includes(" ")) {
-                        return keys.split(" ").map((key => new PrioritizedXpath(`//*[contains(@title.key, '${key}')]`, 1)))
-                    }
-                    return [new PrioritizedXpath(`//*[@title.key='${element.getAttribute("title.key")}']`, 1)]
-                }
-            },
+//            (element) => {
+//                if (element.getAttribute("title.key")) {
+//                    const keys = element.getAttribute("title.key")
+//                    if (keys.includes(" ")) {
+//                        return keys.split(" ").map((key => new PrioritizedXpath(`//*[contains(@title.key, '${key}')]`, 1)))
+//                    }
+//                    return [new PrioritizedXpath(`//*[@title.key='${element.getAttribute("title.key")}']`, 1)]
+//                }
+//            },
             // visible text
             (element) => {
                 if (element.getAttribute("visible_text")) {
@@ -99,13 +99,13 @@ class SmartXpathLocatorsGenerator {
                 }
             },
             // visible text key
-            (element) => {
-                if (element.getAttribute("visible_text_keys")) {
-                    return element.getAttribute("visible_text_keys").split("||")
-                        .flatMap(keys => keys.split(" "))
-                        .map((it) => new PrioritizedXpath(`//div[contains(@visible_text_keys, '${it.trim()}')]`, 3))
-                }
-            },
+//            (element) => {
+//                if (element.getAttribute("visible_text_keys")) {
+//                    return element.getAttribute("visible_text_keys").split("||")
+//                        .flatMap(keys => keys.split(" "))
+//                        .map((it) => new PrioritizedXpath(`//div[contains(@visible_text_keys, '${it.trim()}')]`, 3))
+//                }
+//            },
             //all attributes
             (element) => {
                 return Array.prototype.slice.call(element.attributes)
@@ -114,7 +114,7 @@ class SmartXpathLocatorsGenerator {
                         let priority = 3
                         if (a.nodeValue.length > 30) priority = 4
                         if (a.nodeName.endsWith(".key")) {
-                            priority = 2
+                            priority = 4
                             if (a.nodeValue.includes(" ")) {
                                 return a.nodeValue.split(" ").map(key => new PrioritizedXpath(`//${element.tagName.toLowerCase()}[contains(@${a.nodeName}, '${key}')]`, priority))
                             }

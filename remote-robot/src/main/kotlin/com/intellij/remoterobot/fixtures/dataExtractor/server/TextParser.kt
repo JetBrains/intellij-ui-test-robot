@@ -39,6 +39,8 @@ object TextParser {
             override fun executeInEDT() {
                 try {
                     component.paint(g)
+                } catch (_: NullPointerException) {
+                    // ignore NPE. Some component attributes can be null, in this case we just don't need its data
                 } catch (e: Exception) {
                     logger.error("Text parsing error. Can't do paint on ${component::class.java.simpleName}", e)
                 }

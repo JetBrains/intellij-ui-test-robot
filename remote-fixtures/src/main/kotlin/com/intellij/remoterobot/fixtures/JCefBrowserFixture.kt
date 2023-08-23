@@ -32,7 +32,7 @@ class JCefBrowserFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompon
         val canvasLocator = byXpath("//div[contains(@class, 'Canvas') or contains(@class, 'JBCef')]")
 
         @JvmStatic
-        val macLocator = byXpath("//div[@class='JPanel' and contains(@javaclass, 'CefBrowserWr')]")
+        val macLocator = byXpath("//div[@class='JBCefOsrComponent']")
 
         private const val FINDER = "window.elementFinder"
         private const val INIT_FINDER = """

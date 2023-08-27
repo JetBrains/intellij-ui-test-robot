@@ -9,11 +9,14 @@
     ]]></description>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationInitializedListener implementation="com.intellij.remoterobot.RobotServerStarter"/>
+<!--        <applicationInitializedListener implementation="com.intellij.remoterobot.RobotServerStarter"/>-->
         <applicationService serviceImplementation="com.intellij.remoterobot.recorder.RecorderService"/>
     </extensions>
+    <applicationListeners>
+        <listener class="com.intellij.remoterobot.RobotServerStarter" topic="com.intellij.ide.AppLifecycleListener"/>
+    </applicationListeners>
 
-    <idea-version since-build="183.2153.8"/>
+    <idea-version since-build="192.5728.98"/>
     <actions>
         <action id="com.intellij.remoterobot.recorder.action.OpenRecorderAction" class="com.intellij.remoterobot.recorder.action.OpenRecorderAction"
                 text="Record UI Test"/>

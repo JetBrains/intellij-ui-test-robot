@@ -2,15 +2,15 @@
 
 package com.intellij.remoterobot
 
-import com.intellij.ide.ApplicationInitializedListener
+import com.intellij.ide.AppLifecycleListener
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
 import com.intellij.remoterobot.services.IdeRobot
 import com.intellij.remoterobot.services.LambdaLoader
 import com.intellij.remoterobot.services.js.RhinoJavaScriptExecutor
 
-class RobotServerStarter : ApplicationInitializedListener {
+class RobotServerStarter : AppLifecycleListener {
 
-    override fun componentsInitialized() {
+    override fun appFrameCreated(commandLineArgs: List<String>) {
         val serverHost = if (System.getProperty("robot-server.host.public")?.toBoolean() == true) {
                 "0.0.0.0"
             } else {

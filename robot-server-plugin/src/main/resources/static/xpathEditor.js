@@ -2,7 +2,7 @@
 
 class XpathEditor {
     static get _goodAttributes() {
-        return ['class', 'text', 'name', 'myaction', 'accessiblename', 'text.key', 'accessiblename.key']
+        return ['class', 'text', 'name', 'myaction', 'accessiblename']
     }
 
     constructor(element) {
@@ -81,16 +81,6 @@ class SmartXpathLocatorsGenerator {
                     return [new PrioritizedXpath(`//div[@class='${element.getAttribute("class")}']`, 2)]
                 }
             },
-            // title.key
-//            (element) => {
-//                if (element.getAttribute("title.key")) {
-//                    const keys = element.getAttribute("title.key")
-//                    if (keys.includes(" ")) {
-//                        return keys.split(" ").map((key => new PrioritizedXpath(`//*[contains(@title.key, '${key}')]`, 1)))
-//                    }
-//                    return [new PrioritizedXpath(`//*[@title.key='${element.getAttribute("title.key")}']`, 1)]
-//                }
-//            },
             // visible text
             (element) => {
                 if (element.getAttribute("visible_text")) {
@@ -113,12 +103,6 @@ class SmartXpathLocatorsGenerator {
                     .flatMap((a) => {
                         let priority = 3
                         if (a.nodeValue.length > 30) priority = 4
-                        if (a.nodeName.endsWith(".key")) {
-                            priority = 4
-                            if (a.nodeValue.includes(" ")) {
-                                return a.nodeValue.split(" ").map(key => new PrioritizedXpath(`//${element.tagName.toLowerCase()}[contains(@${a.nodeName}, '${key}')]`, priority))
-                            }
-                        }
                         return [new PrioritizedXpath(`//${element.tagName.toLowerCase()}[@${a.nodeName}='${a.nodeValue}']`, priority)]
                     })
             },

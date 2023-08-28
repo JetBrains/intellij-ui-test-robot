@@ -15,7 +15,7 @@ repositories {
 }
 
 
-def remoteRobotVersion = "0.11.19"
+def remoteRobotVersion = "0.11.20"
 
 kotlin {
     jvmToolchain(17)

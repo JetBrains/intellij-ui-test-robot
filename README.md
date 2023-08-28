@@ -22,7 +22,7 @@ Or, just run all tasks together with one command:
 
 ## Remote-Robot
 
-The Remote-Robot library is inspired by Selenium WebDriver. It supports IntelliJ IDEA since version `2018.3`.
+The Remote-Robot library is inspired by Selenium WebDriver. It supports IntelliJ IDEA since version `2019.2`.
 
 ![](docs/simple-schema.png)
 
@@ -39,7 +39,7 @@ launch IDEA on remote machines or in docker containers to check your plugin with
 
 ### Setup
 
-The last version of the Remote-Robot is `0.11.19`.
+The last version of the Remote-Robot is `0.11.20`.
 
 In the test project:
 

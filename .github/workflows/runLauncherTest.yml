@@ -5,7 +5,7 @@ jobs:
   ui-tests-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v4.1.1
       - name: Setup Java
         uses: actions/setup-java@v3.10.0
         with:

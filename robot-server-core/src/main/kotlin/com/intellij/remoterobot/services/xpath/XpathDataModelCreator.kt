@@ -16,6 +16,7 @@ import java.awt.Container
 import java.lang.reflect.Field
 import java.lang.reflect.InaccessibleObjectException
 import java.util.*
+import java.util.function.Supplier
 import javax.swing.JComponent
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.math.absoluteValue
@@ -232,7 +233,13 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) {
                     ?: component.getClientProperty("JComponent.helpTooltip")?.let {
                         it.javaClass.getDeclaredField("title").apply {
                             isAccessible = true
-                        }.get(it) as String?
+                        }.get(it)?.let { title ->
+                            when(title) {
+                                is String -> title
+                                is Supplier<*> -> title.get()?.toString()
+                                else -> title.toString()
+                            }
+                        }
                     }
             } catch (e: Throwable) {
                 null

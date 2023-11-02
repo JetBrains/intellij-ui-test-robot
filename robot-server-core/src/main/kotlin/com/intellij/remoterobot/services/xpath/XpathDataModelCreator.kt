@@ -8,7 +8,6 @@ import org.assertj.swing.edt.GuiActionRunner
 import org.assertj.swing.edt.GuiTask
 import org.assertj.swing.hierarchy.ComponentHierarchy
 import org.assertj.swing.hierarchy.ExistingHierarchy
-import org.intellij.lang.annotations.Language
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.awt.Component
@@ -76,6 +75,8 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) {
         if (this == targetComponent) {
             element.setAttribute("robot_target_element", "true")
         }
+
+        element.setAttribute("hasfocus", hasFocus().toString())
 
         val elementText = StringBuilder().apply { append(jClass).append(". ") }
 

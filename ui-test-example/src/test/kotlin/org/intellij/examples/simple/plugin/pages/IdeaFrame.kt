@@ -29,7 +29,7 @@ class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
     val menuBar: JMenuBarFixture
         get() = step("Menu...") {
             if (remoteRobot.findAll(JMenuBarFixture::class.java, JMenuBarFixture.byType()).isEmpty()) {
-                CommonSteps(remoteRobot).invokeAction("ToggleGlobalLinuxMenu")
+                CommonSteps(remoteRobot).invokeAction("MainMenuButton.ShowMenu")
             }
             return@step remoteRobot.find(JMenuBarFixture::class.java, JMenuBarFixture.byType())
         }

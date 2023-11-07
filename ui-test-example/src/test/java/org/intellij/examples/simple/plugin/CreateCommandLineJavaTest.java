@@ -69,6 +69,10 @@ public class CreateCommandLineJavaTest {
         sharedSteps.closeTipOfTheDay();
 
         final IdeaFrame idea = remoteRobot.find(IdeaFrame.class, ofSeconds(10));
+        idea.runJs("""
+                const menuBar = component.getJMenuBar()
+                menuBar.setVisible(true)
+            """);
         waitFor(ofMinutes(5), () -> !idea.isDumbMode());
 
         step("Create Java file", () -> {

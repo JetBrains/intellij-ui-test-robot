@@ -12,7 +12,16 @@ import com.intellij.remoterobot.utils.waitFor
 import java.time.Duration
 
 fun RemoteRobot.idea(function: IdeaFrame.() -> Unit) {
-    find<IdeaFrame>(timeout = Duration.ofSeconds(10)).apply(function)
+    find<IdeaFrame>(timeout = Duration.ofSeconds(10))
+        .apply {
+            step("Enable menu") {
+                runJs("""
+                const menuBar = component.getJMenuBar()
+                menuBar.setVisible(true)
+            """)
+            }
+        }
+        .apply(function)
 }
 
 @FixtureName("Idea frame")

@@ -6,22 +6,13 @@ import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.data.RemoteComponent
 import com.intellij.remoterobot.fixtures.*
 import com.intellij.remoterobot.search.locators.byXpath
-import com.intellij.remoterobot.steps.CommonSteps
 import com.intellij.remoterobot.stepsProcessing.step
+import com.intellij.remoterobot.utils.component
 import com.intellij.remoterobot.utils.waitFor
 import java.time.Duration
 
 fun RemoteRobot.idea(function: IdeaFrame.() -> Unit) {
-    find<IdeaFrame>(timeout = Duration.ofSeconds(10))
-        .apply {
-            step("Enable menu") {
-                runJs("""
-                const menuBar = component.getJMenuBar()
-                menuBar.setVisible(true)
-            """)
-            }
-        }
-        .apply(function)
+    find<IdeaFrame>(timeout = Duration.ofSeconds(10)).apply(function)
 }
 
 @FixtureName("Idea frame")
@@ -37,9 +28,6 @@ class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
 
     val menuBar: JMenuBarFixture
         get() = step("Menu...") {
-            if (remoteRobot.findAll(JMenuBarFixture::class.java, JMenuBarFixture.byType()).isEmpty()) {
-                CommonSteps(remoteRobot).invokeAction("MainMenuButton.ShowMenu")
-            }
             return@step remoteRobot.find(JMenuBarFixture::class.java, JMenuBarFixture.byType())
         }
 

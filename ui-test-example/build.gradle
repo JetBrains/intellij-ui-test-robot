@@ -61,9 +61,6 @@ runIdeForUiTests {
     systemProperty "apple.laf.useScreenMenuBar", "false"
     systemProperty "idea.trust.all.projects", "true"
     systemProperty "ide.show.tips.on.startup.default.value", "false"
-//    systemProperty "ide.experimental.ui", "true"
-    systemProperty "linux.native.menu.force.disable", "true"
-    systemProperty "linux.native.menu", "false"
 //    systemProperty "eap.require.license", "true"
 }
 

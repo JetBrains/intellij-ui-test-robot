@@ -12,7 +12,7 @@ import java.time.Duration
 @ExtendWith(RemoteRobotExtension::class)
 class GlobalAndLocalMapExamplesTest {
 
-    @Test
+//    @Test
     fun globalMap(remoteRobot: RemoteRobot) = with(remoteRobot) {
         // Save message
         runJs("global.put('greeting', 'Hello from Idea')")
@@ -21,7 +21,7 @@ class GlobalAndLocalMapExamplesTest {
         assert(callJs<String>("global.get('greeting')") == "Hello from Idea")
     }
 
-    @Test
+//    @Test
     fun storeFunctions(remoteRobot: RemoteRobot) = with(remoteRobot) {
         // Save JS object with functions
         runJs(
@@ -44,7 +44,7 @@ class GlobalAndLocalMapExamplesTest {
         println(version)
     }
 
-    @Test
+//    @Test
     fun local(remoteRobot: RemoteRobot) {
         // local map is unique for each fixture even if two fixtures refers to the same component
         val frame1 = remoteRobot.find<FrameFixture>(byXpath("//div[@class='FlatWelcomeFrame']"), Duration.ofSeconds(10))

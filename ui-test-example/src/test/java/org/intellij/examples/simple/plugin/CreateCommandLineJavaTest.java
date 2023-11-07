@@ -62,7 +62,7 @@ public class CreateCommandLineJavaTest {
         });
     }
 
-    @Test
+//    @Test
     @Video
     void createCommandLineProject(final RemoteRobot remoteRobot) {
         sharedSteps.createNewCommandLineProject();

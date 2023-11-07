@@ -64,6 +64,9 @@ class CreateCommandLineKotlinTest {
             }
         }
         idea {
+            runJs("""
+               component.getRootPane().getJMenuBar().setVisible(true)
+            """)
             waitFor(ofMinutes(5)) { isDumbMode().not() }
             step("Create App file") {
                 with(projectViewTree) {

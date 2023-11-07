@@ -23,7 +23,7 @@ class SayHelloKotlinTest {
         StepsLogger.init()
     }
 
-    @Test
+//    @Test
     @Disabled
     @Video
     fun checkHelloMessage(remoteRobot: RemoteRobot) = with(remoteRobot) {

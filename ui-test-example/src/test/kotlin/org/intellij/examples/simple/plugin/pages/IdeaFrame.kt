@@ -6,8 +6,8 @@ import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.data.RemoteComponent
 import com.intellij.remoterobot.fixtures.*
 import com.intellij.remoterobot.search.locators.byXpath
+import com.intellij.remoterobot.steps.CommonSteps
 import com.intellij.remoterobot.stepsProcessing.step
-import com.intellij.remoterobot.utils.component
 import com.intellij.remoterobot.utils.waitFor
 import java.time.Duration
 
@@ -28,6 +28,9 @@ class IdeaFrame(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
 
     val menuBar: JMenuBarFixture
         get() = step("Menu...") {
+            if (remoteRobot.findAll(JMenuBarFixture::class.java, JMenuBarFixture.byType()).isEmpty()) {
+                CommonSteps(remoteRobot).invokeAction("ToggleGlobalLinuxMenu")
+            }
             return@step remoteRobot.find(JMenuBarFixture::class.java, JMenuBarFixture.byType())
         }
 

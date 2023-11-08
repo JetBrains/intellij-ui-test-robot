@@ -10,9 +10,12 @@ jobs:
         include:
           - os: ubuntu-latest
             runIde: |
-              export DISPLAY=:99.0
+              sudo apt-get install -y fluxbox
+              export DISPLAY=:99.0        
               Xvfb -ac :99 -screen 0 1920x1080x24 &
               sleep 10
+              fluxbox &
+              sleep 10            
               mkdir -p ui-test-example/build/reports
               ./gradlew :ui-test-example:runIdeForUiTests > ui-test-example/build/reports/idea.log &
             runTests: |

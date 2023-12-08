@@ -11,10 +11,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4.1.1
       - name: Build the remote-robot lib
-        run: gradle :remote-robot:build
+        run: ./gradlew :remote-robot:build
       - name: Build the remote-fixtures lib
-        run: gradle :remote-fixtures:build
+        run: ./gradlew :remote-fixtures:build
       - name: Build the ide-launcher lib
         run: ./gradlew :ide-launcher:build -x test
       - name: Build the plugin
-        run: gradle :robot-server-plugin:buildPlugin
+        run: ./gradlew :robot-server-plugin:buildPlugin

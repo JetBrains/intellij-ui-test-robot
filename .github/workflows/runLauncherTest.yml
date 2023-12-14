@@ -16,7 +16,7 @@ jobs:
           ./gradlew :ide-launcher:test
       - name: Save fails report
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ui-tests-fails-report-windows
           path: |

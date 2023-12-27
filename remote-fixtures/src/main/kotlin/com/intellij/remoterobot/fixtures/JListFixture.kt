@@ -23,10 +23,17 @@ class JListFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) :
             const fixture = new JListFixture(robot, component);
             const cellReader = new com.intellij.remoterobot.fixtures.dataExtractor.server.textCellRenderers.JListTextCellReader();
             fixture.replaceCellReader(cellReader);
+            ctx.put("cellReader", cellReader)
             ctx.put("fixture", fixture) 
         """
         )
     }
+
+    /*
+    Overrides cell width which will be used to parse text in it. JList::width is used as default, but sometimes you might need to make it bigger
+    https://github.com/JetBrains/intellij-ui-test-robot/issues/383
+     */
+    fun setCellReaderWidth(width: Int) = runJs("ctx.get('cellReader').setCellWidth($width)")
 
     fun collectItems() = callJs<Array<String>>("ctx.get('fixture').contents()").toList()
 

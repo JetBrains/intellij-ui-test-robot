@@ -73,7 +73,8 @@ object IdeLauncher {
             }
         )
         val ideDefaultVmOptionsFile = Files.list(ideBinDir).filter {
-            it.fileName.toString().endsWith(".vmoptions")
+            val fileName = it.fileName.toString()
+            fileName.endsWith(".vmoptions") && !fileName.contains("(client|cwm)".toRegex())
         }.collect(Collectors.toList()).let { vmOptionsFiles ->
             if (vmOptionsFiles.size == 1) {
                 vmOptionsFiles[0]

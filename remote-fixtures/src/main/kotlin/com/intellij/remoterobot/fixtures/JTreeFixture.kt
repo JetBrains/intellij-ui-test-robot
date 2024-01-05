@@ -138,7 +138,7 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
             const toStringConverter = function(obj) {return java.util.Objects.toString(obj)}
             const visitor = new com.intellij.ui.tree.TreeVisitor.ByTreePath(ignoreRoot, treePath, toStringConverter);
             
-            com.intellij.util.ui.tree.TreeUtil.promiseExpand(component, visitor).blockingGet(5000)
+            com.intellij.util.ui.tree.TreeUtil.promiseExpand(component, visitor).blockingGet(ctx.get('expandTimeout'))
         """)
         return this
     }

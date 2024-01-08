@@ -398,6 +398,7 @@ public final class com/intellij/remoterobot/fixtures/JListFixture : com/intellij
 	public final fun clickItemAtIndex (I)V
 	public final fun collectItems ()Ljava/util/List;
 	public final fun collectSelectedItems ()Ljava/util/List;
+	public final fun setCellReaderWidth (I)V
 }
 
 public final class com/intellij/remoterobot/fixtures/JListFixture$Companion {

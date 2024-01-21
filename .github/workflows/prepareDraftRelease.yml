@@ -20,7 +20,7 @@ jobs:
           BUILD="$(echo "$PROPERTIES" | grep "^rr_build:" | cut -f2- -d ' ')"
           VERSION="${MAIN_VERSION}.${BUILD}"
 
-          echo "::set-output name=version::$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       # Remove old release drafts by using the curl request for the available releases with draft flag
       - name: Remove Old Release Drafts

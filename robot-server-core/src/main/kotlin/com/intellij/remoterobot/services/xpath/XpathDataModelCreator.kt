@@ -108,7 +108,7 @@ class XpathDataModelCreator(private val textToKeyCache: TextToKeyCache) {
                     }?.apply {
                         element.setAttribute(attributeName, this)
                     }
-                    value?.apply {
+                    value?.removeInvalidXmlCharacters()?.apply {
                         if (textFieldsFilter(attributeName, value)) {
                             elementText.append("$attributeName: '$this'. ")
                             textToKeyCache.findKey(value)?.apply {
@@ -307,4 +307,8 @@ fun Element.addIcon(iconName: String, size: Int, onClickFunction: String) {
         onClickFunction
     )
     appendChild(icon)
+}
+
+private fun String.removeInvalidXmlCharacters(): String {
+    return replace(Regex("[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f]"), "")
 }

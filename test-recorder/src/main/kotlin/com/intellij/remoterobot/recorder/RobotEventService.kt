@@ -43,9 +43,6 @@ internal class RobotEventService(private val recordTestModel: RecordUITestModel)
     fun activate() {
         disposable = Disposer.newDisposable()
         val globalActionListener = object : AnActionListener {
-            override fun beforeActionPerformed(action: AnAction, dataContext: DataContext, event: AnActionEvent) {
-
-            }
         }
 
         val globalAwtProcessor = IdeEventQueue.EventDispatcher { awtEvent ->

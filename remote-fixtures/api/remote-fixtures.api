@@ -22,6 +22,7 @@ public final class com/intellij/remoterobot/fixtures/ActionButtonFixture$PopStat
 	public static final field POPPED Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
 	public static final field PUSHED Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
 	public static final field SELECTED Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
 	public static fun values ()[Lcom/intellij/remoterobot/fixtures/ActionButtonFixture$PopState;
 }
@@ -594,6 +595,7 @@ public abstract interface annotation class com/intellij/remoterobot/steps/StepPa
 public final class com/intellij/remoterobot/steps/StepParameter$UiType : java/lang/Enum {
 	public static final field ACTION_ID Lcom/intellij/remoterobot/steps/StepParameter$UiType;
 	public static final field DEFAULT Lcom/intellij/remoterobot/steps/StepParameter$UiType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/intellij/remoterobot/steps/StepParameter$UiType;
 	public static fun values ()[Lcom/intellij/remoterobot/steps/StepParameter$UiType;
 }
@@ -601,6 +603,7 @@ public final class com/intellij/remoterobot/steps/StepParameter$UiType : java/la
 public final class com/intellij/remoterobot/utils/Direction : java/lang/Enum {
 	public static final field RIGHT Lcom/intellij/remoterobot/utils/Direction;
 	public static final field UNDER Lcom/intellij/remoterobot/utils/Direction;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/intellij/remoterobot/utils/Direction;
 	public static fun values ()[Lcom/intellij/remoterobot/utils/Direction;
 }
@@ -651,6 +654,7 @@ public final class com/intellij/remoterobot/utils/Locators$XpathProperty : java/
 	public static final field SIMPLE_CLASS_NAME Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
 	public static final field TEXT Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
 	public static final field TOOLTIP Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getTitle ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lcom/intellij/remoterobot/utils/Locators$XpathProperty;
 	public static fun values ()[Lcom/intellij/remoterobot/utils/Locators$XpathProperty;

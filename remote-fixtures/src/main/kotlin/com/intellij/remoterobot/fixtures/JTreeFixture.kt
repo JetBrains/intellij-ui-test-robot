@@ -149,7 +149,7 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
 
     fun expandAll(): JTreeFixture {
         step("Expand all") {
-            runJs("com.intellij.util.ui.tree.TreeUtil.promiseExpandAll(component).blockingGet(ctx.get('expandTimeout'))")
+            runJs("com.intellij.util.ui.tree.TreeUtil.promiseExpandAll(component).blockingGet(ctx.get('expandTimeout'))", true)
         }
         return this
     }
@@ -168,7 +168,7 @@ open class JTreeFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompone
             const visitor = { visit: visit }
             
             com.intellij.util.ui.tree.TreeUtil.promiseExpand(component, new com.intellij.ui.tree.TreeVisitor(visitor)).blockingGet(ctx.get('expandTimeout'))
-        """)
+        """, true)
         return this
     }
 

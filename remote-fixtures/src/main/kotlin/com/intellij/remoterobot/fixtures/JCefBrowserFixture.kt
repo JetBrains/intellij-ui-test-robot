@@ -43,7 +43,7 @@ class JCefBrowserFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompon
                 this.tag = element.tagName;
                 this.html = element.outerHTML;
                 this.location = element.getBoundingClientRect();
-                this.xpath = '//' + window.elementFinder.getPathTo(element).toLowerCase();
+                this.xpath = '/' + window.elementFinder.getPathTo(element).toLowerCase();
             }
             
             $FINDER.findElement = (xpath) => {
@@ -71,8 +71,8 @@ class JCefBrowserFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompon
                 return JSON.stringify(result);
             };
             
-            $FINDER.getPathTo = (element) => {
-                if (element === document.body) {
+            $FINDER.getPathTo = (element) => {               
+                if (element.tagName.toLowerCase() === 'html') {
                     return element.tagName;
                 }
                 let ix = 0;
@@ -174,7 +174,7 @@ class JCefBrowserFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteCompon
     }
 
     fun getDom(): String {
-        return executeJsInBrowser("""document.documentElement.innerHTML""")
+        return executeJsInBrowser("""document.documentElement.outerHTML""")
     }
 
     fun executeJsInBrowser(@Language("JavaScript") js: String): String = synchronized(this) {

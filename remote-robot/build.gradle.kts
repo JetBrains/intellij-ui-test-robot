@@ -11,7 +11,7 @@ dependencies {
     api("org.slf4j:slf4j-api:2.0.11")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.10.0")
 }
 
 // Create sources Jar from main kotlin sources

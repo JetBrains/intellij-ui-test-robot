@@ -12,7 +12,7 @@ repositories {
 dependencies {
     api(project(":remote-robot"))
 
-    implementation("org.mozilla:rhino:1.7.14")
+    implementation("org.mozilla:rhino:1.7.15")
     implementation("org.assertj:assertj-swing:3.17.1")
     implementation("net.bytebuddy:byte-buddy-dep:1.14.14")
 

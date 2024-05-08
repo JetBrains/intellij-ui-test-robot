@@ -14,7 +14,8 @@ object IdeLauncher {
         additionalProperties: Map<String, Any>,
         additionalVmOptions: List<String>,
         requiredPluginsArchives: List<Path>,
-        ideSandboxDir: Path
+        ideSandboxDir: Path,
+        beforeLaunchAction: (Map<String, Any>) -> Unit = {}
     ): Process {
         val configDir = Files.createTempDirectory(ideSandboxDir, "config")
         val systemDir = Files.createTempDirectory(ideSandboxDir, "system")
@@ -32,6 +33,7 @@ object IdeLauncher {
             buildIdeProperties(pathToIde, configDir, systemDir, pluginsDir, logDir) + additionalProperties
         val vmOptions = readIdeDefaultVmOptions(pathToIde) + additionalVmOptions
 
+        beforeLaunchAction(ideProperties)
         return runIde(pathToIde, ideSandboxDir, ideProperties.mapValues { it.value.toString() }, vmOptions)
     }
 

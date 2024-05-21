@@ -4,7 +4,7 @@ dependencies {
     api("com.squareup.okhttp3:okhttp:4.12.0")
     testImplementation(project(":remote-robot"))
     testImplementation(project(":remote-fixtures"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
     testImplementation("commons-io:commons-io:2.16.1")
 }

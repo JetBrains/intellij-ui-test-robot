@@ -6,6 +6,7 @@ import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.*;
 import com.intellij.remoterobot.search.locators.Locator;
+import com.intellij.remoterobot.steps.CommonSteps;
 import com.intellij.remoterobot.utils.Keyboard;
 import org.assertj.swing.core.MouseButton;
 import org.intellij.examples.simple.plugin.pages.IdeaFrame;
@@ -51,14 +52,7 @@ public class CreateCommandLineJavaTest {
     @AfterEach
     public void closeProject(final RemoteRobot remoteRobot) {
         step("Close the project", () -> {
-            if (remoteRobot.isMac()) {
-                keyboard.hotKey(VK_SHIFT, VK_META, VK_A);
-                keyboard.enterText("Close Project");
-                keyboard.enter();
-            } else {
-                actionMenu(remoteRobot, "File").click();
-                actionMenuItem(remoteRobot, "Close Project").click();
-            }
+            new CommonSteps(remoteRobot).closeProject();
         });
     }
 

@@ -38,7 +38,6 @@ public class JavaExampleSteps {
             welcomeFrame.createNewProjectLink().click();
 
             final DialogFixture newProjectDialog = welcomeFrame.find(DialogFixture.class, DialogFixture.byTitle("New Project"), Duration.ofSeconds(20));
-            newProjectDialog.find(JListFixture.class, byXpath("//div[@class='JBList']")).clickItem("New Project", true);
             newProjectDialog.findText("Java").click();
             newProjectDialog.button("Create").click();
         });
@@ -60,10 +59,10 @@ public class JavaExampleSteps {
 
     public void autocomplete(String text) {
         step("Autocomplete '" + text + "'", () -> {
-            final Locator completionMenu = byXpath("//div[@class='HeavyWeightWindow']");
+            final Locator completionMenu = byXpath("//div[@class='HeavyWeightWindow']//div[@class='LookupList']");
             final Keyboard keyboard = new Keyboard(remoteRobot);
             keyboard.enterText(text);
-            waitFor(ofSeconds(5), () -> hasSingleComponent(remoteRobot, completionMenu));
+            waitFor(ofSeconds(10), () -> hasSingleComponent(remoteRobot, completionMenu));
             remoteRobot.find(ComponentFixture.class, completionMenu)
                     .findText(contains(text))
                     .click();

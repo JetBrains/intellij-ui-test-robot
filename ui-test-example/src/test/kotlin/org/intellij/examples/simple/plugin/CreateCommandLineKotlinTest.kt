@@ -7,6 +7,7 @@ import com.intellij.remoterobot.RemoteRobot
 import com.intellij.remoterobot.fixtures.CommonContainerFixture
 import com.intellij.remoterobot.fixtures.ContainerFixture
 import com.intellij.remoterobot.search.locators.byXpath
+import com.intellij.remoterobot.steps.CommonSteps
 import com.intellij.remoterobot.stepsProcessing.step
 import com.intellij.remoterobot.utils.keyboard
 import com.intellij.remoterobot.utils.waitFor
@@ -37,17 +38,7 @@ class CreateCommandLineKotlinTest {
 
     @AfterEach
     fun closeProject(remoteRobot: RemoteRobot) = with(remoteRobot) {
-        idea {
-            if (remoteRobot.isMac()) {
-                keyboard {
-                    hotKey(VK_SHIFT, VK_META, VK_A)
-                    enterText("Close Project")
-                    enter()
-                }
-            } else {
-                menuBar.select("File", "Close Project")
-            }
-        }
+        CommonSteps(remoteRobot).closeProject()
     }
 
     @Test

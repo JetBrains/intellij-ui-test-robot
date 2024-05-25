@@ -38,7 +38,7 @@ launch IDEA on remote machines or in Docker containers to check your plugin with
 
 ### Setup
 
-The last version of the Remote-Robot is `0.11.22`.
+The last version of the Remote-Robot is `0.11.23`.
 
 In the test project:
 

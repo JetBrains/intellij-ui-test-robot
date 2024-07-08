@@ -14,7 +14,7 @@ dependencies {
 
     implementation("org.mozilla:rhino:1.7.15")
     implementation("org.assertj:assertj-swing:3.17.1")
-    implementation("net.bytebuddy:byte-buddy-dep:1.14.15")
+    implementation("net.bytebuddy:byte-buddy-dep:1.14.18")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")

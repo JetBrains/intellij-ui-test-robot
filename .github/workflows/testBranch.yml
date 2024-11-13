@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v4.1.5
+        uses: actions/checkout@v4.2.2
       - name: Build the remote-robot lib
         run: ./gradlew :remote-robot:build
       - name: Build the remote-fixtures lib

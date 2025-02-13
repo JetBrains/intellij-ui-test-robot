@@ -1,6 +1,6 @@
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.12.1")
     api("com.squareup.okhttp3:okhttp:4.12.0")
     testImplementation(project(":remote-robot"))
     testImplementation(project(":remote-fixtures"))

@@ -2,6 +2,7 @@
 
 package com.intellij.remoterobot
 
+import com.google.gson.GsonBuilder
 import com.intellij.remoterobot.client.IdeRobotApi
 import com.intellij.remoterobot.client.IdeRobotClient
 import com.intellij.remoterobot.data.RemoteComponent
@@ -14,6 +15,7 @@ import com.intellij.remoterobot.fixtures.Fixture
 import com.intellij.remoterobot.search.Finder
 import com.intellij.remoterobot.search.locators.Locator
 import com.intellij.remoterobot.utils.DefaultHttpClient
+import com.intellij.remoterobot.utils.ThrowableTypeAdapter
 import com.intellij.remoterobot.utils.waitFor
 import okhttp3.OkHttpClient
 import org.intellij.lang.annotations.Language
@@ -28,15 +30,19 @@ import javax.imageio.ImageIO
 @DslMarker
 annotation class RemoteCommand
 
-
 class RemoteRobot @JvmOverloads constructor(
     robotServerUrl: String,
     okHttpClient: OkHttpClient = DefaultHttpClient.client,
     secret: String? = null
 ) : SearchContext, JavaScriptApi, LambdaApi {
+
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(Throwable::class.java, ThrowableTypeAdapter)
+        .create()
+
     override val ideRobotClient = IdeRobotClient(
         Retrofit.Builder().baseUrl(robotServerUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
             .create(IdeRobotApi::class.java)

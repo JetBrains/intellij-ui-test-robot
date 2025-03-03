@@ -2,6 +2,8 @@
 
 package com.intellij.remoterobot.services
 
+import com.intellij.openapi.application.EDT
+import com.intellij.openapi.application.WriteIntentReadAction
 import com.intellij.remoterobot.data.*
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextToKeyCache
@@ -9,9 +11,11 @@ import com.intellij.remoterobot.robot.SmoothRobot
 import com.intellij.remoterobot.services.js.JavaScriptExecutor
 import com.intellij.remoterobot.services.xpath.XpathSearcher
 import com.intellij.remoterobot.utils.LruCache
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.assertj.swing.edt.GuiActionRunner.execute
 import org.assertj.swing.edt.GuiQuery
-import org.assertj.swing.edt.GuiTask
 import org.assertj.swing.exception.ComponentLookupException
 import java.awt.Component
 import java.awt.Container
@@ -165,12 +169,11 @@ class IdeRobot(
     fun doAction(actionContainer: ObjectContainer): Result<Unit> {
         return getResult(RobotContext(robot)) { ctx ->
             if (actionContainer.runInEdt) {
-                execute(object : GuiTask() {
-                    override fun executeInEDT() {
-                        val action = lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Unit
-                        ctx.action()
-                    }
-                })
+                runInEdtWithWIL {
+                    val action =
+                        lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Unit
+                    ctx.action()
+                }
             } else {
                 val action = lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Unit
                 ctx.action()
@@ -183,12 +186,11 @@ class IdeRobot(
             ?: throw IllegalStateException("Unknown component id $componentId")
         return getResult(componentContext) { ctx ->
             if (actionContainer.runInEdt) {
-                execute(object : GuiTask() {
-                    override fun executeInEDT() {
-                        val action = lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Unit
-                        ctx.action()
-                    }
-                })
+                runInEdtWithWIL {
+                    val action =
+                        lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Unit
+                    ctx.action()
+                }
             } else {
                 val action = lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Unit
                 ctx.action()
@@ -218,12 +220,11 @@ class IdeRobot(
     fun retrieveAny(actionContainer: ObjectContainer): Result<Serializable> {
         return getResult(RobotContext(robot)) { ctx ->
             if (actionContainer.runInEdt) {
-                return@getResult execute(object : GuiQuery<Serializable>() {
-                    override fun executeInEDT(): Serializable {
-                        val action = lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Serializable
-                        return ctx.action()
-                    }
-                })
+                runInEdtWithWIL {
+                    val action =
+                        lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Serializable
+                    ctx.action()
+                }
             } else {
                 val action = lambdaLoader.getFunction(actionContainer) as RobotContext.() -> Serializable
                 return@getResult ctx.action()
@@ -236,15 +237,14 @@ class IdeRobot(
             ?: throw IllegalStateException("Unknown component id $componentId")
         return getResult(componentContext) { ctx ->
             if (actionContainer.runInEdt) {
-                return@getResult execute(object : GuiQuery<Serializable>() {
-                    override fun executeInEDT(): Serializable {
-                        val action = lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Serializable
-                        return ctx.action()
-                    }
-                })
+                runInEdtWithWIL {
+                    val action =
+                        lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Serializable
+                    ctx.action()
+                }
             } else {
                 val action = lambdaLoader.getFunction(actionContainer) as ComponentContext.() -> Serializable
-                return@getResult ctx.action()
+                ctx.action()
             }
         }
     }
@@ -299,11 +299,9 @@ class IdeRobot(
     fun doAction(script: String, runInEdt: Boolean): Result<Unit> {
         return getResult(RobotContext(robot)) { ctx ->
             if (runInEdt) {
-                execute(object : GuiTask() {
-                    override fun executeInEDT() {
-                        jsExecutor.execute(script, ctx)
-                    }
-                })
+                runInEdtWithWIL {
+                    jsExecutor.execute(script, ctx)
+                }
             } else {
                 jsExecutor.execute(script, ctx)
             }
@@ -316,11 +314,9 @@ class IdeRobot(
             ?: throw IllegalStateException("Unknown component id $componentId")
         return getResult(componentContext) { ctx ->
             if (runInEdt) {
-                execute(object : GuiTask() {
-                    override fun executeInEDT() {
-                        jsExecutor.execute(script, ctx)
-                    }
-                })
+                runInEdtWithWIL {
+                    jsExecutor.execute(script, ctx)
+                }
             } else {
                 jsExecutor.execute(script, ctx)
             }
@@ -331,15 +327,13 @@ class IdeRobot(
     fun retrieveAny(script: String, runInEdt: Boolean): Result<Serializable> {
         return getResult(RobotContext(robot)) { ctx ->
             if (runInEdt) {
-                return@getResult execute(object : GuiQuery<Serializable>() {
-                    override fun executeInEDT(): Serializable {
-                        val result = jsExecutor.execute(script, ctx)
-                        if (result != null && result is Serializable) {
-                            return result as Serializable
-                        }
-                        throw ScriptMustReturnSerializableException(result)
+                runInEdtWithWIL {
+                    val result = jsExecutor.execute(script, ctx)
+                    if (result != null && result is Serializable) {
+                        return@runInEdtWithWIL result
                     }
-                })
+                    throw ScriptMustReturnSerializableException(result)
+                }
             } else {
                 val result = jsExecutor.execute(script, ctx)
                 if (result != null && result is Serializable) {
@@ -356,15 +350,13 @@ class IdeRobot(
 
         return getResult(componentContext) { ctx ->
             if (runInEdt) {
-                return@getResult execute(object : GuiQuery<Serializable>() {
-                    override fun executeInEDT(): Serializable {
-                        val result = jsExecutor.execute(script, ctx)
-                        if (result != null && result is Serializable) {
-                            return result as Serializable
-                        }
-                        throw ScriptMustReturnSerializableException(result)
+                runInEdtWithWIL {
+                    val result = jsExecutor.execute(script, ctx)
+                    if (result != null && result is Serializable) {
+                        return@runInEdtWithWIL result
                     }
-                })
+                    throw ScriptMustReturnSerializableException(result)
+                }
             } else {
                 val result = jsExecutor.execute(script, ctx)
                 if (result != null && result is Serializable) {
@@ -407,4 +399,14 @@ class IdeRobot(
     // RemoteDev
 
 
+}
+
+private fun <T> runInEdtWithWIL(block: () -> T): T {
+    return runBlocking {
+        withContext(Dispatchers.EDT) {
+            WriteIntentReadAction.compute<T> {
+                block()
+            }
+        }
+    }
 }

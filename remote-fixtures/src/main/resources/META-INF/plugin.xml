@@ -1,0 +1,13 @@
+<idea-plugin>
+    <id>com.intellij.remoterobot.server.core</id>
+    <name>Remote Robot Fixtures</name>
+    <version>1.0</version>
+    <vendor>JetBrains</vendor>
+    <description>Remote-Fixtures module</description>
+    
+    <depends>com.intellij.modules.platform</depends>
+    
+    <!-- Empty since this is just a library module -->
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+</idea-plugin> 

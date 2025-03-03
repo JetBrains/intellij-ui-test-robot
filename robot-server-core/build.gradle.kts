@@ -38,7 +38,6 @@ val sourcesJar by tasks.creating(Jar::class) {
 }
 
 intellijPlatform {
-    buildSearchableOptions = false
     pluginConfiguration {
         ideaVersion {
             untilBuild = provider { null }

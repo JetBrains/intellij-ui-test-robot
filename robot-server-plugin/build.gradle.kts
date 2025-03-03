@@ -40,7 +40,7 @@ dependencies {
 }
 
 intellijPlatform {
-    buildSearchableOptions = false
+//    buildSearchableOptions = false
     pluginConfiguration {
         ideaVersion {
             untilBuild = provider { null }

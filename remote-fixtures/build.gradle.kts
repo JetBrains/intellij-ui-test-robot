@@ -1,25 +1,28 @@
 plugins {
-    id("org.jetbrains.intellij")
+    id("org.jetbrains.intellij.platform")
     id("idea")
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.17.0"
 }
 
-intellij {
-    version.set("LATEST-EAP-SNAPSHOT")
+dependencies {
+    implementation(project(":remote-robot"))
+
+    intellijPlatform {
+        intellijIdeaCommunity("2024.1")
+    }
 }
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 idea {
     module {
         isDownloadSources = true
     }
-}
-
-dependencies {
-    implementation(project(":remote-robot"))
 }
 
 val sourcesJar by tasks.creating(Jar::class) {

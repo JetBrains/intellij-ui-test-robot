@@ -1,0 +1,13 @@
+<idea-plugin>
+    <id>com.intellij.remoterobot.server.test.recorder</id>
+    <name>Test Recorder</name>
+    <version>1.0</version>
+    <vendor>JetBrains</vendor>
+    <description>test recorder module for Remote Robot Server</description>
+    
+    <depends>com.intellij.modules.platform</depends>
+    
+    <!-- Empty since this is just a library module -->
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+</idea-plugin> 

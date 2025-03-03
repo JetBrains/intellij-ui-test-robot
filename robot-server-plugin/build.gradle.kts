@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.intellij")
+    id("org.jetbrains.intellij.platform")
 }
 val robotServerVersion = if (System.getenv("SNAPSHOT") == null) {
     rootProject.ext["publish_version"] as String
@@ -10,6 +10,9 @@ version = robotServerVersion
 
 repositories {
     maven("https://repo.labs.intellij.net/intellij")
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 configurations.runtimeClasspath {
@@ -30,6 +33,18 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.0")
+
+    intellijPlatform {
+        intellijIdeaCommunity("2024.1")
+    }
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion {
+            untilBuild = provider { null }
+        }
+    }
 }
 
 // Create sources Jar from main kotlin sources
@@ -38,11 +53,6 @@ val sourcesJar by tasks.creating(Jar::class) {
     description = "Assembles sources JAR"
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
-}
-
-intellij {
-    updateSinceUntilBuild.set(false)
-    version.set("LATEST-EAP-SNAPSHOT")
 }
 
 tasks {

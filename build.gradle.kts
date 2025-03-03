@@ -1,15 +1,22 @@
 plugins {
     id("org.jetbrains.kotlin.jvm") version "2.0.20"
-    id("org.jetbrains.intellij") version "1.17.3"
+    id("org.jetbrains.intellij.platform") version "2.3.0"
 }
 
 repositories {
     mavenCentral()
+
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
-intellij {
-    version.set("LATEST-EAP-SNAPSHOT")
+dependencies {
+    intellijPlatform {
+        intellijIdeaCommunity("2024.1")
+    }
 }
+
 subprojects {
     apply {
         plugin(JavaPlugin::class.java)

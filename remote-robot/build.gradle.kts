@@ -1,7 +1,12 @@
 plugins {
-    id("org.jetbrains.intellij")
+    id("org.jetbrains.intellij.platform")
 }
 
+repositories {
+    intellijPlatform {
+        defaultRepositories()
+    }
+}
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -12,6 +17,10 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    intellijPlatform {
+        intellijIdeaCommunity("2024.1")
+    }
 }
 
 // Create sources Jar from main kotlin sources
@@ -20,10 +29,6 @@ val sourcesJar by tasks.creating(Jar::class) {
     description = "Assembles sources JAR"
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
-}
-
-intellij {
-    version.set("LATEST-EAP-SNAPSHOT")
 }
 
 publishing {

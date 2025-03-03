@@ -1,11 +1,15 @@
 version = rootProject.ext["publish_version"] as String
 
 plugins {
-    id("org.jetbrains.intellij")
+    id("org.jetbrains.intellij.platform")
 }
 
 repositories {
     maven("https://repo.labs.intellij.net/intellij")
+
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 
@@ -19,6 +23,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.0")
+
+    intellijPlatform {
+        intellijIdeaCommunity("2024.1")
+    }
 }
 
 // Create sources Jar from main kotlin sources
@@ -29,9 +37,12 @@ val sourcesJar by tasks.creating(Jar::class) {
     from(sourceSets.main.get().allSource)
 }
 
-intellij {
-    updateSinceUntilBuild.set(false)
-    version.set("LATEST-EAP-SNAPSHOT")
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion {
+            untilBuild = provider { null }
+        }
+    }
 }
 
 publishing {

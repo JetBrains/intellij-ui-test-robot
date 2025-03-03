@@ -2,7 +2,6 @@
 
 package com.intellij.remoterobot.services
 
-import com.intellij.openapi.application.EDT
 import com.intellij.openapi.application.WriteIntentReadAction
 import com.intellij.remoterobot.data.*
 import com.intellij.remoterobot.fixtures.dataExtractor.server.TextParser
@@ -11,9 +10,6 @@ import com.intellij.remoterobot.robot.SmoothRobot
 import com.intellij.remoterobot.services.js.JavaScriptExecutor
 import com.intellij.remoterobot.services.xpath.XpathSearcher
 import com.intellij.remoterobot.utils.LruCache
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.assertj.swing.edt.GuiActionRunner.execute
 import org.assertj.swing.edt.GuiQuery
 import org.assertj.swing.exception.ComponentLookupException
@@ -402,11 +398,11 @@ class IdeRobot(
 }
 
 private fun <T> runInEdtWithWIL(block: () -> T): T {
-    return runBlocking {
-        withContext(Dispatchers.EDT) {
-            WriteIntentReadAction.compute<T> {
+    return execute(object : GuiQuery<T>() {
+        override fun executeInEDT(): T {
+            return WriteIntentReadAction.compute<T> {
                 block()
             }
         }
-    }
+    })
 }

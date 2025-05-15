@@ -16,7 +16,7 @@ dependencies {
     api("org.slf4j:slf4j-api:2.0.13")
 
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 
     intellijPlatform {
         intellijIdeaCommunity("2024.1")
